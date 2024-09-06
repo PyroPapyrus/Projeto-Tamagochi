@@ -12,3 +12,18 @@ web-build/
 
 # macOS
 .DS_Store
+# Ignore arquivos do sistema
+
+.idea/
+.vscode/
+*.log
+*.lock
+.env
+
+# Ignorar arquivos temporários e de sistema do Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+ntuser.dat
+ntuser.ini
