@@ -1,4 +1,4 @@
-import { Link, router } from "expo-router";
+import { router } from "expo-router";
 import { Text, View, StyleSheet, Button } from "react-native";
 
 const styles = StyleSheet.create({
@@ -12,22 +12,17 @@ const styles = StyleSheet.create({
     }
 })
 
-const index = () => {
+const teste = () => {
     return (
         <View style={styles.container}>
             <Text style={styles.text}>
-                Tela do Index
+                Tela de Teste
             </Text>
     
-            <Button 
-                title="Voltar pra tela inicial"
-                onPress={() => {
-                    router.back();
-                }}
-            />
+
             
         </View>
     );
 }
 
-export default index;
+export default teste;
