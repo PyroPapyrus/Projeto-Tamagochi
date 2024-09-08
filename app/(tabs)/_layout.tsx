@@ -31,6 +31,7 @@ export default function TabLayout() {
             <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
           ),
         }}
+<<<<<<< HEAD
 
       />
 
@@ -48,6 +49,9 @@ export default function TabLayout() {
       
       />
       
+=======
+      />
+>>>>>>> c0d260eddb16bfee3e2ddfb496401f3d0ef6a5b7
     </Tabs>
   );
 }

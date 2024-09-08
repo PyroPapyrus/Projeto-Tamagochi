@@ -6,7 +6,10 @@ import { useEffect } from 'react';
 import 'react-native-reanimated';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
+<<<<<<< HEAD
 import { StyleSheet, Text, View } from 'react-native';
+=======
+>>>>>>> c0d260eddb16bfee3e2ddfb496401f3d0ef6a5b7
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -30,13 +33,17 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack>
+<<<<<<< HEAD
         <Stack.Screen name='index' />
+=======
+>>>>>>> c0d260eddb16bfee3e2ddfb496401f3d0ef6a5b7
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
       </Stack>
     </ThemeProvider>
   );
 }
+<<<<<<< HEAD
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "darkblue",
@@ -45,3 +52,5 @@ const styles = StyleSheet.create({
   }
   
 });
+=======
+>>>>>>> c0d260eddb16bfee3e2ddfb496401f3d0ef6a5b7
