@@ -18,7 +18,7 @@ const index = () => {
 
             <Text>
               <Link style={styles.text}
-               href={"/CreateTamagochiScreen"}>Clique aqui para ir a tela de tabs</Link>
+               href={"/CreateTamagochiScreen"}>Clique aqui pra ir a tela do tamagochi</Link>
             </Text>
 
         </SafeAreaView>

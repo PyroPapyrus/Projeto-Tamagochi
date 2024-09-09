@@ -1,7 +1,7 @@
 import { getTamagochiImage } from "@/utils/getTamagochiImage";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { Alert, Image, ImageBackground, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
+import { Alert, Button, Image, ImageBackground, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import { useTamagochiDatabase } from "../database/tamagochiDatabase";
 import { tamagochiImages, TamagochiType } from "@/assets/images/TamagochiImages";
 
@@ -17,6 +17,7 @@ const CreateTamagochiScreen = () => {
         try {
             if (!name) {
                 return Alert.alert('O tamagochi precisa ter um nome');
+                
             }
             if (selectedImage === null) {
                 return Alert.alert('O tamagochi precisa ter uma imagem');
@@ -39,9 +40,16 @@ const CreateTamagochiScreen = () => {
 
 
     return (
-        <ImageBackground  source={{ uri: 'https://example.com/image.png' }} style={styles.background}>
+        <ImageBackground source={{ uri: 'https://i.pinimg.com/736x/c9/8b/a0/c98ba0403bb66007b04c6c396267d30d.jpg' }} style={styles.background}>
+            
+                    <Text style={styles.buttonGoBack}
+                        onPress={() => {
+                            router.back();
+                        }}     
+                    >GO BACK</Text>
 
             <ScrollView  contentContainerStyle={styles.scrollContainer}>
+
                 <Text style={styles.header}>Gerador de Tamagochi</Text>
 
                 <Text style={styles.imageSelectionLabel}>Qual a aparência do Tamagochi:</Text>
@@ -67,7 +75,7 @@ const CreateTamagochiScreen = () => {
                     </View>
                 )}
 
-                <TextInput  placeholder="Name"
+                <TextInput  placeholder="Nome"
                 value={name}
                 style={styles.inputField}
                 onChangeText={setName}
@@ -83,6 +91,16 @@ const CreateTamagochiScreen = () => {
 
 export default CreateTamagochiScreen;
 const styles = StyleSheet.create({
+
+    buttonGoBack: {
+        color: 'white',
+        fontWeight: 'bold',
+        textAlign: 'left', 
+        padding: 15,
+        width: '100%',
+        paddingVertical: 30,
+    },
+
     background: {
         flex: 1,
         justifyContent: 'center',
@@ -97,13 +115,13 @@ const styles = StyleSheet.create({
     header: {
         fontSize: 30,
         fontWeight: 'bold',
-        marginBottom: 20,
-        color: '#000',
+        marginBottom: 10,
+        color: 'white',
     },
     inputField: {
         height: 45,
-        borderColor: '#000',
-        borderWidth: 1,
+        borderColor: 'green',
+        borderWidth: 2,
         marginBottom: 20,
         paddingHorizontal: 10,
         width: '80%',
@@ -113,7 +131,7 @@ const styles = StyleSheet.create({
     imageSelectionLabel: {
         fontSize: 20,
         marginBottom: 10,
-        color: '#000',
+        color: 'white',
     },
     imageGrid: {
         flexDirection: 'row',

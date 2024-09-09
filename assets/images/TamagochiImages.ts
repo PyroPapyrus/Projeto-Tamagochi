@@ -7,44 +7,44 @@ const tamagochiImages: Record<TamagochiStatus, Record<TamagochiType, ImageSource
     morto: {
         tamagochi1: require('./dog.png'),
         tamagochi2: require('./fruit.png'),
-        tamagochi3: require('./dog.png'),
-        tamagochi4: require('./dog.png'),
+        tamagochi3: require('./frog.png'),
+        tamagochi4: require('./pinguim.png'),
     },
     critico: {
         tamagochi1: require('./dog.png'),
         tamagochi2: require('./fruit.png'),
-        tamagochi3: require('./dog.png'),
-        tamagochi4: require('./dog.png'),
+        tamagochi3: require('./frog.png'),
+        tamagochi4: require('./pinguim.png'),
     },
     muito_triste: {
         tamagochi1: require('./dog.png'),
         tamagochi2: require('./fruit.png'),
-        tamagochi3: require('./dog.png'),
-        tamagochi4: require('./dog.png'),
+        tamagochi3: require('./frog.png'),
+        tamagochi4: require('./pinguim.png'),
     },
     triste: {
         tamagochi1: require('./dog.png'),
         tamagochi2: require('./fruit.png'),
-        tamagochi3: require('./dog.png'),
-        tamagochi4: require('./dog.png'),
+        tamagochi3: require('./frog.png'),
+        tamagochi4: require('./pinguim.png'),
     },
     ok: {
         tamagochi1: require('./dog.png'),
         tamagochi2: require('./fruit.png'),
-        tamagochi3: require('./dog.png'),
-        tamagochi4: require('./dog.png'),
+        tamagochi3: require('./frog.png'),
+        tamagochi4: require('./pinguim.png'),
     },
     bem: {
         tamagochi1: require('./dog.png'),
         tamagochi2: require('./fruit.png'),
-        tamagochi3: require('./dog.png'),
-        tamagochi4: require('./dog.png'),
+        tamagochi3: require('./frog.png'),
+        tamagochi4: require('./pinguim.png'),
     },
     muito_bem: {
         tamagochi1: require('./dog.png'),
         tamagochi2: require('./fruit.png'),
-        tamagochi3: require('./dog.png'),
-        tamagochi4: require('./dog.png'),
+        tamagochi3: require('./frog.png'),
+        tamagochi4: require('./pinguim.png'),
     }
 };
 
