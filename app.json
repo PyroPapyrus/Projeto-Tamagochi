@@ -1,12 +1,7 @@
 {
   "expo": {
-<<<<<<< HEAD
     "name": "projeto-tamagochi",
     "slug": "projeto-tamagochi",
-=======
-    "name": "Projeto-Tamagochi",
-    "slug": "Projeto-Tamagochi",
->>>>>>> c0d260eddb16bfee3e2ddfb496401f3d0ef6a5b7
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
