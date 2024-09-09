@@ -1,31 +1,3 @@
-<<<<<<< HEAD
-import { router } from "expo-router";
-import { Text, View, StyleSheet, Button } from "react-native";
-
-const styles = StyleSheet.create({
-    container: {
-        justifyContent: "center",
-        alignItems: "center",
-        flex: 1,
-    },
-    text: {
-        color: "orange",
-    }
-})
-
-const explore = () => {
-    return (
-        <View style={styles.container}>
-            <Text style={styles.text}>
-                Tela do explore
-            </Text>
-
-        </View>
-    );
-}
-
-export default explore;
-=======
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { StyleSheet, Image, Platform } from 'react-native';
 
@@ -128,4 +100,3 @@ const styles = StyleSheet.create({
     gap: 8,
   },
 });
->>>>>>> c0d260eddb16bfee3e2ddfb496401f3d0ef6a5b7
