@@ -1,5 +1,5 @@
 import { Link, router } from "expo-router";
-import { Button, SafeAreaView, StyleSheet, Text } from "react-native";
+import { Button, Pressable, SafeAreaView, StyleSheet, Text } from "react-native";
 
 const index = () => {
     return (
@@ -19,6 +19,16 @@ const index = () => {
             <Text>
               <Link style={styles.text}
                href={"/CreateTamagochiScreen"}>Clique aqui pra ir a tela do tamagochi</Link>
+            </Text>
+            
+            <Button 
+            title="Botao teste (n tem funcionalidade)"
+            onPress={() =>{} }  
+            />
+
+            <Text>
+              <Link style={styles.text}
+               href={"/ListTamagochi"}>Clique aqui pra ir a lista do tamagochi</Link>
             </Text>
 
         </SafeAreaView>

@@ -35,6 +35,7 @@ export default function RootLayout() {
       <Stack>
         <Stack.Screen name='index' />
         <Stack.Screen name='CreateTamagochiScreen' options={{ headerShown: false }} />
+        <Stack.Screen name='ListTamagochi' options={{ headerShown: false }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
       </Stack>
