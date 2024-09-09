@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Projeto-Tamagochi",
-    "slug": "Projeto-Tamagochi",
+    "name": "projeto-tamagochi",
+    "slug": "projeto-tamagochi",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
