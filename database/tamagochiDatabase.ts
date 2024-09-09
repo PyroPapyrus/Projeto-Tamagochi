@@ -58,7 +58,7 @@ export function useTamagochiDatabase() {
     }
 
     // Função para buscar um Tamagochi pelo ID
-    async function findeTamagochiById(id: number) {
+    async function findTamagochiById(id: number) {
         try {
             const query = `SELECT * FROM tamagochis WHERE id = ?;`; // Declaração SQL para buscar um registro pelo ID
             return await database.getFirstAsync<Tamagochi>(query, id); // Executa a consulta e retorna o primeiro resultado
@@ -165,5 +165,5 @@ export function useTamagochiDatabase() {
         
         
         // Retorna todas as funções para uso externo
-    return { createTamagochi, findAllTamagochi, findeTamagochiById, updateHunger, updateHappy, updateSleep,updateAllTamagochiAttribute };
+    return { createTamagochi, findAllTamagochi, findTamagochiById, updateHunger, updateHappy, updateSleep,updateAllTamagochiAttribute };
 }

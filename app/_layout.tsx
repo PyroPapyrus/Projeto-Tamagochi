@@ -1,3 +1,4 @@
+// RootLayout.tsx
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
@@ -12,6 +13,15 @@ import { initDatabase } from '@/database/initDatabase';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
+
+export type RootStackParamList = {
+  index: undefined;
+  CreateTamagochiScreen: undefined;
+  ListTamagochi: undefined;
+  TamagochiDetails: { tamagochiId: number };
+  "(tabs)": undefined;
+  "+not-found": undefined;
+};
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -31,23 +41,24 @@ export default function RootLayout() {
 
   return (
     <SQLiteProvider databaseName='Tamagochi.db' onInit={initDatabase}>
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name='index' />
-        <Stack.Screen name='CreateTamagochiScreen' options={{ headerShown: false }} />
-        <Stack.Screen name='ListTamagochi' options={{ headerShown: false }} />
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-    </ThemeProvider>
+      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+        <Stack>
+          <Stack.Screen name='index' />
+          <Stack.Screen name='CreateTamagochiScreen' options={{ headerShown: false }} />
+          <Stack.Screen name='ListTamagochi' options={{ headerShown: false }} />
+          <Stack.Screen name='TamagochiDetails' options={{ headerShown: false }} />
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="+not-found" />
+        </Stack>
+      </ThemeProvider>
     </SQLiteProvider>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "darkblue",
     flex: 1,
     padding: 24,
   }
-  
 });
