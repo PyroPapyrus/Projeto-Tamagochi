@@ -1,47 +1,51 @@
-type TamagochiStatus = "morto" | "critico" | "muito_triste" | "triste" | "ok" | "bem" | "muito_bem";
-type TamagochiType = "tamagochi1" | "tamagochi2" | "tamagochi3" | "tamagochi4";
+import { ImageSourcePropType } from "react-native";
 
-const tamagochiImages: Record<TamagochiStatus, Record<TamagochiType, string>> = {
+export type TamagochiStatus = "morto" | "critico" | "muito_triste" | "triste" | "ok" | "bem" | "muito_bem";
+export type TamagochiType = "tamagochi1" | "tamagochi2" | "tamagochi3" | "tamagochi4";
+
+const tamagochiImages: Record<TamagochiStatus, Record<TamagochiType, ImageSourcePropType>> = {
     morto: {
-        tamagochi1: "path/to/tamagochi1_morto.png",
-        tamagochi2: "path/to/tamagochi2_morto.png",
-        tamagochi3: "path/to/tamagochi3_morto.png",
-        tamagochi4: "path/to/tamagochi4_morto.png",
+        tamagochi1: require('./dog.png'),
+        tamagochi2: require('./fruit.png'),
+        tamagochi3: require('./dog.png'),
+        tamagochi4: require('./dog.png'),
     },
     critico: {
-        tamagochi1: "path/to/tamagochi1_critico.png",
-        tamagochi2: "path/to/tamagochi2_critico.png",
-        tamagochi3: "path/to/tamagochi3_critico.png",
-        tamagochi4: "path/to/tamagochi4_critico.png",
+        tamagochi1: require('./dog.png'),
+        tamagochi2: require('./fruit.png'),
+        tamagochi3: require('./dog.png'),
+        tamagochi4: require('./dog.png'),
     },
     muito_triste: {
-        tamagochi1: "path/to/tamagochi1_muito_triste.png",
-        tamagochi2: "path/to/tamagochi2_muito_triste.png",
-        tamagochi3: "path/to/tamagochi3_muito_triste.png",
-        tamagochi4: "path/to/tamagochi4_muito_triste.png",
+        tamagochi1: require('./dog.png'),
+        tamagochi2: require('./fruit.png'),
+        tamagochi3: require('./dog.png'),
+        tamagochi4: require('./dog.png'),
     },
     triste: {
-        tamagochi1: "path/to/tamagochi1_triste.png",
-        tamagochi2: "path/to/tamagochi2_triste.png",
-        tamagochi3: "path/to/tamagochi3_triste.png",
-        tamagochi4: "path/to/tamagochi4_triste.png",
+        tamagochi1: require('./dog.png'),
+        tamagochi2: require('./fruit.png'),
+        tamagochi3: require('./dog.png'),
+        tamagochi4: require('./dog.png'),
     },
     ok: {
-        tamagochi1: "path/to/tamagochi1_ok.png",
-        tamagochi2: "path/to/tamagochi2_ok.png",
-        tamagochi3: "path/to/tamagochi3_ok.png",
-        tamagochi4: "path/to/tamagochi4_ok.png",
+        tamagochi1: require('./dog.png'),
+        tamagochi2: require('./fruit.png'),
+        tamagochi3: require('./dog.png'),
+        tamagochi4: require('./dog.png'),
     },
     bem: {
-        tamagochi1: "./dog.png",
-        tamagochi2: "path/to/tamagochi2_bem.png",
-        tamagochi3: "path/to/tamagochi3_bem.png",
-        tamagochi4: "path/to/tamagochi4_bem.png",
+        tamagochi1: require('./dog.png'),
+        tamagochi2: require('./fruit.png'),
+        tamagochi3: require('./dog.png'),
+        tamagochi4: require('./dog.png'),
     },
     muito_bem: {
-        tamagochi1: "path/to/tamagochi1_muito_bem.png",
-        tamagochi2: "path/to/tamagochi2_muito_bem.png",
-        tamagochi3: "path/to/tamagochi3_muito_bem.png",
-        tamagochi4: "path/to/tamagochi4_muito_bem.png",
+        tamagochi1: require('./dog.png'),
+        tamagochi2: require('./fruit.png'),
+        tamagochi3: require('./dog.png'),
+        tamagochi4: require('./dog.png'),
     }
 };
+
+export { tamagochiImages };

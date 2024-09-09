@@ -8,7 +8,7 @@ export type Tamagochi = {
     sleep: number;
     happy: number;
     status: number;
-    tamagochi_id: number;
+    tamagochi_id: string;
     lastUpdated: number;
 };
 
@@ -18,7 +18,7 @@ export function useTamagochiDatabase() {
 
     // Função para criar um novo Tamagochi
     async function createTamagochi(data: Omit<Tamagochi, 'id' | 'hunger' | 'sleep' | 'happy' | 'status' | 'lastUpdated'>) {
-        const currentTime = Math.floor(Date.now() / 4000); // Calcula o tempo atual
+        const currentTime = Math.floor(Date.now() / 3600000); // Calcula o tempo atual
 
         // Prepara a declaração SQL para inserir um novo Tamagochi
         const statement = await database.prepareAsync(`
@@ -33,7 +33,13 @@ export function useTamagochiDatabase() {
                 $lastUpdated: currentTime, 
             });
 
-            return result.lastInsertRowId.toLocaleString(); // Retorna o ID do último registro inserido
+             // Verifica se o ID do último registro inserido é um número válido e o formata
+        const lastInsertId = Number(result.lastInsertRowId);
+        if (!isNaN(lastInsertId)) {
+            return lastInsertId.toLocaleString(); // Retorna o ID do último registro inserido
+        } else {
+            throw new Error("ID do último registro inserido não é um número válido.");
+        }
         } catch (error) {
             throw error; // Lança um erro caso ocorra algum problema
         } finally {
@@ -42,7 +48,7 @@ export function useTamagochiDatabase() {
     }
 
     // Função para buscar todos os Tamagochis
-    async function findAll() {
+    async function findAllTamagochi() {
         try {
             const query = `SELECT * FROM tamagochis;`; // Declaração SQL para buscar todos os registros
             return await database.getAllAsync<Tamagochi>(query); // Executa a consulta e retorna os resultados
@@ -52,7 +58,7 @@ export function useTamagochiDatabase() {
     }
 
     // Função para buscar um Tamagochi pelo ID
-    async function findById(id: number) {
+    async function findeTamagochiById(id: number) {
         try {
             const query = `SELECT * FROM tamagochis WHERE id = ?;`; // Declaração SQL para buscar um registro pelo ID
             return await database.getFirstAsync<Tamagochi>(query, id); // Executa a consulta e retorna o primeiro resultado
@@ -62,7 +68,7 @@ export function useTamagochiDatabase() {
     }
 
     // Função para buscar Tamagochis pelo nome
-    async function findByName(search: string) {
+    async function findTamagochiByName(search: string) {
         try {
             const query = `SELECT * FROM tamagochis WHERE name LIKE ?;`; // Declaração SQL para buscar registros pelo nome
             return await database.getAllAsync<Tamagochi>(query, `%${search}%`); // Executa a consulta e retorna os resultados
@@ -73,7 +79,7 @@ export function useTamagochiDatabase() {
 
     // Função para atualizar o atributo hunger de um Tamagochi
     async function updateHunger(id: number, hunger: number) {
-        const currentTime = Math.floor(Date.now() / 4000); // Calcula o tempo atual
+        const currentTime = Math.floor(Date.now() / 3600000); // Calcula o tempo atual
         
         // Prepara a declaração SQL para atualizar o atributo hunger
         const statement = await database.prepareAsync(`
@@ -95,7 +101,7 @@ export function useTamagochiDatabase() {
 
     // Função para atualizar o atributo happy de um Tamagochi
     async function updateHappy(id: number, happy: number) {
-        const currentTime = Math.floor(Date.now() / 4000); // Calcula o tempo atual
+        const currentTime = Math.floor(Date.now() / 3600000); // Calcula o tempo atual
         
         // Prepara a declaração SQL para atualizar o atributo happy
         const statement = await database.prepareAsync(`
@@ -117,7 +123,7 @@ export function useTamagochiDatabase() {
 
     // Função para atualizar o atributo sleep de um Tamagochi
     async function updateSleep(id: number, sleep: number) {
-        const currentTime = Math.floor(Date.now() / 4000); // Calcula o tempo atual
+        const currentTime = Math.floor(Date.now() / 3600000); // Calcula o tempo atual
         
         // Prepara a declaração SQL para atualizar o atributo sleep
         const statement = await database.prepareAsync(`
@@ -136,14 +142,10 @@ export function useTamagochiDatabase() {
             await statement.finalizeAsync(); // Finaliza a declaração SQL
         }
     }
-
     
-    
-    
-    
-    async function updateTamagochiAttribute(petId: number, hunger: number, sleep: number, happy: number) {
+    async function updateTamagochiAttribute(tamagochiId: number, hunger: number, sleep: number, happy: number) {
         // Calcula o tempo atual em segundos
-        const currentTime = Math.floor(Date.now() / 4000); 
+        const currentTime = Math.floor(Date.now() / 3600000); 
         
         // Prepara a declaração SQL para atualizar os atributos do Tamagochi
         const statement = await database.prepareAsync(`
@@ -159,7 +161,7 @@ export function useTamagochiDatabase() {
                     $sleep: sleep,
                     $happy: happy,
                     $lastUpdated: currentTime,
-                    $id: petId
+                    $id: tamagochiId
                 });
             } catch (error) {
                 // Lança um erro caso ocorra algum problema
@@ -173,5 +175,5 @@ export function useTamagochiDatabase() {
         
         
         // Retorna todas as funções para uso externo
-    return { createTamagochi, findAll, findById, findByName, updateHunger, updateHappy, updateSleep,updateTamagochiAttribute };
+    return { createTamagochi, findAllTamagochi, findeTamagochiById, findTamagochiByName, updateHunger, updateHappy, updateSleep,updateTamagochiAttribute };
 }

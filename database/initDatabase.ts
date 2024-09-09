@@ -12,7 +12,7 @@ export async function initDatabase(database: SQLiteDatabase) {
         happy INTEGER NOT NULL DEFAULT 100,
         sleep INTEGER NOT NULL DEFAULT 100,
         status INTEGER,
-        tamagochi_id INTEGER NOT NULL,
+        tamagochi_id TEXT NOT NULL,
         lastUpdated INTEGER NOT NULL DEFAULT (strftime('%s', 'now'))
     );
 `);

@@ -1,3 +1,5 @@
+import { TamagochiStatus } from "@/assets/images/TamagochiImages";
+
 export function calculateTamagochiStatus(hunger: number, sleep: number, happy: number): TamagochiStatus {
     const total = hunger + sleep + happy;
 

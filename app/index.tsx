@@ -13,10 +13,13 @@ const index = () => {
 
             <Button 
             title="Botao teste (n tem funcionalidade)"
-            onPress={() => {
-
-            }}  
+            onPress={() =>{} }  
             />
+
+            <Text>
+              <Link style={styles.text}
+               href={"/CreateTamagochiScreen"}>Clique aqui para ir a tela de tabs</Link>
+            </Text>
 
         </SafeAreaView>
 

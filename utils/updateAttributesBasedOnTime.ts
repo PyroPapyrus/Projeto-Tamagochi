@@ -1,5 +1,5 @@
-export function calculateAttributeDecay(lastUpdated: number, hunger: number, sleep: number, happy: number): { hunger: number; sleep: number; happy: number } {
-    const currentTime = Math.floor(Date.now() / 3600); // Cada unidade representa 1 hora
+export function updateAttributesBasedOnTime(lastUpdated: number, hunger: number, sleep: number, happy: number): { hunger: number; sleep: number; happy: number } {
+    const currentTime = Math.floor(Date.now() / 3600000); // Cada unidade representa 1 hora
     const timeDiff = currentTime - lastUpdated; // Diferença em horas
 
     const decayAmount = timeDiff * 1; // Decaimento de 1 unidade por hora
