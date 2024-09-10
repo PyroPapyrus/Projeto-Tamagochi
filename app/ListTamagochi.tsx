@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, FlatList, StyleSheet, Pressable, SafeAreaView } from 'react-native';
+import { View, Text, Image, FlatList, StyleSheet, Pressable, SafeAreaView, ScrollView } from 'react-native';
 import { Tamagochi, useTamagochiDatabase } from "@/database/tamagochiDatabase";
 import { updateAttributesBasedOnTime } from "@/utils/updateAttributesBasedOnTime";
 import { getTamagochiImage } from '@/utils/getTamagochiImage';
@@ -9,6 +9,10 @@ import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from './_layout';
 import { TamagochiType } from '@/assets/images/TamagochiImages';
 import { router } from 'expo-router';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Ionicons } from '@expo/vector-icons';
+import { ImageBackground } from 'react-native';
+import { VirtualizedList } from 'react-native';
 
 type ListTamagochiNavigationProp = StackNavigationProp<RootStackParamList, 'ListTamagochi'>;
 
@@ -74,34 +78,76 @@ const ListTamagochi: React.FC = () => {
   };
 
   return (
-    <FlatList
-      data={tamagochis}
-      renderItem={renderItem}
-      keyExtractor={item => item.id.toString()}
-    />
+
+  <ImageBackground source={{ uri: 'https://i.pinimg.com/736x/c9/8b/a0/c98ba0403bb66007b04c6c396267d30d.jpg' }} style={styles.background}>
+    
+      <SafeAreaView>
+          <Ionicons name="arrow-back" style={styles.arrowBack}
+            onPress={() => {
+            router.back();
+          }}/>
+      </SafeAreaView>
+   
+        <FlatList style={styles.list}
+          data={tamagochis}
+          renderItem={renderItem}
+          keyExtractor={item => item.id.toString()} 
+
+          ItemSeparatorComponent={() => <View style={styles.separator} />}
+        />    
+  </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
+  
+  arrowBack: {
+    fontSize: 32,
+    color: "black",     
+    marginTop: 25,
+    paddingHorizontal: 10, 
+    paddingVertical: 5,    
+    alignSelf: 'flex-start', 
+  },
+
+  separator: {
+    height: 5,
+  },
+
+  background: {
+    flex: 1,
+  },
+
+  list: {
+    flexDirection: 'column',
+    padding: 10,
+    margin: 10,
+    shadowColor: 'black',
+  },
 
   buttonGoBack: {
+    backgroundColor: 'white',
     color: 'white',
     fontWeight: 'bold',
     textAlign: 'left', 
-    padding: 15,
+    padding: 20,
     width: '100%',
-    paddingVertical: 30,
+    marginTop: 40,
+    paddingHorizontal: 20,
   },
 
-
   itemContainer: {
-    backgroundColor: 'orange',
-    padding: 15,
+    padding: 20,
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center'
+    gap: 10,
+    backgroundColor: 'rgba(255, 255, 255, 0.4)',
+    borderWidth: 2,
+    borderRadius: 10,
+    shadowColor: 'black',
+    elevation: 5
+    
   },
   image: {
     width: 50,

@@ -1,9 +1,11 @@
-import { Tabs, useRouter } from 'expo-router';
+import { Tabs } from 'expo-router';
 import React from 'react';
 
-import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { Text } from 'react-native';
+import { Icon } from '@rneui/base';
+import { FontAwesome6 } from '@expo/vector-icons';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -17,29 +19,39 @@ export default function TabLayout() {
       }}>
     
       <Tabs.Screen
-        name="index"
+        name='index'
         options={{
-          title: 'OutSide',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
+          tabBarLabel: ({ focused }) => (
+            <Text style={{ color: focused ? '#3498db' : 'gray', fontSize: 10 }}>Outside</Text>
+
+          ),
+          tabBarIcon: ({ focused }) => (
+            <FontAwesome6 name="house" size={20} color={focused ? '#3498db' : 'gray'} />
           ),
         }}
       />
       <Tabs.Screen
-        name="BedroomScreen"
+
+        name='BedroomScreen'
         options={{
-          title: 'Bedroom',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
+          tabBarLabel: ({ focused }) => (
+            <Text style={{ color: focused ? '#f1c40f' : 'gray', fontSize: 10 }}>Bedroom</Text>
+
+          ),
+          tabBarIcon: ({ focused }) => (
+            <Icon name="bedroom-parent" size={24} color={focused ? '#f1c40f' : 'gray'} />
           ),
         }}
       />
         <Tabs.Screen    
         name='KitchenScreen'
         options={{
-          title:'Kitchen',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'balloon' : 'balloon-outline'} color={color} />
+          tabBarLabel: ({ focused }) => (
+            <Text style={{ color: focused ? '#27ae60' : 'black', fontSize: 10 }}>Kitchen</Text>
+
+          ),
+          tabBarIcon: ({ focused }) => (
+            <Icon name="kitchen" size={24} color={focused ? '#27ae60' : 'gray'} />
             ),
         }}
       />

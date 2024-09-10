@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Alert, Button, Image, ImageBackground, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import { useTamagochiDatabase } from "../database/tamagochiDatabase";
 import { tamagochiImages, TamagochiType } from "@/assets/images/TamagochiImages";
+import { Ionicons } from "@expo/vector-icons";
 
 
 const CreateTamagochiScreen = () => {
@@ -42,11 +43,10 @@ const CreateTamagochiScreen = () => {
     return (
         <ImageBackground source={{ uri: 'https://i.pinimg.com/736x/c9/8b/a0/c98ba0403bb66007b04c6c396267d30d.jpg' }} style={styles.background}>
             
-                    <Text style={styles.buttonGoBack}
-                        onPress={() => {
-                            router.back();
-                        }}     
-                    >GO BACK</Text>
+            <Ionicons name="arrow-back" style={styles.arrowBack}
+                onPress={() => {
+                    router.back();
+                }}/>
 
             <ScrollView  contentContainerStyle={styles.scrollContainer}>
 
@@ -92,14 +92,14 @@ const CreateTamagochiScreen = () => {
 export default CreateTamagochiScreen;
 const styles = StyleSheet.create({
 
-    buttonGoBack: {
-        color: 'white',
-        fontWeight: 'bold',
-        textAlign: 'left', 
-        padding: 15,
-        width: '100%',
-        paddingVertical: 30,
-    },
+    arrowBack: {
+        fontSize: 32,
+        color: "white",     
+        marginTop: 25,
+        paddingHorizontal: 10, 
+        paddingVertical: 10,    
+        alignSelf: 'flex-start', 
+      },
 
     background: {
         flex: 1,

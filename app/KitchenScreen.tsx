@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, StyleSheet, Pressable } from 'react-native';
+import { View, Text, Image, StyleSheet, Pressable, ImageBackground } from 'react-native';
 import { useRoute, useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Tamagochi, useTamagochiDatabase } from "@/database/tamagochiDatabase";
@@ -42,6 +42,11 @@ const KitchenScreen: React.FC = () => {
   const status = calculateTamagochiStatus(tamagochi.hunger, tamagochi.sleep, tamagochi.happy);
 
   return (
+
+    <ImageBackground
+      source={require('@/assets/images/kitchen.gif')}
+      style={styles.background}
+    >
     <View style={styles.container}>
       <Image source={getTamagochiImage(status, tamagochi.tamagochi_id as TamagochiType)} style={styles.image} />
       <View style={styles.attributesContainer}>
@@ -55,10 +60,17 @@ const KitchenScreen: React.FC = () => {
       </Pressable>
 
     </View>
+
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
+
+  background: {
+    flex: 1
+  },
+
   container: {
     flex: 1,
     alignItems: 'center',

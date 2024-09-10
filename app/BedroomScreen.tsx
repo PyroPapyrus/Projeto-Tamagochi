@@ -56,7 +56,7 @@ const BedroomScreen: React.FC = () => {
           <Text>Sono: {tamagochi.sleep}</Text>
           <Text>Felicidade: {tamagochi.happy}</Text>
         </View>
-        <Pressable onPress={handleSleep} disabled={isSleeping} style={styles.sleepButton}>
+        <Pressable onPress={handleSleep} disabled={isSleeping} style={[styles.sleepButton, isSleeping && styles.sleepButtonInactive]}>
           <Text style={styles.buttonText}>Dormir</Text>
         </Pressable>
       </View>
@@ -67,8 +67,6 @@ const BedroomScreen: React.FC = () => {
 const styles = StyleSheet.create({
   background: {
     flex: 1,
-    width: '100%',
-    height: '100%',
   },
   container: {
     flex: 1,
@@ -91,6 +89,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#4CAF50',
     padding: 10,
     borderRadius: 5,
+  },
+  sleepButtonInactive: {
+    backgroundColor: '#A5D6A7',
   },
   buttonText: {
     color: '#fff',

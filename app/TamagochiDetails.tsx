@@ -7,6 +7,8 @@ import { calculateTamagochiStatus } from '@/utils/calculateTamagochiStatus';
 import KitchenScreen from './KitchenScreen';
 import BedroomScreen from './BedroomScreen';
 import OutsideScreen from './OutsideScreen';
+import { Icon } from '@rneui/base';
+import { FontAwesome6 } from '@expo/vector-icons';
 
 const Tab = createBottomTabNavigator();
 
@@ -32,10 +34,59 @@ const TamagochiDetails: React.FC = () => {
   const status = calculateTamagochiStatus(tamagochi.hunger, tamagochi.sleep, tamagochi.happy);
 
   return (
-    <Tab.Navigator>
-      <Tab.Screen name="Kitchen" component={KitchenScreen} initialParams={{ tamagochiId }} />
-      <Tab.Screen name="Bedroom" component={BedroomScreen} initialParams={{ tamagochiId }} />
-      <Tab.Screen name="Outside" component={OutsideScreen} initialParams={{ tamagochiId }} />
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+
+      <Tab.Screen 
+        name="Bedroom" 
+        component={BedroomScreen} 
+        initialParams={{ tamagochiId }} 
+        options={{
+          tabBarLabel: ({ focused }) => (
+            <Text style={{ color: focused ? '#f1c40f' : 'gray', fontSize: 10 }}>Bedroom</Text>
+
+          ),
+          tabBarIcon: ({ focused }) => (
+            <Icon name="bedroom-parent" size={24} color={focused ? '#f1c40f' : 'gray'} />
+          ),
+        }}
+      />
+
+      <Tab.Screen 
+        name="Kitchen" 
+        component={KitchenScreen} 
+        initialParams={{ tamagochiId }} 
+        options={{
+          tabBarLabel: ({ focused }) => (
+            <Text style={{ color: focused ? '#27ae60' : 'black', fontSize: 10 }}>Kitchen</Text>
+
+          ),
+          tabBarIcon: ({ focused }) => (
+            <Icon name="kitchen" size={24} color={focused ? '#27ae60' : 'gray'} />
+            ),
+        }}
+      />
+
+
+      
+      <Tab.Screen 
+      name="Outside" 
+      component={OutsideScreen} 
+      initialParams={{ tamagochiId }}
+      options={{
+        tabBarLabel: ({ focused }) => (
+          <Text style={{ color: focused ? '#3498db' : 'gray', fontSize: 10 }}>Outside</Text>
+
+        ),
+        tabBarIcon: ({ focused }) => (
+          <FontAwesome6 name="house" size={20} color={focused ? '#3498db' : 'gray'} />
+        ),
+      }}
+    />
+
     </Tab.Navigator>
   );
 };
