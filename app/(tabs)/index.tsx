@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     }
 })
 
-const KitchenScreen = () => {
+const index = () => {
     return (
 
         <ImageBackground source={{ uri: 'https://i.pinimg.com/736x/77/4f/58/774f58cfae4e15311228739bf5b9ab46.jpg'}} style={styles.background}>
@@ -43,4 +43,4 @@ const KitchenScreen = () => {
     );
 }
 
-export default KitchenScreen;
+export default index;

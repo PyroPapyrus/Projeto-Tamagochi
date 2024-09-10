@@ -5,7 +5,12 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Tamagochi, useTamagochiDatabase } from "@/database/tamagochiDatabase";
 import { getTamagochiImage } from '@/utils/getTamagochiImage';
 import { calculateTamagochiStatus } from '@/utils/calculateTamagochiStatus';
-import { TamagochiType } from '@/assets/images/TamagochiImages';
+import { TamagochiType } from '@/assets/images/TamagochiImages'; // Importe as telas das abas
+import KitchenScreen from './KitchenScreen';
+import BedroomScreen from './BedroomScreen';
+import OutsideScreen from './OutsideScreen';
+import { Icon } from '@rneui/base';
+import { FontAwesome6 } from '@expo/vector-icons';
 
 const Tab = createBottomTabNavigator();
 
@@ -31,14 +36,60 @@ const TamagochiDetails: React.FC = () => {
   const status = calculateTamagochiStatus(tamagochi.hunger, tamagochi.sleep, tamagochi.happy);
 
   return (
-    <View style={styles.container}>
-      <Image source={getTamagochiImage(status, tamagochi.tamagochi_id as TamagochiType)} style={styles.image} />
-      <View style={styles.attributesContainer}>
-        <Text>Fome: {tamagochi.hunger}</Text>
-        <Text>Sono: {tamagochi.sleep}</Text>
-        <Text>Felicidade: {tamagochi.happy}</Text>
-      </View>
-    </View>
+    <Tab.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+
+      <Tab.Screen 
+        name="Bedroom" 
+        component={BedroomScreen} 
+        initialParams={{ tamagochiId }} 
+        options={{
+          tabBarLabel: ({ focused }) => (
+            <Text style={{ color: focused ? '#f1c40f' : 'gray', fontSize: 10 }}>Bedroom</Text>
+
+          ),
+          tabBarIcon: ({ focused }) => (
+            <Icon name="bedroom-parent" size={24} color={focused ? '#f1c40f' : 'gray'} />
+          ),
+        }}
+      />
+
+      <Tab.Screen 
+        name="Kitchen" 
+        component={KitchenScreen} 
+        initialParams={{ tamagochiId }} 
+        options={{
+          tabBarLabel: ({ focused }) => (
+            <Text style={{ color: focused ? '#27ae60' : 'black', fontSize: 10 }}>Kitchen</Text>
+
+          ),
+          tabBarIcon: ({ focused }) => (
+            <Icon name="kitchen" size={24} color={focused ? '#27ae60' : 'gray'} />
+            ),
+        }}
+      />
+
+
+      
+      <Tab.Screen 
+      name="Outside" 
+      component={OutsideScreen} 
+      initialParams={{ tamagochiId }}
+      options={{
+        tabBarLabel: ({ focused }) => (
+          <Text style={{ color: focused ? '#3498db' : 'gray', fontSize: 10 }}>Outside</Text>
+
+        ),
+        tabBarIcon: ({ focused }) => (
+          <FontAwesome6 name="house" size={20} color={focused ? '#3498db' : 'gray'} />
+        ),
+      }}
+    />
+
+    </Tab.Navigator>
   );
 };
 

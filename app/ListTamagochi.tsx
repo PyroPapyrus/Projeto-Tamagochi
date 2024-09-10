@@ -94,10 +94,7 @@ const ListTamagochi: React.FC = () => {
           keyExtractor={item => item.id.toString()} 
 
           ItemSeparatorComponent={() => <View style={styles.separator} />}
-        />
-      
-      
-    
+        />    
   </ImageBackground>
   );
 };

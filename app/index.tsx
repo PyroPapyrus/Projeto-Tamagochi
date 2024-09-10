@@ -15,12 +15,6 @@ const index = () => {
 
       <SafeAreaView style={styles.container}>
  
-        <Link href={"/(tabs)"} asChild>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.text}>Tela de Tabs</Text>
-          </TouchableOpacity>
-        </Link>
-
         <Link href={"/CreateTamagochiScreen"} asChild>
           <TouchableOpacity style={styles.button}>
             <Text style={styles.text}>Criar tamagochi</Text>

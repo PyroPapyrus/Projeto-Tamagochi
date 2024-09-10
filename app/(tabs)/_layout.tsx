@@ -1,16 +1,15 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
 
-import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
-import { Pressable, Text } from 'react-native';
-import { Icon, ScreenWidth } from '@rneui/base';
-import { FontAwesome, FontAwesome6 } from '@expo/vector-icons';
+import { Text } from 'react-native';
+import { Icon } from '@rneui/base';
+import { FontAwesome6 } from '@expo/vector-icons';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
-
+  
   return (
 
     <Tabs
@@ -23,7 +22,7 @@ export default function TabLayout() {
         name='index'
         options={{
           tabBarLabel: ({ focused }) => (
-            <Text style={{ color: focused ? '#3498db' : 'gray', fontSize: 10 }}>Home</Text>
+            <Text style={{ color: focused ? '#3498db' : 'gray', fontSize: 10 }}>Outside</Text>
 
           ),
           tabBarIcon: ({ focused }) => (
@@ -43,11 +42,8 @@ export default function TabLayout() {
             <Icon name="bedroom-parent" size={24} color={focused ? '#f1c40f' : 'gray'} />
           ),
         }}
-
       />
-
-        <Tabs.Screen
-      
+        <Tabs.Screen    
         name='KitchenScreen'
         options={{
           tabBarLabel: ({ focused }) => (
@@ -58,7 +54,6 @@ export default function TabLayout() {
             <Icon name="kitchen" size={24} color={focused ? '#27ae60' : 'gray'} />
             ),
         }}
-      
       />
       
     </Tabs>
