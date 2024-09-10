@@ -3,9 +3,7 @@ import { View, Text, Image, StyleSheet } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Tamagochi, useTamagochiDatabase } from "@/database/tamagochiDatabase";
-import { getTamagochiImage } from '@/utils/getTamagochiImage';
 import { calculateTamagochiStatus } from '@/utils/calculateTamagochiStatus';
-import { TamagochiType } from '@/assets/images/TamagochiImages'; // Importe as telas das abas
 import KitchenScreen from './KitchenScreen';
 import BedroomScreen from './BedroomScreen';
 import OutsideScreen from './OutsideScreen';

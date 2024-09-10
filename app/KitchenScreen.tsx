@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Image, StyleSheet, Pressable } from 'react-native';
-import { useRoute } from '@react-navigation/native';
+import { useRoute, useFocusEffect } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Tamagochi, useTamagochiDatabase } from "@/database/tamagochiDatabase";
 import { getTamagochiImage } from '@/utils/getTamagochiImage';
 import { calculateTamagochiStatus } from '@/utils/calculateTamagochiStatus';
@@ -12,29 +13,31 @@ const KitchenScreen: React.FC = () => {
   const [tamagochi, setTamagochi] = useState<Tamagochi | null>(null);
   const database = useTamagochiDatabase();
 
-  useEffect(() => {
-    const fetchTamagochi = async () => {
-      const tamagochiData = await database.findTamagochiById(tamagochiId);
-      setTamagochi(tamagochiData);
-    };
+  const fetchTamagochi = async () => {
+    const tamagochiData = await database.findTamagochiById(tamagochiId);
+    setTamagochi(tamagochiData);
+    await AsyncStorage.setItem('tamagochi', JSON.stringify(tamagochiData));
+  };
 
-    fetchTamagochi();
-  }, [tamagochiId]);
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchTamagochi();
+    }, [tamagochiId])
+  );
 
-  
   const handleFeed = async () => {
     if (tamagochi) {
       const newHunger = Math.min(tamagochi.hunger + 10, 100); // Incrementa a fome em 10, mas não ultrapassa 100
       await database.updateHunger(tamagochi.id, newHunger);
-      setTamagochi({ ...tamagochi, hunger: newHunger });
+      const updatedTamagochi = { ...tamagochi, hunger: newHunger };
+      setTamagochi(updatedTamagochi);
+      await AsyncStorage.setItem('tamagochi', JSON.stringify(updatedTamagochi));
     }
   };
-
 
   if (!tamagochi) {
     return <Text>Carregando...</Text>;
   }
-
 
   const status = calculateTamagochiStatus(tamagochi.hunger, tamagochi.sleep, tamagochi.happy);
 
