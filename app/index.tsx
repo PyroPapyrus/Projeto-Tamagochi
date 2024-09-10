@@ -1,5 +1,5 @@
-import { Link } from "expo-router";
-import { ImageBackground, SafeAreaView, StyleSheet, Text, Image, Pressable } from "react-native";
+import { Link, router } from "expo-router";
+import { ImageBackground, SafeAreaView, StyleSheet, Text, Image, Pressable, Button, TouchableOpacity } from "react-native";
 
 const index = () => {
 
@@ -8,26 +8,30 @@ const index = () => {
     <ImageBackground source={{ uri: 'https://wallpapers.com/images/hd/small-memory-art-smartphone-background-3mb6tn8a4554t5k2.jpg' }} style={styles.container}>
 
       <SafeAreaView style={styles.logoContainer}>
-          <Text style={styles.logoText}>PROJETO TAMAGOCHI</Text>
+          <Text style={styles.logoText}>PROJETO{'\n'}TAMAGOCHI</Text>
 
           <Image style={styles.logo} source={require('./pinguim-dance-unscreen.gif')}></Image>
       </SafeAreaView>
 
       <SafeAreaView style={styles.container}>
+ 
+        <Link href={"/(tabs)"} asChild>
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.text}>Tela de Tabs</Text>
+          </TouchableOpacity>
+        </Link>
 
-        <Pressable style={styles.button}>
-            <Text>
-              <Link style={styles.text}
-               href={"/(tabs)"}>Tela de tabs</Link>
-            </Text>
-        </Pressable>
+        <Link href={"/CreateTamagochiScreen"} asChild>
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.text}>Criar tamagochi</Text>
+          </TouchableOpacity>
+        </Link>
 
-          <Pressable style={styles.button}>
-            <Text>
-              <Link style={styles.text}
-               href={"/CreateTamagochiScreen"}>Criar tamagochi</Link>
-            </Text>
-          </Pressable>
+        <Link href={"/ListTamagochi"} asChild>
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.text}>Lista tamagochi</Text>
+          </TouchableOpacity>
+        </Link>
 
         </SafeAreaView>
 
@@ -53,8 +57,6 @@ const styles = StyleSheet.create({
     text: {
       color: "#fff",
       fontWeight: 'bold',
-      borderWidth: 5,
-      borderColor: 'green',
     },
 
     button: {
@@ -76,7 +78,11 @@ const styles = StyleSheet.create({
       fontWeight: 'bold',
       fontSize: 30,
       textAlign: 'center',
-      margin: 10,
+      textShadowColor: 'lightblack',
+      textShadowOffset: { width: -2, height: 5 },
+      textShadowRadius: 15,
+      margin: 20,
+      marginTop: 250,
       elevation: 20
     },
 
@@ -84,7 +90,8 @@ const styles = StyleSheet.create({
       width: 150,
       height: 150,
       resizeMode: 'contain',
-      opacity: 0.5
+      opacity: 0.1,
+      
     }
     
   });

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, FlatList, StyleSheet, Pressable } from 'react-native';
+import { View, Text, Image, FlatList, StyleSheet, Pressable, SafeAreaView } from 'react-native';
 import { Tamagochi, useTamagochiDatabase } from "@/database/tamagochiDatabase";
 import { updateAttributesBasedOnTime } from "@/utils/updateAttributesBasedOnTime";
 import { getTamagochiImage } from '@/utils/getTamagochiImage';
@@ -8,6 +8,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from './_layout';
 import { TamagochiType } from '@/assets/images/TamagochiImages';
+import { router } from 'expo-router';
 
 type ListTamagochiNavigationProp = StackNavigationProp<RootStackParamList, 'ListTamagochi'>;
 
@@ -64,10 +65,10 @@ const ListTamagochi: React.FC = () => {
     const status = calculateTamagochiStatus(item.hunger, item.sleep, item.happy);
     return (
       <Pressable onPress={() => navigation.navigate('TamagochiDetails', { tamagochiId: item.id })}>
-        <View style={styles.itemContainer}>
+        <SafeAreaView style={styles.itemContainer}>      
           <Image source={getTamagochiImage(status, item.tamagochi_id as TamagochiType)} style={styles.image} />
           <Text style={styles.name}>{item.name}</Text>
-        </View>
+        </SafeAreaView>
       </Pressable>
     );
   };
@@ -82,12 +83,25 @@ const ListTamagochi: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
+
+  buttonGoBack: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'left', 
+    padding: 15,
+    width: '100%',
+    paddingVertical: 30,
+  },
+
+
   itemContainer: {
-    padding: 10,
+    backgroundColor: 'orange',
+    padding: 15,
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center'
   },
   image: {
     width: 50,
