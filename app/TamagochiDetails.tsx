@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
-import { useRoute } from '@react-navigation/native';
+import { NavigationContainer, useRoute } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Tamagochi, useTamagochiDatabase } from "@/database/tamagochiDatabase";
 import { calculateTamagochiStatus } from '@/utils/calculateTamagochiStatus';
 import KitchenScreen from './KitchenScreen';
 import BedroomScreen from './BedroomScreen';
-import OutsideScreen from './OutsideScreen';
+import OutsideStack from './OutsideStack'; // Importando o OutsideStack
 import { Icon } from '@rneui/base';
 import { FontAwesome6 } from '@expo/vector-icons';
 
@@ -39,7 +39,6 @@ const TamagochiDetails: React.FC = () => {
         headerShown: false,
       }}
     >
-
       <Tab.Screen 
         name="Bedroom" 
         component={BedroomScreen} 
@@ -47,14 +46,12 @@ const TamagochiDetails: React.FC = () => {
         options={{
           tabBarLabel: ({ focused }) => (
             <Text style={{ color: focused ? '#f1c40f' : 'gray', fontSize: 10 }}>Bedroom</Text>
-
           ),
           tabBarIcon: ({ focused }) => (
             <Icon name="bedroom-parent" size={24} color={focused ? '#f1c40f' : 'gray'} />
           ),
         }}
       />
-
       <Tab.Screen 
         name="Kitchen" 
         component={KitchenScreen} 
@@ -62,31 +59,25 @@ const TamagochiDetails: React.FC = () => {
         options={{
           tabBarLabel: ({ focused }) => (
             <Text style={{ color: focused ? '#27ae60' : 'black', fontSize: 10 }}>Kitchen</Text>
-
           ),
           tabBarIcon: ({ focused }) => (
             <Icon name="kitchen" size={24} color={focused ? '#27ae60' : 'gray'} />
-            ),
+          ),
         }}
       />
-
-
-      
       <Tab.Screen 
-      name="Outside" 
-      component={OutsideScreen} 
-      initialParams={{ tamagochiId }}
-      options={{
-        tabBarLabel: ({ focused }) => (
-          <Text style={{ color: focused ? '#3498db' : 'gray', fontSize: 10 }}>Outside</Text>
-
-        ),
-        tabBarIcon: ({ focused }) => (
-          <FontAwesome6 name="house" size={20} color={focused ? '#3498db' : 'gray'} />
-        ),
-      }}
-    />
-
+        name="Outside" 
+        options={{
+          tabBarLabel: ({ focused }) => (
+            <Text style={{ color: focused ? '#3498db' : 'gray', fontSize: 10 }}>Outside</Text>
+          ),
+          tabBarIcon: ({ focused }) => (
+            <FontAwesome6 name="house" size={20} color={focused ? '#3498db' : 'gray'} />
+          ),
+        }}
+      >
+        {() => <OutsideStack tamagochiId={tamagochiId} />}
+      </Tab.Screen>
     </Tab.Navigator>
   );
 };
