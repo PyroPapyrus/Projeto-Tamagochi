@@ -58,7 +58,7 @@ const TamagochiDetails: React.FC = () => {
         initialParams={{ tamagochiId }} 
         options={{
           tabBarLabel: ({ focused }) => (
-            <Text style={{ color: focused ? '#27ae60' : 'black', fontSize: 10 }}>Kitchen</Text>
+            <Text style={{ color: focused ? '#27ae60' : 'gray', fontSize: 10 }}>Kitchen</Text>
           ),
           tabBarIcon: ({ focused }) => (
             <Icon name="kitchen" size={24} color={focused ? '#27ae60' : 'gray'} />
