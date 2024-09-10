@@ -1,18 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, Pressable } from 'react-native';
 import { useRoute } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Tamagochi, useTamagochiDatabase } from "@/database/tamagochiDatabase";
 import { getTamagochiImage } from '@/utils/getTamagochiImage';
 import { calculateTamagochiStatus } from '@/utils/calculateTamagochiStatus';
-import { TamagochiType } from '@/assets/images/TamagochiImages'; // Importe as telas das abas
-import KitchenScreen from './KitchenScreen';
-import BedroomScreen from './BedroomScreen';
-import OutsideScreen from './OutsideScreen';
+import { TamagochiType } from '@/assets/images/TamagochiImages';
 
-const Tab = createBottomTabNavigator();
-
-const TamagochiDetails: React.FC = () => {
+const KitchenScreen: React.FC = () => {
   const route = useRoute();
   const { tamagochiId } = route.params as { tamagochiId: number };
   const [tamagochi, setTamagochi] = useState<Tamagochi | null>(null);
@@ -27,18 +21,37 @@ const TamagochiDetails: React.FC = () => {
     fetchTamagochi();
   }, [tamagochiId]);
 
+  
+  const handleFeed = async () => {
+    if (tamagochi) {
+      const newHunger = Math.min(tamagochi.hunger + 10, 100); // Incrementa a fome em 10, mas não ultrapassa 100
+      await database.updateHunger(tamagochi.id, newHunger);
+      setTamagochi({ ...tamagochi, hunger: newHunger });
+    }
+  };
+
+
   if (!tamagochi) {
     return <Text>Carregando...</Text>;
   }
 
+
   const status = calculateTamagochiStatus(tamagochi.hunger, tamagochi.sleep, tamagochi.happy);
 
   return (
-    <Tab.Navigator>
-      <Tab.Screen name="Kitchen" component={KitchenScreen} initialParams={{ tamagochiId }} />
-      <Tab.Screen name="Bedroom" component={BedroomScreen} initialParams={{ tamagochiId }} />
-      <Tab.Screen name="Outside" component={OutsideScreen} initialParams={{ tamagochiId }} />
-    </Tab.Navigator>
+    <View style={styles.container}>
+      <Image source={getTamagochiImage(status, tamagochi.tamagochi_id as TamagochiType)} style={styles.image} />
+      <View style={styles.attributesContainer}>
+        <Text>Fome: {tamagochi.hunger}</Text>
+        <Text>Sono: {tamagochi.sleep}</Text>
+        <Text>Felicidade: {tamagochi.happy}</Text>
+      </View>
+
+      <Pressable onPress={handleFeed}>
+        <Image source={require('../assets/images/fruit.png')} style={styles.fruitImage}/>
+      </Pressable>
+
+    </View>
   );
 };
 
@@ -54,6 +67,10 @@ const styles = StyleSheet.create({
     height: 200,
     marginBottom: 20,
   },
+  fruitImage: {
+    width: 50,
+    height: 50,
+  },
   attributesContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -62,4 +79,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TamagochiDetails;
+export default KitchenScreen;
