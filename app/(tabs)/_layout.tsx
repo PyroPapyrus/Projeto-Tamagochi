@@ -17,16 +17,16 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
+          title: 'OutSide',
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
           ),
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="BedroomScreen"
         options={{
-          title: 'Explore',
+          title: 'Bedroom',
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
           ),
@@ -36,9 +36,9 @@ export default function TabLayout() {
 
         <Tabs.Screen
       
-        name='teste'
+        name='KitchenScreen'
         options={{
-          title:'Teste',
+          title:'Kitchen',
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={focused ? 'balloon' :
                'balloon-outline'}

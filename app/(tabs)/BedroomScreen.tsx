@@ -16,7 +16,7 @@ import { Text, View, StyleSheet, Button, TouchableOpacity, Modal } from "react-n
     },
 })*/
 
-const explore = () => {
+const BedroomScreen = () => {
 
     const [modalVisible, setModalVisible] = useState(false);
 
@@ -88,8 +88,8 @@ const styles = StyleSheet.create({
     
     /*<View style={styles.container}>
         <Text style={styles.text}>
-            Tela do explore
+            Tela do BedroomScreen
         </Text>
     </View>*/
 
-export default explore;
+export default BedroomScreen;

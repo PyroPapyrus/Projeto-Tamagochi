@@ -5,9 +5,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Tamagochi, useTamagochiDatabase } from "@/database/tamagochiDatabase";
 import { getTamagochiImage } from '@/utils/getTamagochiImage';
 import { calculateTamagochiStatus } from '@/utils/calculateTamagochiStatus';
-import KitchenScreen from './KitchenScreen';
-import BedroomScreen from './BedroomScreen';
-import OutsideScreen from './OutsideScreen';
 import { TamagochiType } from '@/assets/images/TamagochiImages';
 
 const Tab = createBottomTabNavigator();
@@ -41,54 +38,9 @@ const TamagochiDetails: React.FC = () => {
         <Text>Sono: {tamagochi.sleep}</Text>
         <Text>Felicidade: {tamagochi.happy}</Text>
       </View>
-      <Tab.Navigator >
-        <Tab.Screen name="Cozinha" component={KitchenScreen} />
-        <Tab.Screen name="Quarto" component={BedroomScreen} />
-        <Tab.Screen name="Lado de Fora" component={OutsideScreen} />
-      </Tab.Navigator>
     </View>
   );
 };
-{/* <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-      }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="explore"
-        options={{
-          title: 'Explore',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
-          ),
-        }}
-
-      />
-
-        <Tabs.Screen
-      
-        name='teste'
-        options={{
-          title:'Teste',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'balloon' :
-               'balloon-outline'}
-                color={color} />
-            ),
-        }}
-      
-      />
-      
-    </Tabs> */}
 
 const styles = StyleSheet.create({
   container: {
