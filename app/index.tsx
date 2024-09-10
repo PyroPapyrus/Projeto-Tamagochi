@@ -1,53 +1,97 @@
 import { Link, router } from "expo-router";
-import { Button, Pressable, SafeAreaView, StyleSheet, Text } from "react-native";
+import { ImageBackground, SafeAreaView, StyleSheet, Text, Image, Pressable, Button, TouchableOpacity } from "react-native";
 
 const index = () => {
+
     return (
-        <SafeAreaView style={styles.container}>
-            <Text>Tela inicial</Text>
-            
-            <Text>
-              <Link style={styles.text}
-               href={"/(tabs)"}>Clique aqui para ir a tela de tabs</Link>
-            </Text>
+      
+    <ImageBackground source={{ uri: 'https://wallpapers.com/images/hd/small-memory-art-smartphone-background-3mb6tn8a4554t5k2.jpg' }} style={styles.container}>
 
-            <Button 
-            title="Botao teste (n tem funcionalidade)"
-            onPress={() =>{} }  
-            />
+      <SafeAreaView style={styles.logoContainer}>
+          <Text style={styles.logoText}>PROJETO{'\n'}TAMAGOCHI</Text>
 
-            <Text>
-              <Link style={styles.text}
-               href={"/CreateTamagochiScreen"}>Clique aqui pra ir a tela do tamagochi</Link>
-            </Text>
-            
-            <Button 
-            title="Botao teste (n tem funcionalidade)"
-            onPress={() =>{} }  
-            />
+          <Image style={styles.logo} source={require('./pinguim-dance-unscreen.gif')}></Image>
+      </SafeAreaView>
 
-            <Text>
-              <Link style={styles.text}
-               href={"/ListTamagochi"}>Clique aqui pra ir a lista do tamagochi</Link>
-            </Text>
+      <SafeAreaView style={styles.container}>
+ 
+        <Link href={"/(tabs)"} asChild>
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.text}>Tela de Tabs</Text>
+          </TouchableOpacity>
+        </Link>
+
+        <Link href={"/CreateTamagochiScreen"} asChild>
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.text}>Criar tamagochi</Text>
+          </TouchableOpacity>
+        </Link>
+
+        <Link href={"/ListTamagochi"} asChild>
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.text}>Lista tamagochi</Text>
+          </TouchableOpacity>
+        </Link>
 
         </SafeAreaView>
 
-
+      </ImageBackground>
 
     );
 }
 
 const styles = StyleSheet.create({
+
+    background: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+
     container: {
-      backgroundColor: "white",
       justifyContent: "center",
       alignItems: "center",
       flex: 1,
-      padding: 24,
     },
+
     text: {
-      color: "red"
+      color: "#fff",
+      fontWeight: 'bold',
+    },
+
+    button: {
+      backgroundColor: '#007bff',
+      padding: 15,
+      margin: 5,
+      borderRadius: 5,
+      elevation: 20,  
+    },
+
+    logoContainer: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      flex: 2,
+    },
+
+    logoText: {
+      color: "#fff",
+      fontWeight: 'bold',
+      fontSize: 30,
+      textAlign: 'center',
+      textShadowColor: 'lightblack',
+      textShadowOffset: { width: -2, height: 5 },
+      textShadowRadius: 15,
+      margin: 20,
+      marginTop: 250,
+      elevation: 20
+    },
+
+    logo: {
+      width: 150,
+      height: 150,
+      resizeMode: 'contain',
+      opacity: 0.1,
+      
     }
     
   });

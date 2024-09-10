@@ -41,9 +41,9 @@ export default function RootLayout() {
 
   return (
     <SQLiteProvider databaseName='Tamagochi.db' onInit={initDatabase}>
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      <ThemeProvider value={colorScheme === 'light' ? DarkTheme : DefaultTheme}>
         <Stack>
-          <Stack.Screen name='index' />
+          <Stack.Screen name='index' options={{ headerShown: false}}/>
           <Stack.Screen name='CreateTamagochiScreen' options={{ headerShown: false }} />
           <Stack.Screen name='ListTamagochi' options={{ headerShown: false }} />
           <Stack.Screen name='TamagochiDetails' options={{ headerShown: false }} />
