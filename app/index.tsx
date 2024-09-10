@@ -1,7 +1,29 @@
+import { Audio } from "expo-av";
 import { Link, router } from "expo-router";
+import { useEffect, useState } from "react";
 import { ImageBackground, SafeAreaView, StyleSheet, Text, Image, Pressable, Button, TouchableOpacity } from "react-native";
 
 const index = () => {
+
+  const [sound, setSound] = useState<Audio.Sound | null>(null);
+
+  async function playSound() {
+    const { sound } = await Audio.Sound.createAsync(
+       require('../assets/audios/invention_ - Wingspan.mp3'),
+       { shouldPlay: true, isLooping: true }
+    );
+    setSound(sound);
+  }
+
+  useEffect(() => {
+    playSound();
+
+    return () => {
+      if (sound) {
+        sound.unloadAsync();
+      }
+    };
+  }, []);
 
     return (
       
