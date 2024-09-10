@@ -11,6 +11,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 type RootStackParamList = {
   OutsideMain: { tamagochiId: number };
   Minigame: undefined;
+  SecondMinigameScreen: undefined;
 };
 
 type OutsideScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'OutsideMain'>;
@@ -61,6 +62,7 @@ const OutsideScreen: React.FC = () => {
       const updatedTamagochi = { ...tamagochi, happy: newHappy };
       setTamagochi(updatedTamagochi);
       await AsyncStorage.setItem('tamagochi', JSON.stringify(updatedTamagochi));
+      navigation.navigate('SecondMinigameScreen');
       setTimeout(() => setIsWalkButtonDisabled(false), 10000); // Desabilita o botão por 10 segundos
     }
   };
