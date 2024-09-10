@@ -21,6 +21,9 @@ const OutsideScreen: React.FC = () => {
   const { tamagochiId } = route.params as { tamagochiId: number };
   const [tamagochi, setTamagochi] = useState<Tamagochi | null>(null);
   const database = useTamagochiDatabase();
+  const [isPlayButtonDisabled, setIsPlayButtonDisabled] = useState(false);
+  const [isWalkButtonDisabled, setIsWalkButtonDisabled] = useState(false);
+
 
   const fetchTamagochi = async () => {
     const tamagochiData = await database.findTamagochiById(tamagochiId);
@@ -35,23 +38,30 @@ const OutsideScreen: React.FC = () => {
   );
 
   const handlePlay = async () => {
+
     if (tamagochi) {
+      setIsPlayButtonDisabled(true);
       const newHappy = Math.min(tamagochi.happy + 10, 100); // Incrementa a felicidade em 10, mas não ultrapassa 100
       await database.updateHappy(tamagochi.id, newHappy);
       const updatedTamagochi = { ...tamagochi, happy: newHappy };
       setTamagochi(updatedTamagochi);
       await AsyncStorage.setItem('tamagochi', JSON.stringify(updatedTamagochi));
       navigation.navigate('Minigame'); // Navega para a tela do minigame
+      setTimeout(() => setIsPlayButtonDisabled(false), 10000) // Desabilita o botão por 10 segundos
     }
+
   };
 
   const handleWalk = async () => {
+
     if (tamagochi) {
+      setIsWalkButtonDisabled(true);
       const newHappy = Math.min(tamagochi.happy + 5, 100); // Incrementa a felicidade em 5, mas não ultrapassa 100
       await database.updateHappy(tamagochi.id, newHappy);
       const updatedTamagochi = { ...tamagochi, happy: newHappy };
       setTamagochi(updatedTamagochi);
       await AsyncStorage.setItem('tamagochi', JSON.stringify(updatedTamagochi));
+      setTimeout(() => setIsWalkButtonDisabled(false), 10000); // Desabilita o botão por 10 segundos
     }
   };
 
@@ -73,11 +83,22 @@ const OutsideScreen: React.FC = () => {
           <Text>Sono: {tamagochi.sleep}</Text>
           <Text>Felicidade: {tamagochi.happy}</Text>
         </View>
-        <Pressable onPress={handlePlay} style={styles.playButton}>
+        <Pressable
+          onPress={handlePlay} disabled={isPlayButtonDisabled} style={({ pressed }) => [
+            styles.playButton,
+            isPlayButtonDisabled && styles.disabledButton,
+            pressed && styles.pressedButton, ]}>
+          
           <Text style={styles.buttonText}>Brincar</Text>
+
         </Pressable>
-        <Pressable onPress={handleWalk} style={styles.walkButton}>
+        <Pressable onPress={handleWalk} disabled={isWalkButtonDisabled} style={({ pressed }) => [
+            styles.walkButton,
+            isWalkButtonDisabled && styles.disabledButton,
+            pressed && styles.pressedButton, ]}>
+
           <Text style={styles.buttonText}>Passear</Text>
+
         </Pressable>
       </View>
     </ImageBackground>
@@ -106,19 +127,30 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   playButton: {
-    backgroundColor: '#FFEB3B',
+    alignItems: 'center',
+    justifyContent: 'center',
     padding: 10,
+    backgroundColor: 'blue',
     borderRadius: 5,
     marginBottom: 10,
   },
   walkButton: {
-    backgroundColor: '#FFC107',
+    alignItems: 'center',
+    justifyContent: 'center',
     padding: 10,
+    backgroundColor: 'green',
     borderRadius: 5,
   },
   buttonText: {
-    color: '#000',
+    color: 'white',
     fontSize: 16,
+  },
+  disabledButton: {
+    opacity: 0.5,
+    transform: [{ scale: 0.8 }],
+  },
+  pressedButton: {
+    transform: [{ scale: 0.9 }],
   },
 });
 

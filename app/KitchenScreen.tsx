@@ -11,6 +11,7 @@ const KitchenScreen: React.FC = () => {
   const route = useRoute();
   const { tamagochiId } = route.params as { tamagochiId: number };
   const [tamagochi, setTamagochi] = useState<Tamagochi | null>(null);
+  const [isButtonDisabled,setIsButtonDisabled] = useState(false);
   const database = useTamagochiDatabase();
 
   const fetchTamagochi = async () => {
@@ -26,13 +27,17 @@ const KitchenScreen: React.FC = () => {
   );
 
   const handleFeed = async () => {
+
     if (tamagochi) {
+      setIsButtonDisabled(true);
       const newHunger = Math.min(tamagochi.hunger + 10, 100); // Incrementa a fome em 10, mas não ultrapassa 100
       await database.updateHunger(tamagochi.id, newHunger);
       const updatedTamagochi = { ...tamagochi, hunger: newHunger };
       setTamagochi(updatedTamagochi);
       await AsyncStorage.setItem('tamagochi', JSON.stringify(updatedTamagochi));
+      setTimeout(() => setIsButtonDisabled(false), 2000); // Desabilita o botão por 2 segundos
     }
+    
   };
 
   if (!tamagochi) {
@@ -55,7 +60,11 @@ const KitchenScreen: React.FC = () => {
         <Text>Felicidade: {tamagochi.happy}</Text>
       </View>
 
-      <Pressable onPress={handleFeed}>
+      <Pressable onPress={handleFeed} disabled={isButtonDisabled} style={({ pressed }) => [
+            styles.pressable,
+            isButtonDisabled && styles.disabledPressable,
+            pressed && styles.pressedPressable,
+          ]}>
         <Image source={require('../assets/images/fruit.png')} style={styles.fruitImage}/>
       </Pressable>
 
@@ -91,6 +100,17 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: '100%',
     marginBottom: 20,
+  },
+  pressable: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  disabledPressable: {
+    opacity: 0.5,
+    transform: [{ scale: 0.8 }],
+  },
+  pressedPressable: {
+    transform: [{ scale: 0.9 }],
   },
 });
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, FlatList, StyleSheet, Pressable, SafeAreaView, ScrollView } from 'react-native';
+import { View, Text, Image, FlatList, StyleSheet, Pressable, SafeAreaView, ScrollView, Alert } from 'react-native';
 import { Tamagochi, useTamagochiDatabase } from "@/database/tamagochiDatabase";
 import { updateAttributesBasedOnTime } from "@/utils/updateAttributesBasedOnTime";
 import { getTamagochiImage } from '@/utils/getTamagochiImage';
@@ -65,15 +65,55 @@ const ListTamagochi: React.FC = () => {
     return () => clearInterval(intervalId);
   }, []);
 
+  
+  const deleteTamagochi = async (id: number) => {
+    try {
+      await database.deleteTamagochiById(id);
+      setTamagochis(tamagochis.filter(tamagochi => tamagochi.id !== id));
+    } catch (error) {
+      console.log('Erro ao deletar Tamagochi:', error);
+    }
+  };
+
+  const confirmDelete = (id: number) => {
+    Alert.alert(
+      "Confirmar Exclusão",
+      "Você realmente deseja excluir este Tamagochi?",
+      [
+        {
+          text: "Cancelar",
+          style: "cancel"
+        },
+        {
+          text: "Excluir",
+          onPress: () => deleteTamagochi(id),
+          style: "destructive"
+        }
+      ]
+    );
+  };
+
+
   const renderItem = ({ item }: { item: Tamagochi }) => {
+
     const status = calculateTamagochiStatus(item.hunger, item.sleep, item.happy);
+    const isDead = status === "morto";
+    
     return (
-      <Pressable onPress={() => navigation.navigate('TamagochiDetails', { tamagochiId: item.id })}>
-        <SafeAreaView style={styles.itemContainer}>      
+      <View style={[styles.itemContainer, isDead && styles.deadItem]}>
+        <Pressable onPress={() => !isDead && navigation.navigate('TamagochiDetails', { tamagochiId: item.id })}
+        disabled={isDead} style={styles.pressable}>
           <Image source={getTamagochiImage(status, item.tamagochi_id as TamagochiType)} style={styles.image} />
           <Text style={styles.name}>{item.name}</Text>
-        </SafeAreaView>
-      </Pressable>
+        </Pressable>
+        <Ionicons
+          name="trash-bin"
+          size={24}
+          color="red"
+          onPress={() => confirmDelete(item.id)}
+          style={styles.deleteButton}
+        />
+      </View>
     );
   };
 
@@ -153,6 +193,16 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     marginRight: 10,
+  },
+  deadItem: {
+    backgroundColor: 'gray', // Cor para itens "mortos"
+  },
+  pressable: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  deleteButton: {
+    marginLeft: 'auto',
   },
   name: {
     fontSize: 18,
