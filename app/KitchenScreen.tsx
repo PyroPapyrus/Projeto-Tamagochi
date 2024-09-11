@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, StyleSheet, Pressable, ImageBackground } from 'react-native';
+import { View, Text, Image, StyleSheet, Pressable, ImageBackground, SafeAreaView } from 'react-native';
 import { useRoute, useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Tamagochi, useTamagochiDatabase } from "@/database/tamagochiDatabase";
@@ -52,13 +52,28 @@ const KitchenScreen: React.FC = () => {
       source={require('@/assets/images/kitchen.gif')}
       style={styles.background}
     >
+
+    <SafeAreaView style={styles.attributesContainer}> 
+      <View style={styles.hungerContainer}> 
+        <Text style={styles.text}>Fome{'\n'}{tamagochi.hunger}</Text>
+      </View>  
+
+      <View style={styles.sleepContainer}> 
+        <Text style={styles.text}>Sono{'\n'}{tamagochi.sleep}</Text>
+      </View> 
+
+      <View style={styles.happyContainer}> 
+        <Text style={styles.text}>Humor{'\n'}{tamagochi.happy}</Text>
+      </View> 
+    </SafeAreaView>
+
+      <View style={styles.statusContainer}>
+        <Text style={styles.statusText}>STATUS</Text>
+        <Text style={styles.statusNumberText}>{tamagochi.status}</Text>
+      </View>
+
     <View style={styles.container}>
       <Image source={getTamagochiImage(status, tamagochi.tamagochi_id as TamagochiType)} style={styles.image} />
-      <View style={styles.attributesContainer}>
-        <Text>Fome: {tamagochi.hunger}</Text>
-        <Text>Sono: {tamagochi.sleep}</Text>
-        <Text>Felicidade: {tamagochi.happy}</Text>
-      </View>
 
       <Pressable onPress={handleFeed} disabled={isButtonDisabled} style={({ pressed }) => [
             styles.pressable,
@@ -86,21 +101,85 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 20,
   },
+
   image: {
     width: 200,
     height: 200,
     marginBottom: 20,
   },
+
   fruitImage: {
     width: 50,
     height: 50,
   },
-  attributesContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '100%',
-    marginBottom: 20,
+
+  text: {
+    textAlign: 'center',
+    color: 'white',
+    fontWeight: 'bold',
+    padding: 10,
+    borderRadius: 10,
+    fontSize: 20
   },
+
+  attributesContainer: {
+    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 40,
+    marginTop: 30,
+    padding: 5,
+    shadowColor: 'white',
+    elevation: 7,
+  },
+
+  statusContainer: {
+    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+    alignItems: 'center',
+    margin: 10,
+    padding: 10,
+    shadowColor: 'white',
+    elevation: 7,
+  },
+
+  statusText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+
+  statusNumberText: {
+    color: '#00d100',
+    fontWeight: 'bold'
+  },
+
+  hungerContainer: {
+      flexDirection: 'row',
+      justifyContent: 'flex-start',
+      alignSelf: 'flex-start', 
+      backgroundColor: 'rgba(229, 43, 20, 0.4)',
+      padding: 5,
+      borderRadius: 5
+  },
+
+  sleepContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignSelf: 'flex-start', 
+    backgroundColor: 'rgba(152, 8, 229, 0.4)',
+    padding: 5,
+    borderRadius: 5
+},
+
+  happyContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignSelf: 'flex-start', 
+    backgroundColor: 'rgba(8, 132, 229, 0.4)',
+    padding: 5,
+    borderRadius: 5,
+  },
+
   pressable: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -112,6 +191,7 @@ const styles = StyleSheet.create({
   pressedPressable: {
     transform: [{ scale: 0.9 }],
   },
+
 });
 
 export default KitchenScreen;
