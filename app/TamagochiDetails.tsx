@@ -6,7 +6,7 @@ import { Tamagochi, useTamagochiDatabase } from "@/database/tamagochiDatabase";
 import { calculateTamagochiStatus } from '@/utils/calculateTamagochiStatus';
 import KitchenScreen from './KitchenScreen';
 import BedroomScreen from './BedroomScreen';
-import OutsideStack from './OutsideStack'; // Importando o OutsideStack
+import OutsideStack from './OutsideStack';
 import { Icon } from '@rneui/base';
 import { FontAwesome6 } from '@expo/vector-icons';
 

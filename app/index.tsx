@@ -1,13 +1,14 @@
+import PlayPauseButton from "@/components/ButtonPlayPause";
 import { Audio } from "expo-av";
 import { Link, router } from "expo-router";
 import { useEffect, useState } from "react";
 import { ImageBackground, SafeAreaView, StyleSheet, Text, Image, Pressable, Button, TouchableOpacity } from "react-native";
 
 const index = () => {
-
   const [sound, setSound] = useState<Audio.Sound | null>(null);
+  const [isPlaying, setIsPlaying] = useState<boolean>(true);
 
-  async function playSound() {
+  async function loadSound() {
     const { sound } = await Audio.Sound.createAsync(
        require('../assets/audios/invention_ - Wingspan.mp3'),
        { shouldPlay: true, isLooping: true }
@@ -16,7 +17,7 @@ const index = () => {
   }
 
   useEffect(() => {
-    playSound();
+    loadSound();
 
     return () => {
       if (sound) {
@@ -25,9 +26,25 @@ const index = () => {
     };
   }, []);
 
+  const togglePlayPause = async () => {
+    if (sound) {
+      if (isPlaying) {
+        await sound.pauseAsync();
+      } else {
+        await sound.playAsync();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
+  
+
     return (
       
     <ImageBackground source={{ uri: 'https://wallpapers.com/images/hd/small-memory-art-smartphone-background-3mb6tn8a4554t5k2.jpg' }} style={styles.container}>
+
+
+    <PlayPauseButton isPlaying={isPlaying} onPress={togglePlayPause} />
+
 
       <SafeAreaView style={styles.logoContainer}>
           <Text style={styles.logoText}>PROJETO{'\n'}TAMAGOCHI</Text>
@@ -36,6 +53,8 @@ const index = () => {
       </SafeAreaView>
 
       <SafeAreaView style={styles.container}>
+
+      <PlayPauseButton isPlaying={isPlaying} onPress={togglePlayPause} />
  
         <Link href={"/CreateTamagochiScreen"} asChild>
           <TouchableOpacity style={styles.button}>

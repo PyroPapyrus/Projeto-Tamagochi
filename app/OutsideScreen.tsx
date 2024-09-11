@@ -84,6 +84,7 @@ const OutsideScreen: React.FC = () => {
           <Text>Fome: {tamagochi.hunger}</Text>
           <Text>Sono: {tamagochi.sleep}</Text>
           <Text>Felicidade: {tamagochi.happy}</Text>
+          
         </View>
         <Pressable
           onPress={handlePlay} disabled={isPlayButtonDisabled} style={({ pressed }) => [
