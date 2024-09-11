@@ -7,6 +7,11 @@ import { getTamagochiImage } from '@/utils/getTamagochiImage';
 import { calculateTamagochiStatus } from '@/utils/calculateTamagochiStatus';
 import { TamagochiType } from '@/assets/images/TamagochiImages';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import AtributtesContainer from '@/components/AtributtesContainer';
+import SleepContainer from '@/components/SleepContainer';
+import HappyContainer from '@/components/HappyContainer';
+import HungerContainer from '@/components/HungerContainer';
+import StatusContainer from '@/components/StatusContainer';
 
 type RootStackParamList = {
   OutsideMain: { tamagochiId: number };
@@ -79,47 +84,57 @@ const OutsideScreen: React.FC = () => {
       style={styles.background}
     >
 
-    <SafeAreaView style={styles.attributesContainer}> 
-      <View style={styles.hungerContainer}> 
-        <Text style={styles.text}>Fome{'\n'}{tamagochi.hunger}</Text>
-      </View>  
+    <SafeAreaView>
+      <AtributtesContainer>
+        <View> 
+          <HungerContainer>
+            <Text style={styles.text}>Fome{'\n'}{tamagochi.hunger}</Text>
+          </HungerContainer>
+        </View>  
 
-      <View style={styles.sleepContainer}> 
-        <Text style={styles.text}>Sono{'\n'}{tamagochi.sleep}</Text>
-      </View> 
+        <View> 
+          <SleepContainer>
+            <Text style={styles.text}>Sono{'\n'}{tamagochi.sleep}</Text>
+          </SleepContainer>
+        </View> 
 
-      <View style={styles.happyContainer}> 
-        <Text style={styles.text}>Humor{'\n'}{tamagochi.happy}</Text>
-      </View>
-    </SafeAreaView>
+        <View> 
+          <HappyContainer>
+            <Text style={styles.text}>Humor{'\n'}{tamagochi.happy}</Text>
+          </HappyContainer>
+        </View> 
+        </AtributtesContainer> 
+      </SafeAreaView>
 
-      <View style={styles.statusContainer}>
-
+      <View>
+        <StatusContainer>
           <Text style={styles.statusText}>STATUS</Text>
           <Text style={styles.statusNumberText}>{status}</Text>
-
+        </StatusContainer>
       </View>
 
       <View style={styles.container}>
         <Image source={getTamagochiImage(status, tamagochi.tamagochi_id as TamagochiType)} style={styles.image} />
 
-        <Pressable
-          onPress={handlePlay} disabled={isPlayButtonDisabled} style={({ pressed }) => [
-            styles.playButton,
-            isPlayButtonDisabled && styles.disabledButton,
-            pressed && styles.pressedButton, ]}>
-          
-          <Text style={styles.buttonText}>Brincar</Text>
+        <View style={styles.buttonContainer}>
+          <Pressable
+              onPress={handlePlay} disabled={isPlayButtonDisabled} style={({ pressed }) => [
+              styles.playButton,
+              isPlayButtonDisabled && styles.disabledButton,
+              pressed && styles.pressedButton, ]}>
+            
+            <Text style={styles.buttonText}>Brincar</Text>
+          </Pressable>
+        
+          <Pressable onPress={handleWalk} disabled={isWalkButtonDisabled} style={({ pressed }) => [
+              styles.walkButton,
+              isWalkButtonDisabled && styles.disabledButton,
+              pressed && styles.pressedButton, ]}>
 
-        </Pressable>
-        <Pressable onPress={handleWalk} disabled={isWalkButtonDisabled} style={({ pressed }) => [
-            styles.walkButton,
-            isWalkButtonDisabled && styles.disabledButton,
-            pressed && styles.pressedButton, ]}>
+            <Text style={styles.buttonText}>Passear</Text>
+          </Pressable>
+        </View>
 
-          <Text style={styles.buttonText}>Passear</Text>
-
-        </Pressable>
       </View>
     </ImageBackground>
   );
@@ -141,6 +156,7 @@ const styles = StyleSheet.create({
   image: {
     width: 200,
     height: 200,
+    marginVertical: 200,
     marginBottom: 20,
   },
 
@@ -162,28 +178,7 @@ const styles = StyleSheet.create({
     textShadowColor: 'cyan'
   },
 
-  attributesContainer: {
-    backgroundColor: 'rgba(0, 0, 0, 0.2)',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 40,
-    marginTop: 30,
-    padding: 5,
-    shadowColor: 'white',
-    elevation: 7,
-  },
-
   box: {
-    shadowColor: 'white',
-    elevation: 7,
-  },
-
-  statusContainer: {
-    backgroundColor: 'rgba(0, 0, 0, 0.2)',
-    alignItems: 'center',
-    margin: 10,
-    padding: 10,
     shadowColor: 'white',
     elevation: 7,
   },
@@ -198,51 +193,28 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 
-  hungerContainer: {
-      flexDirection: 'row',
-      justifyContent: 'flex-start',
-      alignSelf: 'flex-start', 
-      backgroundColor: 'rgba(229, 43, 20, 0.4)',
-      padding: 5,
-      borderRadius: 5
-  },
-
-  sleepContainer: {
+  buttonContainer: {
     flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignSelf: 'flex-start', 
-    backgroundColor: 'rgba(152, 8, 229, 0.4)',
-    padding: 5,
-    borderRadius: 5
-  },
-
-  happyContainer: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignSelf: 'flex-start', 
-    backgroundColor: 'rgba(8, 132, 229, 0.4)',
-    padding: 5,
-    borderRadius: 5,
+    gap: 10
   },
 
   playButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 10,
-    backgroundColor: 'blue',
+    padding: 12,
+    backgroundColor: 'darkorange',
+    paddingHorizontal: 14,
     borderRadius: 5,
-    marginBottom: 10,
+    elevation: 10
   },
 
   walkButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 10,
+    padding: 12,
     backgroundColor: 'green',
     borderRadius: 5,
+    elevation: 10
   },
   
   buttonText: {
+    fontWeight: 'bold',
     color: 'white',
     fontSize: 16,
   },
@@ -251,8 +223,9 @@ const styles = StyleSheet.create({
     opacity: 0.5,
     transform: [{ scale: 0.8 }],
   },
+
   pressedButton: {
-    transform: [{ scale: 0.9 }],
+    transform: [{ scale: 0.8 }],
   },
 });
 

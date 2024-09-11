@@ -10,7 +10,7 @@ const index = () => {
 
   async function loadSound() {
     const { sound } = await Audio.Sound.createAsync(
-       require('../assets/audios/invention_ - Wingspan.mp3'),
+       require('@/assets/audios/invention_ - Wingspan.mp3'),
        { shouldPlay: true, isLooping: true }
     );
     setSound(sound);
@@ -42,9 +42,9 @@ const index = () => {
       
     <ImageBackground source={{ uri: 'https://wallpapers.com/images/hd/small-memory-art-smartphone-background-3mb6tn8a4554t5k2.jpg' }} style={styles.container}>
 
-
-    <PlayPauseButton isPlaying={isPlaying} onPress={togglePlayPause} />
-
+    <SafeAreaView style={styles.playButton} >
+      <PlayPauseButton isPlaying={isPlaying} onPress={togglePlayPause} />
+    </SafeAreaView>
 
       <SafeAreaView style={styles.logoContainer}>
           <Text style={styles.logoText}>PROJETO{'\n'}TAMAGOCHI</Text>
@@ -54,8 +54,6 @@ const index = () => {
 
       <SafeAreaView style={styles.container}>
 
-      <PlayPauseButton isPlaying={isPlaying} onPress={togglePlayPause} />
- 
         <Link href={"/CreateTamagochiScreen"} asChild>
           <TouchableOpacity style={styles.button}>
             <Text style={styles.text}>Criar tamagochi</Text>
@@ -127,6 +125,16 @@ const styles = StyleSheet.create({
       resizeMode: 'contain',
       opacity: 0.1,
       
+    },
+
+    playButton: {
+      margin: 20,
+      marginVertical: 25,
+      marginHorizontal: 10,
+      padding: 10,
+      position: 'absolute',
+      top: 0,
+      left: 0,
     }
     
   });

@@ -10,7 +10,7 @@ interface PlayPauseButtonProps {
 const PlayPauseButton: React.FC<PlayPauseButtonProps> = ({ isPlaying, onPress }) => {
   return (
     <TouchableOpacity onPress={onPress} style={styles.button}>
-      <Ionicons name={isPlaying ? "pause" : "play"} size={32} color="black" />
+      <Ionicons name={isPlaying ? "pause" : "play"} size={32} color="white" />
     </TouchableOpacity>
   );
 };
