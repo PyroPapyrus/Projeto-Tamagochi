@@ -38,6 +38,7 @@ export default function RootLayout() {
     return null;
   }
 
+ 
   return (
     <SQLiteProvider databaseName='Tamagochi.db' onInit={initDatabase}>
 
