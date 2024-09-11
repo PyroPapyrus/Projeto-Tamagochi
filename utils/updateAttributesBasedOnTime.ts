@@ -5,8 +5,8 @@ export function updateAttributesBasedOnTime(lastUpdated: number, hunger: number,
     const decayAmount = timeDiff * 1; // Decaimento de 1 unidade por hora
 
     return {
-        hunger: Math.max(0, hunger - (decayAmount + 2)), // Atualiza a fome
-        sleep: Math.max(0, sleep - (decayAmount + 3)), // Atualiza o sono
-        happy: Math.max(0, happy - (decayAmount + 4)), // Atualiza a felicidade
+        hunger: Math.max(0, hunger - (decayAmount )), // Atualiza a fome
+        sleep: Math.max(0, sleep - (decayAmount )), // Atualiza o sono
+        happy: Math.max(0, happy - (decayAmount)), // Atualiza a felicidade
     };
 }

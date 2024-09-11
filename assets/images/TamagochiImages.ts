@@ -44,7 +44,7 @@ const tamagochiImages: Record<TamagochiStatus, Record<TamagochiType, ImageSource
         tamagochi1: require('./dog/dog.png'),
         tamagochi2: require('./big-floppa/floppa.png'),
         tamagochi3: require('./frog/frog.png'),
-        tamagochi4: require('./pinguim/pinguim.png'),
+        tamagochi4: require('./pinguim/pinguim-dance-unscreen.gif'),
     }
 };
 

@@ -75,7 +75,7 @@ const OutsideScreen: React.FC = () => {
 
   return (
     <ImageBackground
-      source={require('../assets/images/bakground.png')}
+      source={require('@/assets/images/bakground.png')}
       style={styles.background}
     >
 
@@ -96,18 +96,13 @@ const OutsideScreen: React.FC = () => {
       <View style={styles.statusContainer}>
 
           <Text style={styles.statusText}>STATUS</Text>
-          <Text style={styles.statusNumberText}>{tamagochi.status}</Text>
+          <Text style={styles.statusNumberText}>{status}</Text>
 
       </View>
 
       <View style={styles.container}>
         <Image source={getTamagochiImage(status, tamagochi.tamagochi_id as TamagochiType)} style={styles.image} />
-        <View style={styles.attributesContainer}>
-          <Text>Fome: {tamagochi.hunger}</Text>
-          <Text>Sono: {tamagochi.sleep}</Text>
-          <Text>Felicidade: {tamagochi.happy}</Text>
-          
-        </View>
+
         <Pressable
           onPress={handlePlay} disabled={isPlayButtonDisabled} style={({ pressed }) => [
             styles.playButton,

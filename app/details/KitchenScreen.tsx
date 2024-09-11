@@ -7,11 +7,11 @@ import { getTamagochiImage } from '@/utils/getTamagochiImage';
 import { calculateTamagochiStatus } from '@/utils/calculateTamagochiStatus';
 import { TamagochiType } from '@/assets/images/TamagochiImages';
 
-const BedroomScreen: React.FC = () => {
+const KitchenScreen: React.FC = () => {
   const route = useRoute();
   const { tamagochiId } = route.params as { tamagochiId: number };
   const [tamagochi, setTamagochi] = useState<Tamagochi | null>(null);
-  const [isSleeping, setIsSleeping] = useState(false);
+  const [isButtonDisabled,setIsButtonDisabled] = useState(false);
   const database = useTamagochiDatabase();
 
   const fetchTamagochi = async () => {
@@ -26,16 +26,18 @@ const BedroomScreen: React.FC = () => {
     }, [tamagochiId])
   );
 
-  const handleSleep = async () => {
+  const handleFeed = async () => {
+
     if (tamagochi) {
-      setIsSleeping(true);
-      const newSleep = Math.min(tamagochi.sleep + 10, 100); // Incrementa o sono em 10, mas não ultrapassa 100
-      await database.updateSleep(tamagochi.id, newSleep);
-      const updatedTamagochi = { ...tamagochi, sleep: newSleep };
+      setIsButtonDisabled(true);
+      const newHunger = Math.min(tamagochi.hunger + 10, 100); // Incrementa a fome em 10, mas não ultrapassa 100
+      await database.updateHunger(tamagochi.id, newHunger);
+      const updatedTamagochi = { ...tamagochi, hunger: newHunger };
       setTamagochi(updatedTamagochi);
       await AsyncStorage.setItem('tamagochi', JSON.stringify(updatedTamagochi));
-      setTimeout(() => setIsSleeping(false), 10000); // Botão inativo por 10 segundos
+      setTimeout(() => setIsButtonDisabled(false), 2000); // Desabilita o botão por 2 segundos
     }
+    
   };
 
   if (!tamagochi) {
@@ -45,40 +47,44 @@ const BedroomScreen: React.FC = () => {
   const status = calculateTamagochiStatus(tamagochi.hunger, tamagochi.sleep, tamagochi.happy);
 
   return (
+
     <ImageBackground
-      source={isSleeping ? require('@/assets/images/night.jpeg') : require('@/assets/images/day.jpeg')}
+      source={require('@/assets/images/kitchen.gif')}
       style={styles.background}
     >
 
-      <SafeAreaView style={styles.attributesContainer}> 
-        <View style={styles.hungerContainer}> 
+    <SafeAreaView style={styles.attributesContainer}> 
+      <View style={styles.hungerContainer}> 
         <Text style={styles.text}>Fome{'\n'}{tamagochi.hunger}</Text>
-        </View>  
+      </View>  
 
-        <View style={styles.sleepContainer}> 
+      <View style={styles.sleepContainer}> 
         <Text style={styles.text}>Sono{'\n'}{tamagochi.sleep}</Text>
-        </View> 
+      </View> 
 
-        <View style={styles.happyContainer}> 
+      <View style={styles.happyContainer}> 
         <Text style={styles.text}>Humor{'\n'}{tamagochi.happy}</Text>
-        </View> 
-      </SafeAreaView>
+      </View> 
+    </SafeAreaView>
 
       <View style={styles.statusContainer}>
         <Text style={styles.statusText}>STATUS</Text>
-        <Text style={styles.statusNumberText}>{tamagochi.status}</Text>
+        <Text style={styles.statusNumberText}>{status}</Text>
       </View>
 
-      <View style={styles.container}>        
-        <Image source={getTamagochiImage(status, tamagochi.tamagochi_id as TamagochiType)} style={styles.image} />
+    <View style={styles.container}>
+      <Image source={getTamagochiImage(status, tamagochi.tamagochi_id as TamagochiType)} style={styles.image} />
 
-      <Text>
-        <Pressable onPress={handleSleep} disabled={isSleeping} style={[styles.sleepButton, isSleeping && styles.sleepButtonInactive]}>
-          <Text style={styles.buttonText}>Dormir</Text>
-        </Pressable>
-      </Text>
+      <Pressable onPress={handleFeed} disabled={isButtonDisabled} style={({ pressed }) => [
+            styles.pressable,
+            isButtonDisabled && styles.disabledPressable,
+            pressed && styles.pressedPressable,
+          ]}>
+        <Image source={require('@/assets/images/fruit.png')} style={styles.fruitImage}/>
+      </Pressable>
 
-      </View>
+    </View>
+
     </ImageBackground>
   );
 };
@@ -86,20 +92,25 @@ const BedroomScreen: React.FC = () => {
 const styles = StyleSheet.create({
 
   background: {
-    flex: 1,
+    flex: 1
   },
 
   container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    padding: 20,
   },
 
   image: {
     width: 200,
     height: 200,
-    marginVertical: 200,
     marginBottom: 20,
+  },
+
+  fruitImage: {
+    width: 50,
+    height: 50,
   },
 
   text: {
@@ -109,15 +120,6 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     fontSize: 20
-  },
-
-  textAttributes: {
-    color: 'white',
-    fontWeight: 'bold',
-    flexDirection: 'row',
-    padding: 10,
-    paddingHorizontal: 20,
-    textShadowColor: 'cyan'
   },
 
   attributesContainer: {
@@ -147,7 +149,7 @@ const styles = StyleSheet.create({
   },
 
   statusNumberText: {
-    color: '#00a600',
+    color: '#00d100',
     fontWeight: 'bold'
   },
 
@@ -167,7 +169,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(152, 8, 229, 0.4)',
     padding: 5,
     borderRadius: 5
-  },
+},
 
   happyContainer: {
     flexDirection: 'row',
@@ -178,21 +180,18 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
 
-  sleepButton: {
-    backgroundColor: '#00a600',
-    borderRadius: 5,
+  pressable: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  disabledPressable: {
+    opacity: 0.5,
+    transform: [{ scale: 0.8 }],
+  },
+  pressedPressable: {
+    transform: [{ scale: 0.9 }],
   },
 
-  sleepButtonInactive: {
-    backgroundColor: '#A5D6A7',
-    opacity: 0.5
-  },
-
-  buttonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
 });
 
-export default BedroomScreen;
+export default KitchenScreen;

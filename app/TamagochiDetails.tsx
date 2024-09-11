@@ -4,9 +4,9 @@ import { NavigationContainer, useRoute } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Tamagochi, useTamagochiDatabase } from "@/database/tamagochiDatabase";
 import { calculateTamagochiStatus } from '@/utils/calculateTamagochiStatus';
-import KitchenScreen from './KitchenScreen';
-import BedroomScreen from './BedroomScreen';
-import OutsideStack from './OutsideStack';
+import KitchenScreen from './details/KitchenScreen';
+import BedroomScreen from './details/BedroomScreen';
+import OutsideStack from './details/OutsideStack';
 import { Icon } from '@rneui/base';
 import { FontAwesome6 } from '@expo/vector-icons';
 

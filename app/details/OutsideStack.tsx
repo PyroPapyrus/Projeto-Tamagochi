@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import OutsideScreen from './OutsideScreen';
+import OutsideScreen from '@/app/details/OutsideScreen';
 import MinigameScreen from './MinigameScreen';
 import SecondMinigameScreen from './SecondMinigameScreen';
 

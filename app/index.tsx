@@ -49,7 +49,7 @@ const index = () => {
       <SafeAreaView style={styles.logoContainer}>
           <Text style={styles.logoText}>PROJETO{'\n'}TAMAGOCHI</Text>
 
-          <Image style={styles.logo} source={require('@/assets/images/pinguim-dance-unscreen.gif')}></Image>
+          <Image style={styles.logo} source={require('@/assets/images/pinguim/pinguim-dance-unscreen.gif')}></Image>
       </SafeAreaView>
 
       <SafeAreaView style={styles.container}>
