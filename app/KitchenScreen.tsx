@@ -11,6 +11,7 @@ const KitchenScreen: React.FC = () => {
   const route = useRoute();
   const { tamagochiId } = route.params as { tamagochiId: number };
   const [tamagochi, setTamagochi] = useState<Tamagochi | null>(null);
+  const [isButtonDisabled,setIsButtonDisabled] = useState(false);
   const database = useTamagochiDatabase();
 
   const fetchTamagochi = async () => {
@@ -26,13 +27,17 @@ const KitchenScreen: React.FC = () => {
   );
 
   const handleFeed = async () => {
+
     if (tamagochi) {
+      setIsButtonDisabled(true);
       const newHunger = Math.min(tamagochi.hunger + 10, 100); // Incrementa a fome em 10, mas não ultrapassa 100
       await database.updateHunger(tamagochi.id, newHunger);
       const updatedTamagochi = { ...tamagochi, hunger: newHunger };
       setTamagochi(updatedTamagochi);
       await AsyncStorage.setItem('tamagochi', JSON.stringify(updatedTamagochi));
+      setTimeout(() => setIsButtonDisabled(false), 2000); // Desabilita o botão por 2 segundos
     }
+    
   };
 
   if (!tamagochi) {
@@ -50,36 +55,31 @@ const KitchenScreen: React.FC = () => {
 
     <SafeAreaView style={styles.attributesContainer}> 
       <View style={styles.hungerContainer}> 
-        <Text style={styles.text}>Fome</Text>
+        <Text style={styles.text}>Fome{'\n'}{tamagochi.hunger}</Text>
       </View>  
 
       <View style={styles.sleepContainer}> 
-        <Text style={styles.text}>Sono</Text>
+        <Text style={styles.text}>Sono{'\n'}{tamagochi.sleep}</Text>
       </View> 
 
       <View style={styles.happyContainer}> 
-        <Text style={styles.text}>Humor</Text>
+        <Text style={styles.text}>Humor{'\n'}{tamagochi.happy}</Text>
       </View> 
     </SafeAreaView>
 
-    <View style={styles.statusContainer}>
-      <SafeAreaView style={styles.hungerContainer}>
-          <Text style={styles.textAttributes}>{tamagochi.hunger}</Text>
-      </SafeAreaView>
-
-      <SafeAreaView style={styles.sleepContainer}>
-          <Text style={styles.textAttributes}>{tamagochi.sleep}</Text>
-      </SafeAreaView>
-
-      <SafeAreaView style={styles.happyContainer}>
-          <Text style={styles.textAttributes}>{tamagochi.happy}</Text>
-      </SafeAreaView>
-    </View>
+      <View style={styles.statusContainer}>
+        <Text style={styles.statusText}>STATUS</Text>
+        <Text style={styles.statusNumberText}>{tamagochi.status}</Text>
+      </View>
 
     <View style={styles.container}>
       <Image source={getTamagochiImage(status, tamagochi.tamagochi_id as TamagochiType)} style={styles.image} />
 
-      <Pressable onPress={handleFeed}>
+      <Pressable onPress={handleFeed} disabled={isButtonDisabled} style={({ pressed }) => [
+            styles.pressable,
+            isButtonDisabled && styles.disabledPressable,
+            pressed && styles.pressedPressable,
+          ]}>
         <Image source={require('../assets/images/fruit.png')} style={styles.fruitImage}/>
       </Pressable>
 
@@ -122,16 +122,6 @@ const styles = StyleSheet.create({
     fontSize: 20
   },
 
-  textAttributes: {
-    color: 'white',
-    fontWeight: 'bold',
-    flexDirection: 'row',
-    padding: 10,
-    paddingHorizontal: 20,
-    textShadowColor: 'cyan'
-
-  },
-
   attributesContainer: {
     backgroundColor: 'rgba(0, 0, 0, 0.2)',
     flexDirection: 'row',
@@ -145,17 +135,23 @@ const styles = StyleSheet.create({
   },
 
   statusContainer: {
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
-    flexDirection: 'row',
-    justifyContent: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.2)',
     alignItems: 'center',
-    columnGap: 55,
     margin: 10,
-    padding: 5,
-    borderRadius: 10,
+    padding: 10,
     shadowColor: 'white',
-    elevation: 3,
-},
+    elevation: 7,
+  },
+
+  statusText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+
+  statusNumberText: {
+    color: '#00d100',
+    fontWeight: 'bold'
+  },
 
   hungerContainer: {
       flexDirection: 'row',
@@ -182,6 +178,18 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(8, 132, 229, 0.4)',
     padding: 5,
     borderRadius: 5,
+  },
+
+  pressable: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  disabledPressable: {
+    opacity: 0.5,
+    transform: [{ scale: 0.8 }],
+  },
+  pressedPressable: {
+    transform: [{ scale: 0.9 }],
   },
 
 });

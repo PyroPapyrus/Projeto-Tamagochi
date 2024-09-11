@@ -81,9 +81,12 @@ const CreateTamagochiScreen = () => {
                 onChangeText={setName}
                 />
 
-                <Pressable onPress={constructTamagochi} style={styles.createButton}>
-                    <Text style={styles.createButtonText}>Gerar</Text>
+                <Pressable style={styles.createButton} onPress={constructTamagochi}>
+                    <Text style={styles.createButtonText}>
+                        Gerar
+                    </Text>
                 </Pressable>
+                
             </ScrollView>
         </ImageBackground>
     );
@@ -120,13 +123,14 @@ const styles = StyleSheet.create({
     },
     inputField: {
         height: 45,
-        borderColor: 'green',
-        borderWidth: 2,
+        borderColor: 'black',
+        borderWidth: 1,
         marginBottom: 20,
         paddingHorizontal: 10,
         width: '80%',
         backgroundColor: '#fff',
         borderRadius: 5,
+        elevation: 10
     },
     imageSelectionLabel: {
         fontSize: 20,
@@ -138,18 +142,21 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         justifyContent: 'center',
         margin: 20,
-        gap: 5
+        gap: 5,
     },
     imageTile: {
         margin: 10,
         padding: 10,
-        borderWidth: 1,
+        borderWidth: 3,
         borderColor: '#777',
-        borderRadius: 5,
-        backgroundColor: '#fff',
+        borderRadius: 10,
+        backgroundColor: 'rgba(255, 255, 255, 0.4)',
+        opacity: 0.5
     },
     selectedImageTile: {
-        borderColor: '#295',
+        backgroundColor: 'rgba(255, 255, 255, 1)',
+        borderColor: 'green',
+        opacity: 1
     },
     image: {
         width: 70,
@@ -161,12 +168,15 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     createButton: {
-        backgroundColor: '#007B18',
-        padding: 10,
-        borderRadius: 5,
+        backgroundColor: 'green',
+        padding: 12,
+        paddingHorizontal: 28,
+        borderRadius: 10,
+        elevation: 5
     },
     createButtonText: {
-        color: '#fff',
+        fontWeight: 'bold',
+        color: 'white',
         fontSize: 18,
     },
 });

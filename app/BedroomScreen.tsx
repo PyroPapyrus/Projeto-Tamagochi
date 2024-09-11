@@ -52,38 +52,32 @@ const BedroomScreen: React.FC = () => {
 
       <SafeAreaView style={styles.attributesContainer}> 
         <View style={styles.hungerContainer}> 
-        <Text style={styles.text}>Fome</Text>
+        <Text style={styles.text}>Fome{'\n'}{tamagochi.hunger}</Text>
         </View>  
 
         <View style={styles.sleepContainer}> 
-        <Text style={styles.text}>Sono</Text>
+        <Text style={styles.text}>Sono{'\n'}{tamagochi.sleep}</Text>
         </View> 
 
         <View style={styles.happyContainer}> 
-        <Text style={styles.text}>Humor</Text>
+        <Text style={styles.text}>Humor{'\n'}{tamagochi.happy}</Text>
         </View> 
       </SafeAreaView>
 
-    <View style={styles.statusContainer}>
-      <SafeAreaView style={styles.hungerContainer}>
-          <Text style={styles.textAttributes}>{tamagochi.hunger}</Text>
-      </SafeAreaView>
-
-      <SafeAreaView style={styles.sleepContainer}>
-          <Text style={styles.textAttributes}>{tamagochi.sleep}</Text>
-      </SafeAreaView>
-
-      <SafeAreaView style={styles.happyContainer}>
-          <Text style={styles.textAttributes}>{tamagochi.happy}</Text>
-      </SafeAreaView>
-    </View>
+      <View style={styles.statusContainer}>
+        <Text style={styles.statusText}>STATUS</Text>
+        <Text style={styles.statusNumberText}>{tamagochi.status}</Text>
+      </View>
 
       <View style={styles.container}>        
         <Image source={getTamagochiImage(status, tamagochi.tamagochi_id as TamagochiType)} style={styles.image} />
- 
+
+      <Text>
         <Pressable onPress={handleSleep} disabled={isSleeping} style={[styles.sleepButton, isSleeping && styles.sleepButtonInactive]}>
           <Text style={styles.buttonText}>Dormir</Text>
         </Pressable>
+      </Text>
+
       </View>
     </ImageBackground>
   );
@@ -139,17 +133,23 @@ const styles = StyleSheet.create({
   },
 
   statusContainer: {
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
-    flexDirection: 'row',
-    justifyContent: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.2)',
     alignItems: 'center',
-    columnGap: 55,
     margin: 10,
-    padding: 5,
-    borderRadius: 10,
+    padding: 10,
     shadowColor: 'white',
-    elevation: 3,
-},
+    elevation: 7,
+  },
+
+  statusText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+
+  statusNumberText: {
+    color: '#00a600',
+    fontWeight: 'bold'
+  },
 
   hungerContainer: {
       flexDirection: 'row',
@@ -179,17 +179,18 @@ const styles = StyleSheet.create({
   },
 
   sleepButton: {
-    backgroundColor: '#4CAF50',
-    padding: 10,
+    backgroundColor: '#00a600',
     borderRadius: 5,
   },
 
   sleepButtonInactive: {
     backgroundColor: '#A5D6A7',
+    opacity: 0.5
   },
 
   buttonText: {
     color: '#fff',
+    fontWeight: 'bold',
     fontSize: 16,
   },
 });

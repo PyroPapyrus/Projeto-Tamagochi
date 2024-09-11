@@ -11,6 +11,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 type RootStackParamList = {
   OutsideMain: { tamagochiId: number };
   Minigame: undefined;
+  SecondMinigameScreen: undefined;
 };
 
 type OutsideScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'OutsideMain'>;
@@ -21,6 +22,9 @@ const OutsideScreen: React.FC = () => {
   const { tamagochiId } = route.params as { tamagochiId: number };
   const [tamagochi, setTamagochi] = useState<Tamagochi | null>(null);
   const database = useTamagochiDatabase();
+  const [isPlayButtonDisabled, setIsPlayButtonDisabled] = useState(false);
+  const [isWalkButtonDisabled, setIsWalkButtonDisabled] = useState(false);
+
 
   const fetchTamagochi = async () => {
     const tamagochiData = await database.findTamagochiById(tamagochiId);
@@ -35,23 +39,31 @@ const OutsideScreen: React.FC = () => {
   );
 
   const handlePlay = async () => {
+
     if (tamagochi) {
+      setIsPlayButtonDisabled(true);
       const newHappy = Math.min(tamagochi.happy + 10, 100); // Incrementa a felicidade em 10, mas não ultrapassa 100
       await database.updateHappy(tamagochi.id, newHappy);
       const updatedTamagochi = { ...tamagochi, happy: newHappy };
       setTamagochi(updatedTamagochi);
       await AsyncStorage.setItem('tamagochi', JSON.stringify(updatedTamagochi));
       navigation.navigate('Minigame'); // Navega para a tela do minigame
+      setTimeout(() => setIsPlayButtonDisabled(false), 10000) // Desabilita o botão por 10 segundos
     }
+
   };
 
   const handleWalk = async () => {
+
     if (tamagochi) {
+      setIsWalkButtonDisabled(true);
       const newHappy = Math.min(tamagochi.happy + 5, 100); // Incrementa a felicidade em 5, mas não ultrapassa 100
       await database.updateHappy(tamagochi.id, newHappy);
       const updatedTamagochi = { ...tamagochi, happy: newHappy };
       setTamagochi(updatedTamagochi);
       await AsyncStorage.setItem('tamagochi', JSON.stringify(updatedTamagochi));
+      navigation.navigate('SecondMinigameScreen');
+      setTimeout(() => setIsWalkButtonDisabled(false), 10000); // Desabilita o botão por 10 segundos
     }
   };
 
@@ -69,41 +81,39 @@ const OutsideScreen: React.FC = () => {
 
     <SafeAreaView style={styles.attributesContainer}> 
       <View style={styles.hungerContainer}> 
-        <Text style={styles.text}>Fome</Text>
+        <Text style={styles.text}>Fome{'\n'}{tamagochi.hunger}</Text>
       </View>  
 
       <View style={styles.sleepContainer}> 
-        <Text style={styles.text}>Sono</Text>
+        <Text style={styles.text}>Sono{'\n'}{tamagochi.sleep}</Text>
       </View> 
 
       <View style={styles.happyContainer}> 
-        <Text style={styles.text}>Humor</Text>
-      </View> 
+        <Text style={styles.text}>Humor{'\n'}{tamagochi.happy}</Text>
+      </View>
     </SafeAreaView>
 
-    <View style={styles.statusContainer}>
-      <SafeAreaView style={styles.hungerContainer}>
-          <Text style={styles.textAttributes}>{tamagochi.hunger}</Text>
-      </SafeAreaView>
+      <View style={styles.statusContainer}>
 
-      <SafeAreaView style={styles.sleepContainer}>
-          <Text style={styles.textAttributes}>{tamagochi.sleep}</Text>
-      </SafeAreaView>
+          <Text style={styles.statusText}>STATUS</Text>
+          <Text style={styles.statusNumberText}>{tamagochi.status}</Text>
 
-      <SafeAreaView style={styles.happyContainer}>
-          <Text style={styles.textAttributes}>{tamagochi.happy}</Text>
-      </SafeAreaView>
-    </View>
-
+      </View>
 
       <View style={styles.container}>
         <Image source={getTamagochiImage(status, tamagochi.tamagochi_id as TamagochiType)} style={styles.image} />
 
         <Pressable onPress={handlePlay} style={styles.playButton}>
           <Text style={styles.buttonText}>Brincar</Text>
+
         </Pressable>
-        <Pressable onPress={handleWalk} style={styles.walkButton}>
+        <Pressable onPress={handleWalk} disabled={isWalkButtonDisabled} style={({ pressed }) => [
+            styles.walkButton,
+            isWalkButtonDisabled && styles.disabledButton,
+            pressed && styles.pressedButton, ]}>
+
           <Text style={styles.buttonText}>Passear</Text>
+
         </Pressable>
       </View>
     </ImageBackground>
@@ -159,17 +169,28 @@ const styles = StyleSheet.create({
     elevation: 7,
   },
 
-  statusContainer: {
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    columnGap: 55,
-    margin: 10,
-    padding: 5,
-    borderRadius: 10,
+  box: {
     shadowColor: 'white',
-    elevation: 3,
+    elevation: 7,
+  },
+
+  statusContainer: {
+    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+    alignItems: 'center',
+    margin: 10,
+    padding: 10,
+    shadowColor: 'white',
+    elevation: 7,
+  },
+
+  statusText: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+
+  statusNumberText: {
+    color: '#00d100',
+    fontWeight: 'bold',
   },
 
   hungerContainer: {
@@ -200,23 +221,34 @@ const styles = StyleSheet.create({
   },
 
   playButton: {
-    backgroundColor: '#FFEB3B',
+    alignItems: 'center',
+    justifyContent: 'center',
     padding: 10,
+    backgroundColor: 'blue',
     borderRadius: 5,
     marginBottom: 10,
   },
 
   walkButton: {
-    backgroundColor: '#FFC107',
+    alignItems: 'center',
+    justifyContent: 'center',
     padding: 10,
+    backgroundColor: 'green',
     borderRadius: 5,
   },
   
   buttonText: {
-    color: '#000',
+    color: 'white',
     fontSize: 16,
   },
 
+  disabledButton: {
+    opacity: 0.5,
+    transform: [{ scale: 0.8 }],
+  },
+  pressedButton: {
+    transform: [{ scale: 0.9 }],
+  },
 });
 
 export default OutsideScreen;

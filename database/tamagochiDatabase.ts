@@ -67,6 +67,25 @@ export function useTamagochiDatabase() {
         }
     }
 
+    // Função para excluir um Tamagochi pelo ID
+async function deleteTamagochiById(id: number) {
+    let statement;
+    try {
+        statement = await database.prepareAsync(`
+            DELETE FROM tamagochis WHERE id = $id;
+        `);
+        await statement.executeAsync({ $id: id });
+    } catch (error) {
+        throw error; // Lança um erro caso ocorra algum problema
+    } finally {
+        if (statement) {
+            await statement.finalizeAsync(); // Finaliza a declaração SQL
+        }
+    }
+}
+
+
+
     // Função para atualizar o atributo hunger de um Tamagochi
     async function updateHunger(id: number, hunger: number) {
         const currentTime = Math.floor(Date.now() / 3600000); // Calcula o tempo atual
@@ -161,9 +180,11 @@ export function useTamagochiDatabase() {
                 await statement.finalizeAsync();
             }
         }
+
+        
         
         
         
         // Retorna todas as funções para uso externo
-    return { createTamagochi, findAllTamagochi, findTamagochiById, updateHunger, updateHappy, updateSleep,updateAllTamagochiAttribute };
+    return { createTamagochi, findAllTamagochi, findTamagochiById,deleteTamagochiById, updateHunger, updateHappy, updateSleep,updateAllTamagochiAttribute };
 }
