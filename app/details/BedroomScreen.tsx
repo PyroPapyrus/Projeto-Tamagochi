@@ -86,7 +86,7 @@ const BedroomScreen: React.FC = () => {
 
       <View style={styles.container}>
 
-        <Image source={isSleeping ? require('@/assets/images/sleepingTamagochi/floppa sleep.png') : getTamagochiImage(status, tamagochi.tamagochi_id as TamagochiType)} style={styles.image} />
+        <Image source={getTamagochiImage(status, tamagochi.tamagochi_id as TamagochiType)} style={styles.image} />
 
         <TouchableOpacity onPress={handleSleep} disabled={isSleeping} style={[styles.sleepButton, isSleeping && styles.sleepButtonInactive]}>
 
