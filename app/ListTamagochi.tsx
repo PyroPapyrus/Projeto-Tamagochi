@@ -108,7 +108,7 @@ const ListTamagochi: React.FC = () => {
         </Pressable>
         <Ionicons
           name="trash-bin"
-          size={24}
+          size={26}
           color="red"
           onPress={() => confirmDelete(item.id)}
           style={styles.deleteButton}
@@ -135,6 +135,7 @@ const ListTamagochi: React.FC = () => {
 
           ItemSeparatorComponent={() => <View style={styles.separator} />}
         />    
+        
   </ImageBackground>
   );
 };
@@ -189,25 +190,32 @@ const styles = StyleSheet.create({
     elevation: 5
     
   },
+
   image: {
     width: 50,
     height: 50,
     marginRight: 10,
   },
+  
   deadItem: {
     backgroundColor: 'gray', // Cor para itens "mortos"
   },
+
   pressable: {
     flexDirection: 'row',
     alignItems: 'center',
   },
+
   deleteButton: {
+    marginTop: 10,
     marginLeft: 'auto',
   },
+
   name: {
     fontSize: 18,
     fontWeight: 'bold',
   },
+
 });
 
 export default ListTamagochi;

@@ -6,6 +6,11 @@ import { Tamagochi, useTamagochiDatabase } from "@/database/tamagochiDatabase";
 import { getTamagochiImage } from '@/utils/getTamagochiImage';
 import { calculateTamagochiStatus } from '@/utils/calculateTamagochiStatus';
 import { TamagochiType } from '@/assets/images/TamagochiImages';
+import AtributtesContainer from '@/components/AtributtesContainer';
+import HungerContainer from '@/components/HungerContainer';
+import SleepContainer from '@/components/SleepContainer';
+import HappyContainer from '@/components/HappyContainer';
+import StatusContainer from '@/components/StatusContainer';
 
 const KitchenScreen: React.FC = () => {
   const route = useRoute();
@@ -53,34 +58,43 @@ const KitchenScreen: React.FC = () => {
       style={styles.background}
     >
 
-    <SafeAreaView style={styles.attributesContainer}> 
-      <View style={styles.hungerContainer}> 
-        <Text style={styles.text}>Fome{'\n'}{tamagochi.hunger}</Text>
-      </View>  
+    <SafeAreaView>
+      <AtributtesContainer>
+        <View> 
+          <HungerContainer>
+            <Text style={styles.text}>Fome{'\n'}{tamagochi.hunger}</Text>
+          </HungerContainer>
+        </View>  
 
-      <View style={styles.sleepContainer}> 
-        <Text style={styles.text}>Sono{'\n'}{tamagochi.sleep}</Text>
-      </View> 
+        <View> 
+          <SleepContainer>
+            <Text style={styles.text}>Sono{'\n'}{tamagochi.sleep}</Text>
+          </SleepContainer>
+        </View> 
 
-      <View style={styles.happyContainer}> 
-        <Text style={styles.text}>Humor{'\n'}{tamagochi.happy}</Text>
-      </View> 
-    </SafeAreaView>
+        <View> 
+          <HappyContainer>
+            <Text style={styles.text}>Humor{'\n'}{tamagochi.happy}</Text>
+          </HappyContainer>
+        </View> 
+        </AtributtesContainer> 
+      </SafeAreaView>
 
-      <View style={styles.statusContainer}>
-        <Text style={styles.statusText}>STATUS</Text>
-        <Text style={styles.statusNumberText}>{status}</Text>
+      <View>
+        <StatusContainer>
+          <Text style={styles.statusText}>STATUS</Text>
+          <Text style={styles.statusNumberText}>{status}</Text>
+        </StatusContainer>
       </View>
 
     <View style={styles.container}>
       <Image source={getTamagochiImage(status, tamagochi.tamagochi_id as TamagochiType)} style={styles.image} />
 
       <Pressable onPress={handleFeed} disabled={isButtonDisabled} style={({ pressed }) => [
-            styles.pressable,
             isButtonDisabled && styles.disabledPressable,
             pressed && styles.pressedPressable,
           ]}>
-        <Image source={require('@/assets/images/fruit.png')} style={styles.fruitImage}/>
+        <Image source={require('@/assets/images/hamburguer.png')} style={styles.foodImage}/>
       </Pressable>
 
     </View>
@@ -105,12 +119,13 @@ const styles = StyleSheet.create({
   image: {
     width: 200,
     height: 200,
+    marginVertical: 200,
     marginBottom: 20,
   },
 
-  fruitImage: {
-    width: 50,
-    height: 50,
+  foodImage: {
+    width: 90,
+    height: 90,
   },
 
   text: {
@@ -120,27 +135,6 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     fontSize: 20
-  },
-
-  attributesContainer: {
-    backgroundColor: 'rgba(0, 0, 0, 0.2)',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 40,
-    marginTop: 30,
-    padding: 5,
-    shadowColor: 'white',
-    elevation: 7,
-  },
-
-  statusContainer: {
-    backgroundColor: 'rgba(0, 0, 0, 0.2)',
-    alignItems: 'center',
-    margin: 10,
-    padding: 10,
-    shadowColor: 'white',
-    elevation: 7,
   },
 
   statusText: {
@@ -153,41 +147,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
 
-  hungerContainer: {
-      flexDirection: 'row',
-      justifyContent: 'flex-start',
-      alignSelf: 'flex-start', 
-      backgroundColor: 'rgba(229, 43, 20, 0.4)',
-      padding: 5,
-      borderRadius: 5
-  },
-
-  sleepContainer: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignSelf: 'flex-start', 
-    backgroundColor: 'rgba(152, 8, 229, 0.4)',
-    padding: 5,
-    borderRadius: 5
-},
-
-  happyContainer: {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignSelf: 'flex-start', 
-    backgroundColor: 'rgba(8, 132, 229, 0.4)',
-    padding: 5,
-    borderRadius: 5,
-  },
-
-  pressable: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   disabledPressable: {
     opacity: 0.5,
     transform: [{ scale: 0.8 }],
   },
+
   pressedPressable: {
     transform: [{ scale: 0.9 }],
   },

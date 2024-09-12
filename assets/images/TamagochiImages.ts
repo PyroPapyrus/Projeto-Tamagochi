@@ -5,44 +5,44 @@ export type TamagochiType = "tamagochi1" | "tamagochi2" | "tamagochi3" | "tamago
 
 const tamagochiImages: Record<TamagochiStatus, Record<TamagochiType, ImageSourcePropType>> = {
     morto: {
-        tamagochi1: require('./dog/dog.png'),
+        tamagochi1: require('./monky/macaco.png'),
         tamagochi2: require('./big-floppa/floppa.png'),
         tamagochi3: require('./frog/frog.png'),
         tamagochi4: require('./pinguim/pinguim.png'),
     },
     critico: {
-        tamagochi1: require('./dog/dog.png'),
+        tamagochi1: require('./monky/macaco.png'),
         tamagochi2: require('./big-floppa/floppa gritante.png'),
         tamagochi3: require('./frog/frog.png'),
         tamagochi4: require('./pinguim/pinguim.png'),
     },
     muito_triste: {
-        tamagochi1: require('./dog/dog.png'),
+        tamagochi1: require('./monky/monky muito-triste.png'),
         tamagochi2: require('./big-floppa/floppa.png'),
         tamagochi3: require('./frog/frog.png'),
         tamagochi4: require('./pinguim/pinguim.png'),
     },
     triste: {
-        tamagochi1: require('./dog/dog.png'),
+        tamagochi1: require('./monky/monky triste.png'),
         tamagochi2: require('./big-floppa/floppa.png'),
         tamagochi3: require('./frog/frog.png'),
         tamagochi4: require('./pinguim/pinguim.png'),
     },
     ok: {
-        tamagochi1: require('./dog/dog.png'),
+        tamagochi1: require('./monky/monky ok.png'),
         tamagochi2: require('./big-floppa/floppa.png'),
         tamagochi3: require('./frog/frog.png'),
         tamagochi4: require('./pinguim/pinguim.png'),
     },
     bem: {
-        tamagochi1: require('./dog/dog.png'),
+        tamagochi1: require('./monky/monky bem.png'),
         tamagochi2: require('./big-floppa/floppa.png'),
         tamagochi3: require('./frog/frog.png'),
         tamagochi4: require('./pinguim/pinguim.png'),
     },
     muito_bem: {
-        tamagochi1: require('./dog/dog.png'),
-        tamagochi2: require('./big-floppa/floppa.png'),
+        tamagochi1: require('./monky/monky muito-bem.gif'),
+        tamagochi2: require('./big-floppa/floppa-pet.gif'),
         tamagochi3: require('./frog/frog.png'),
         tamagochi4: require('./pinguim/pinguim-dance-unscreen.gif'),
     }
