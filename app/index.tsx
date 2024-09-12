@@ -1,8 +1,8 @@
 import PlayPauseButton from "@/components/ButtonPlayPause";
 import { Audio } from "expo-av";
-import { Link, router } from "expo-router";
+import { Link } from "expo-router";
 import { useEffect, useState } from "react";
-import { ImageBackground, SafeAreaView, StyleSheet, Text, Image, Pressable, Button, TouchableOpacity } from "react-native";
+import { ImageBackground, SafeAreaView, StyleSheet, Text, Image, TouchableOpacity } from "react-native";
 
 const index = () => {
   const [sound, setSound] = useState<Audio.Sound | null>(null);
@@ -43,7 +43,9 @@ const index = () => {
     <ImageBackground source={{ uri: 'https://wallpapers.com/images/hd/small-memory-art-smartphone-background-3mb6tn8a4554t5k2.jpg' }} style={styles.container}>
 
     <SafeAreaView style={styles.playButton} >
-      <PlayPauseButton isPlaying={isPlaying} onPress={togglePlayPause} />
+      <TouchableOpacity style={styles.opacityPlayButton}>
+        <PlayPauseButton isPlaying={isPlaying} onPress={togglePlayPause} />
+      </TouchableOpacity>
     </SafeAreaView>
 
       <SafeAreaView style={styles.logoContainer}>
@@ -127,14 +129,20 @@ const styles = StyleSheet.create({
       
     },
 
+    playContainer: {
+      backgroundColor: 'white'
+    },
+
     playButton: {
-      margin: 20,
-      marginVertical: 25,
-      marginHorizontal: 10,
-      padding: 10,
-      position: 'absolute',
-      top: 0,
-      left: 0,
+      
+    },
+
+    opacityPlayButton: {
+      backgroundColor: 'black',
+      padding: 5,
+      paddingHorizontal: 10,
+      borderRadius: 10,
+      position: 'absolute'
     }
     
   });

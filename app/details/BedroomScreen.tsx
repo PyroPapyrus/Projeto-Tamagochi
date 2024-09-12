@@ -11,6 +11,7 @@ import HungerContainer from '@/components/HungerContainer';
 import SleepContainer from '@/components/SleepContainer';
 import HappyContainer from '@/components/HappyContainer';
 import StatusContainer from '@/components/StatusContainer';
+import { getSleepingImage } from '@/utils/getSleepImage';
 
 const BedroomScreen: React.FC = () => {
   const route = useRoute();
@@ -86,7 +87,7 @@ const BedroomScreen: React.FC = () => {
 
       <View style={styles.container}>
 
-        <Image source={getTamagochiImage(status, tamagochi.tamagochi_id as TamagochiType)} style={styles.image} />
+        <Image source={isSleeping ? getSleepingImage(tamagochi.tamagochi_id as TamagochiType) : getTamagochiImage(status, tamagochi.tamagochi_id as TamagochiType)} style={styles.image} />
 
         <TouchableOpacity onPress={handleSleep} disabled={isSleeping} style={[styles.sleepButton, isSleeping && styles.sleepButtonInactive]}>
 

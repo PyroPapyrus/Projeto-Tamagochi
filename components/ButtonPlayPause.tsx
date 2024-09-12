@@ -19,6 +19,12 @@ const styles = StyleSheet.create({
   button: {
     justifyContent: 'center',
     alignItems: 'center',
+    margin: 20,
+    marginVertical: 25,
+    marginHorizontal: 10,
+    padding: 10,
+
+    backgroundColor: 'orange'
   },
 });
 
