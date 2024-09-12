@@ -7,7 +7,7 @@ import SecondMinigameScreen from './SecondMinigameScreen';
 type RootStackParamList = {
   OutsideMain: { tamagochiId: number };
   Minigame: undefined;
-  SecondMinigameScreen: undefined;
+  SecondMinigameScreen: { tamagochiId : number};
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -27,6 +27,7 @@ const OutsideStack: React.FC<{ tamagochiId: number }> = ({ tamagochiId }) => {
       <Stack.Screen 
         name="SecondMinigameScreen" 
         component={SecondMinigameScreen} 
+        initialParams={{ tamagochiId }} 
       />
     </Stack.Navigator>
   );

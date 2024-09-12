@@ -11,12 +11,16 @@ import HungerContainer from '@/components/HungerContainer';
 import SleepContainer from '@/components/SleepContainer';
 import HappyContainer from '@/components/HappyContainer';
 import StatusContainer from '@/components/StatusContainer';
+import getFoodImage from '@/utils/getFoodImage';
+
 
 const KitchenScreen: React.FC = () => {
   const route = useRoute();
   const { tamagochiId } = route.params as { tamagochiId: number };
   const [tamagochi, setTamagochi] = useState<Tamagochi | null>(null);
-  const [isButtonDisabled,setIsButtonDisabled] = useState(false);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const [currentFoodIndex, setCurrentFoodIndex] = useState(0);
+  const [currentFood, setCurrentFood] = useState('hamburguer');
   const database = useTamagochiDatabase();
 
   const fetchTamagochi = async () => {
@@ -32,17 +36,47 @@ const KitchenScreen: React.FC = () => {
   );
 
   const handleFeed = async () => {
-
     if (tamagochi) {
       setIsButtonDisabled(true);
-      const newHunger = Math.min(tamagochi.hunger + 10, 100); // Incrementa a fome em 10, mas não ultrapassa 100
+      const newHunger = Math.min(tamagochi.hunger + 10, 100);
       await database.updateHunger(tamagochi.id, newHunger);
       const updatedTamagochi = { ...tamagochi, hunger: newHunger };
       setTamagochi(updatedTamagochi);
       await AsyncStorage.setItem('tamagochi', JSON.stringify(updatedTamagochi));
-      setTimeout(() => setIsButtonDisabled(false), 2000); // Desabilita o botão por 2 segundos
+      setTimeout(() => setIsButtonDisabled(false), 2000);
     }
-    
+  };
+
+  const handlePreviousFood = () => {
+    // Lógica para alterar a comida para a anterior
+    setCurrentFood((prevFood) => {
+      switch (prevFood) {
+        case 'hamburguer':
+          return 'sushi';
+        case 'pizza':
+          return 'hamburguer';
+        case 'sushi':
+          return 'pizza';
+        default:
+          return 'hamburguer';
+      }
+    });
+  };
+
+ const handleNextFood = () => {
+    // Lógica para alterar a comida para a próxima
+    setCurrentFood((prevFood) => {
+      switch (prevFood) {
+        case 'hamburguer':
+          return 'pizza';
+        case 'pizza':
+          return 'sushi';
+        case 'sushi':
+          return 'hamburguer';
+        default:
+          return 'hamburguer';
+      }
+    });
   };
 
   if (!tamagochi) {
@@ -52,32 +86,28 @@ const KitchenScreen: React.FC = () => {
   const status = calculateTamagochiStatus(tamagochi.hunger, tamagochi.sleep, tamagochi.happy);
 
   return (
-
     <ImageBackground
       source={require('@/assets/images/kitchen.gif')}
       style={styles.background}
     >
-
-    <SafeAreaView>
-      <AtributtesContainer>
-        <View> 
-          <HungerContainer>
-            <Text style={styles.text}>Fome{'\n'}{tamagochi.hunger}</Text>
-          </HungerContainer>
-        </View>  
-
-        <View> 
-          <SleepContainer>
-            <Text style={styles.text}>Sono{'\n'}{tamagochi.sleep}</Text>
-          </SleepContainer>
-        </View> 
-
-        <View> 
-          <HappyContainer>
-            <Text style={styles.text}>Humor{'\n'}{tamagochi.happy}</Text>
-          </HappyContainer>
-        </View> 
-        </AtributtesContainer> 
+      <SafeAreaView>
+        <AtributtesContainer>
+          <View>
+            <HungerContainer>
+              <Text style={styles.text}>Fome{'\n'}{tamagochi.hunger}</Text>
+            </HungerContainer>
+          </View>
+          <View>
+            <SleepContainer>
+              <Text style={styles.text}>Sono{'\n'}{tamagochi.sleep}</Text>
+            </SleepContainer>
+          </View>
+          <View>
+            <HappyContainer>
+              <Text style={styles.text}>Humor{'\n'}{tamagochi.happy}</Text>
+            </HappyContainer>
+          </View>
+        </AtributtesContainer>
       </SafeAreaView>
 
       <View>
@@ -87,75 +117,95 @@ const KitchenScreen: React.FC = () => {
         </StatusContainer>
       </View>
 
-    <View style={styles.container}>
-      <Image source={getTamagochiImage(status, tamagochi.tamagochi_id as TamagochiType)} style={styles.image} />
+      <View style={styles.tamagochiContainer}>
+        <Image source={getTamagochiImage(status, tamagochi.tamagochi_id as TamagochiType)} style={styles.image} />
+      </View>
 
-      <Pressable onPress={handleFeed} disabled={isButtonDisabled} style={({ pressed }) => [
-            isButtonDisabled && styles.disabledPressable,
-            pressed && styles.pressedPressable,
-          ]}>
-        <Image source={require('@/assets/images/hamburguer.png')} style={styles.foodImage}/>
-      </Pressable>
+      <View style={styles.container}>
+        <View style={styles.arrowContainer}>
+          <Pressable onPress={handlePreviousFood} style={styles.arrowButton}>
+            <Text style={styles.arrowText}>{"<"}</Text>
+          </Pressable>
+        </View>
 
-    </View>
+        <Pressable onPress={handleFeed} disabled={isButtonDisabled} style={({ pressed }) => [
+          isButtonDisabled && styles.disabledPressable,
+          pressed && styles.pressedPressable,
+        ]}>
+           <Image source={getFoodImage(currentFood)} style={styles.foodImage} />
+        </Pressable>
 
+        <View style={styles.arrowContainer}>
+          <Pressable onPress={handleNextFood} style={styles.arrowButton}>
+            <Text style={styles.arrowText}>{">"}</Text>
+          </Pressable>
+        </View>
+      </View>
+
+    
     </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
-
   background: {
-    flex: 1
-  },
-
-  container: {
     flex: 1,
+  },
+  container: {
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 20,
   },
-
   image: {
     width: 200,
     height: 200,
-    marginVertical: 200,
-    marginBottom: 20,
+    marginVertical: 20,
   },
-
   foodImage: {
     width: 90,
     height: 90,
   },
-
   text: {
     fontFamily: 'PixelifySansBold',
     textAlign: 'center',
     color: 'white',
     padding: 10,
     borderRadius: 10,
-    fontSize: 20
+    fontSize: 20,
   },
-
   statusText: {
     fontFamily: 'PixelifySansBold',
     color: 'white',
   },
-
   statusNumberText: {
     fontFamily: 'PixelifySansBold',
     color: '#00d100',
+    fontWeight: 'bold'
   },
-
   disabledPressable: {
     opacity: 0.5,
     transform: [{ scale: 0.8 }],
   },
-
   pressedPressable: {
     transform: [{ scale: 0.9 }],
   },
-
+  arrowContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+  },
+  arrowButton: {
+    padding: 10,
+  },
+  arrowText: {
+    fontSize: 30,
+    color: 'white',
+  },
+  tamagochiContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });
 
 export default KitchenScreen;

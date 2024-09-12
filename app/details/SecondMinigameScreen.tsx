@@ -1,107 +1,189 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Animated, Dimensions } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, Text, StyleSheet, Image, Dimensions, Button } from 'react-native';
 import { Accelerometer } from 'expo-sensors';
+import { router } from 'expo-router';
 
-const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 const SecondMinigameScreen = () => {
-  const [subscription, setSubscription] = useState<any>(null);
-  const [x, setX] = useState(0);
-  const [ballPosition, setBallPosition] = useState({ x: screenWidth / 2 - 25, y: screenHeight - 100 });
-  const [obstacles, setObstacles] = useState<{ x: number; y: number }[]>([]);
+  const [xPos, setXPos] = useState(width / 2 - 100 / 2); // Posição inicial da cesta
+  const [fruits, setFruits] = useState<{ id: number; x: number; y: number }[]>([]);
   const [score, setScore] = useState(0);
-  const [isGameOver, setIsGameOver] = useState(false);
+  const [fruitSpeed, setFruitSpeed] = useState(5); // Velocidade das frutas
+  const [gameOver, setGameOver] = useState(false); // Estado para verificar se o jogo acabou
+  const frameId = useRef<number | null>(null); // Referência para o ID do frame
 
-  // Initialize the Accelerometer
+  
+
+  // Sensibilidade do movimento da cesta
+  const sensitivity = 60; // Ajuste conforme necessário
+
+  const basketWidth = 100; // Largura da cesta
+  const basketHeight = 80; // Altura da cesta
+
+  const fruitWidth = 50; // Largura da fruta
+  const fruitHeight = 60; // Altura da fruta
+
+  // Definição das áreas de coleta
+  const topCollectArea = 20; // Área de coleta superior
+  const sideCollectArea = 15; // Área lateral de coleta
+
+  // Movimentação da cesta com o acelerômetro
   useEffect(() => {
-    const _subscription = Accelerometer.addListener(accelerometerData => {
-      setX(accelerometerData.x);
+    if (gameOver) return; // Não movimentar a cesta se o jogo acabou
+
+    Accelerometer.setUpdateInterval(100);
+    const subscription = Accelerometer.addListener(accelerometerData => {
+      let newXPos = xPos - accelerometerData.x * sensitivity;
+      if (newXPos < 0) newXPos = 0;
+      if (newXPos > width - basketWidth) newXPos = width - basketWidth;
+      setXPos(newXPos);
     });
-    setSubscription(_subscription);
 
-    return () => {
-      _subscription.remove();
-    };
-  }, []);
+    return () => subscription.remove();
+  }, [xPos, gameOver]);
 
-  // Update ball position based on accelerometer data
+  // Atualiza a posição das frutas e verifica colisões
   useEffect(() => {
-    if (isGameOver) return;
+    if (gameOver) return; // Não atualizar frutas se o jogo acabou
 
-    const moveBall = () => {
-      setBallPosition(prev => ({
-        x: Math.max(0, Math.min(screenWidth - 50, prev.x + x * 20)),
-        y: prev.y
-      }));
-    };
+    const updateFruits = () => {
+      setFruits(fruits => {
+        const updatedFruits = fruits.map(fruit => ({ ...fruit, y: fruit.y + fruitSpeed }));
 
-    moveBall();
-  }, [x]);
+        // Remove frutas que saíram da tela
+        const filteredFruits = updatedFruits.filter(fruit => fruit.y < height);
 
-  // Update obstacles and check collisions
-  useEffect(() => {
-    if (isGameOver) return;
+        // Verifica colisões e remove frutas que colidiram com a cesta
+        const remainingFruits = filteredFruits.filter(fruit => {
+          const fruitRight = fruit.x + fruitWidth;
+          const fruitBottom = fruit.y + fruitHeight;
+          const basketRight = xPos + basketWidth;
+          const basketBottom = height - 50; // Posição fixa da cesta no fundo da tela
 
-    const interval = setInterval(() => {
-      if (Math.random() < 0.05) {
-        setObstacles(prevObstacles => [
-          ...prevObstacles,
-          { x: Math.random() * (screenWidth - 50), y: 0 }
-        ]);
-      }
-      setObstacles(prevObstacles =>
-        prevObstacles
-          .map(obstacle => ({ ...obstacle, y: obstacle.y + 5 }))
-          .filter(obstacle => obstacle.y < screenHeight)
-      );
+          // Verifica se a fruta está dentro da área lateral de coleta da cesta
+          const isInSideCollectArea =
+            (fruit.x < xPos + basketWidth + sideCollectArea && fruitRight > xPos - sideCollectArea);
 
-      // Check for collisions
-      obstacles.forEach(obstacle => {
-        if (
-          ballPosition.x < obstacle.x + 50 &&
-          ballPosition.x + 50 > obstacle.x &&
-          ballPosition.y < obstacle.y + 50 &&
-          ballPosition.y + 50 > obstacle.y
-        ) {
-          setIsGameOver(true);
-        }
+          // Verifica se a fruta está dentro da área superior de coleta da cesta
+          const isInTopCollectArea =
+            (fruitBottom > height - basketHeight - topCollectArea) &&
+            (fruit.y < height - basketHeight);
+
+          if (
+            isInSideCollectArea &&
+            isInTopCollectArea &&
+            fruitBottom > height - basketHeight - 50 &&
+            fruit.y < basketBottom
+          ) {
+            setScore(score => {
+              const newScore = score + 1;
+              if (newScore >= 100) {
+                setGameOver(true); // Acaba o jogo ao alcançar 100 frutas
+              }
+              return newScore;
+            });
+            return false; // Remove a fruta da lista
+          }
+          return true;
+        });
+
+        return remainingFruits;
       });
 
-      if (!isGameOver) {
-        setScore(prevScore => prevScore + 1);
+      frameId.current = requestAnimationFrame(updateFruits);
+    };
+
+    frameId.current = requestAnimationFrame(updateFruits);
+
+    return () => {
+      if (frameId.current) {
+        cancelAnimationFrame(frameId.current);
       }
-    }, 100);
+    };
+  }, [xPos, score, fruitSpeed, gameOver]);
 
-    return () => clearInterval(interval);
-  }, [obstacles, ballPosition, isGameOver]);
+  // Cria novas frutas a intervalos regulares
+  useEffect(() => {
+    if (gameOver) return; // Não criar novas frutas se o jogo acabou
 
-  const resetGame = () => {
-    setBallPosition({ x: screenWidth / 2 - 25, y: screenHeight - 100 });
-    setObstacles([]);
+    const spawnFruit = () => {
+      setFruits(fruits => {
+        if (fruits.length < 6) { // Limita o número máximo de frutas na tela
+          return [
+            ...fruits,
+            {
+              id: Date.now(),
+              x: Math.random() * (width - fruitWidth), // Posição X aleatória
+              y: -fruitHeight, // Começa fora da tela
+            },
+          ];
+        }
+        return fruits;
+      });
+    };
+
+    const spawnInterval = setInterval(spawnFruit, 500); // Frequência de criação das frutas
+
+    return () => clearInterval(spawnInterval);
+  }, [gameOver]);
+
+  // Aumenta gradualmente a velocidade das frutas até um certo limite
+  useEffect(() => {
+    if (gameOver) return; // Não aumentar a velocidade se o jogo acabou
+
+    const speedIncrement = 0.1; // Incremento de velocidade
+    const maxSpeed = 10; // Velocidade máxima das frutas
+
+    const increaseSpeed = () => {
+      setFruitSpeed(prevSpeed => Math.min(prevSpeed + speedIncrement, maxSpeed));
+    };
+
+    const speedInterval = setInterval(increaseSpeed, 10000); // Aumenta a velocidade a cada 10 segundos
+
+    return () => clearInterval(speedInterval);
+  }, [gameOver]);
+
+
+  const handleRestart = async () => {
+    setXPos(width / 2 - basketWidth / 2);
+    setFruits([]);
     setScore(0);
-    setIsGameOver(false);
+    setFruitSpeed(5);
+    setGameOver(false);
+  };
+
+  const handleExit = () => {
+    router.back();
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.score}>Score: {score}</Text>
-      {isGameOver && <Text style={styles.gameOver}>Game Over</Text>}
-      <Animated.View
-        style={[styles.ball, {
-          transform: [{ translateX: ballPosition.x }, { translateY: ballPosition.y }]
-        }]}
-      />
-      {obstacles.map((obstacle, index) => (
-        <View
-          key={index}
-          style={[styles.obstacle, {
-            transform: [{ translateX: obstacle.x }, { translateY: obstacle.y }]
-          }]}
-        />
-      ))}
-      <TouchableOpacity onPress={resetGame} style={styles.resetButton}>
-        <Text style={styles.resetText}>Reset Game</Text>
-      </TouchableOpacity>
+      {gameOver ? (
+        <View style={styles.gameOverContainer}>
+          <Text style={styles.gameOverText}>Você coletou 100 frutas!</Text>
+          <Button title="Jogar de novo" onPress={handleRestart} />
+          <Button title="Sair" onPress={handleExit} />
+        </View>
+      ) : (
+        <>
+          <Text style={styles.title}>Pontuação: {score}</Text>
+          {fruits.map(fruit => (
+            <View
+              key={fruit.id}
+              style={[
+                styles.fruit,
+                { left: fruit.x, top: fruit.y },
+              ]}
+            >
+              <Image source={require('../../assets/images/hamburguer.png')} style={styles.image} />
+            </View>
+          ))}
+          <View style={[styles.basket, { left: xPos }]}>
+            <Image source={require('../../assets/images/basket.png')} style={styles.image} />
+          </View>
+        </>
+      )}
     </View>
   );
 };
@@ -111,43 +193,34 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
   },
-  ball: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: 'blue',
-    position: 'absolute',
-  },
-  obstacle: {
-    width: 50,
-    height: 50,
-    backgroundColor: 'red',
-    position: 'absolute',
-  },
-  resetButton: {
-    position: 'absolute',
-    bottom: 20,
-    padding: 10,
-    backgroundColor: 'gray',
-  },
-  resetText: {
-    color: 'white',
-  },
-  score: {
-    position: 'absolute',
-    top: 20,
+  title: {
     fontSize: 24,
-    fontWeight: 'bold',
+    marginBottom: 20,
   },
-  gameOver: {
+  basket: {
     position: 'absolute',
-    top: screenHeight / 2 - 50,
-    fontSize: 40,
-    fontWeight: 'bold',
-    color: 'red',
+    bottom: 50,
+    width: 100,
+    height: 80,
+  },
+  fruit: {
+    position: 'absolute',
+    width: 50,
+    height: 60,
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+  },
+  gameOverContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  gameOverText: {
+    fontSize: 24,
+    marginBottom: 20,
   },
 });
 
-export default SecondMinigameScreen;
+export default SecondMinigameScreen

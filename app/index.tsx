@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
       textShadowRadius: 15,
       margin: 20,
       marginTop: 250,
-      elevation: 20
+      elevation: 20,
     },
 
     logo: {
