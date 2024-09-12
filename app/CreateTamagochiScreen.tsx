@@ -27,7 +27,7 @@ const CreateTamagochiScreen = () => {
                 name: name,
                 tamagochi_id: selectedImage
             });
-            Alert.alert('Tamagochi cadastrado com sucesso!', `ID: ${newTamagochiId}`);
+            Alert.alert('Tamagochi cadastrado com sucesso!');
             setName('');
             setSelectedImage(null);
             router.back();
@@ -52,7 +52,7 @@ const CreateTamagochiScreen = () => {
 
                 <Text style={styles.header}>Gerador de Tamagochi</Text>
 
-                <Text style={styles.imageSelectionLabel}>Qual a aparência do Tamagochi:</Text>
+                <Text style={styles.imageSelectionLabel}>Escolha a aparência do Tamagochi:</Text>
                 <View style={styles.imageGrid}>
                     {Object.keys(tamagochiImages.muito_bem).map((key) => (
                         <Pressable
@@ -116,12 +116,12 @@ const styles = StyleSheet.create({
         padding: 20,
     },
     header: {
+        fontFamily: 'PixelifySansBold',
         fontSize: 30,
-        fontWeight: 'bold',
-        marginBottom: 10,
         color: 'white',
     },
     inputField: {
+        fontFamily: 'PixelifySansMedium',
         height: 45,
         borderColor: 'black',
         borderWidth: 1,
@@ -133,6 +133,7 @@ const styles = StyleSheet.create({
         elevation: 10
     },
     imageSelectionLabel: {
+        fontFamily: 'PixelifySansMedium',
         fontSize: 20,
         marginBottom: 10,
         color: 'white',
@@ -168,14 +169,14 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     createButton: {
-        backgroundColor: 'green',
+        backgroundColor: '#4e74ff',
         padding: 12,
         paddingHorizontal: 28,
         borderRadius: 10,
         elevation: 5
     },
     createButtonText: {
-        fontWeight: 'bold',
+        fontFamily: 'PixelifySansMedium',
         color: 'white',
         fontSize: 18,
     },

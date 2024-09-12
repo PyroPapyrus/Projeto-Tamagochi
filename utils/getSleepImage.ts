@@ -1,4 +1,5 @@
 import { TamagochiType } from "@/assets/images/TamagochiImages";
+import { StyleSheet } from "react-native";
 
 const getSleepingImage = (tamagochiId: TamagochiType) => {
     switch (tamagochiId) {
@@ -14,5 +15,11 @@ const getSleepingImage = (tamagochiId: TamagochiType) => {
         return require('@/assets/images/sleepingTamagochi/walter-white.png');
     }
   };
+
+  const styles = StyleSheet.create({
+    format: {
+
+    }
+  })
 
 export { getSleepingImage };

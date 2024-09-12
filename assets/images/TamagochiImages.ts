@@ -5,10 +5,10 @@ export type TamagochiType = "tamagochi1" | "tamagochi2" | "tamagochi3" | "tamago
 
 const tamagochiImages: Record<TamagochiStatus, Record<TamagochiType, ImageSourcePropType>> = {
     morto: {
-        tamagochi1: require('./monky/macaco.png'),
-        tamagochi2: require('./big-floppa/floppa.png'),
-        tamagochi3: require('./frog/frog.png'),
-        tamagochi4: require('./pinguim/pinguim.png'),
+        tamagochi1: require('./rip-morto.webp'),
+        tamagochi2: require('./rip-morto.webp'),
+        tamagochi3: require('./rip-morto.webp'),
+        tamagochi4: require('./rip-morto.webp'),
     },
     critico: {
         tamagochi1: require('./monky/macaco.png'),

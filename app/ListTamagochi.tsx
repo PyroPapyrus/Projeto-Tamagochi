@@ -141,7 +141,7 @@ const ListTamagochi: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
-  
+
   arrowBack: {
     fontSize: 32,
     color: "black",     
@@ -169,7 +169,6 @@ const styles = StyleSheet.create({
   buttonGoBack: {
     backgroundColor: 'white',
     color: 'white',
-    fontWeight: 'bold',
     textAlign: 'left', 
     padding: 20,
     width: '100%',

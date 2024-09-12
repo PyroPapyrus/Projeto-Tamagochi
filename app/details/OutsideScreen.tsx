@@ -161,9 +161,9 @@ const styles = StyleSheet.create({
   },
 
   text: {
+    fontFamily: 'PixelifySansBold',
     textAlign: 'center',
     color: 'white',
-    fontWeight: 'bold',
     padding: 10,
     borderRadius: 10,
     fontSize: 20
@@ -184,13 +184,13 @@ const styles = StyleSheet.create({
   },
 
   statusText: {
+    fontFamily: 'PixelifySansBold',
     color: 'white',
-    fontWeight: 'bold',
   },
 
   statusNumberText: {
+    fontFamily: 'PixelifySansBold',
     color: '#00d100',
-    fontWeight: 'bold',
   },
 
   buttonContainer: {

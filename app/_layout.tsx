@@ -4,9 +4,6 @@ import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
-
-import { useColorScheme } from '@/hooks/useColorScheme';
-import { StyleSheet, Text, View } from 'react-native';
 import { SQLiteProvider } from 'expo-sqlite';
 import { initDatabase } from '@/database/initDatabase';
 
@@ -23,18 +20,18 @@ export type RootStackParamList = {
 };
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+  const [loaded, error] = useFonts({
+    'PixelifySansBold': require('@/assets/fonts/PixelifySans-Bold.ttf'),
+    'PixelifySansMedium': require('@/assets/fonts/PixelifySans-Medium.ttf'),
   });
 
   useEffect(() => {
-    if (loaded) {
+    if (loaded || error) {
       SplashScreen.hideAsync();
     }
-  }, [loaded]);
+  }, [loaded, error]);
 
-  if (!loaded) {
+  if (!loaded && !error) {
     return null;
   }
 
@@ -43,7 +40,7 @@ export default function RootLayout() {
     <SQLiteProvider databaseName='Tamagochi.db' onInit={initDatabase}>
 
         <Stack>
-          <Stack.Screen name='index' options={{ headerShown: false}}/>
+          <Stack.Screen name='index' options={{ headerShown: false} }/>
           <Stack.Screen name='CreateTamagochiScreen' options={{ headerShown: false }} />
           <Stack.Screen name='ListTamagochi' options={{ headerShown: false }} />
           <Stack.Screen name='TamagochiDetails' options={{ headerShown: false }} />
@@ -53,11 +50,3 @@ export default function RootLayout() {
     </SQLiteProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "darkblue",
-    flex: 1,
-    padding: 24,
-  }
-});

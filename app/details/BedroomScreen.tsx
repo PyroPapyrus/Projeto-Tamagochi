@@ -90,8 +90,6 @@ const BedroomScreen: React.FC = () => {
         <Image source={isSleeping ? getSleepingImage(tamagochi.tamagochi_id as TamagochiType) : getTamagochiImage(status, tamagochi.tamagochi_id as TamagochiType)} style={styles.image} />
 
         <TouchableOpacity onPress={handleSleep} disabled={isSleeping} style={[styles.sleepButton, isSleeping && styles.sleepButtonInactive]}>
-
-
           <Text style={styles.buttonText}>Dormir</Text>
         </TouchableOpacity>
 
@@ -120,9 +118,9 @@ const styles = StyleSheet.create({
   },
 
   text: {
+    fontFamily: 'PixelifySansBold',
     textAlign: 'center',
     color: 'white',
-    fontWeight: 'bold',
     padding: 10,
     borderRadius: 10,
     fontSize: 20
@@ -138,13 +136,13 @@ const styles = StyleSheet.create({
   },
 
   statusText: {
+    fontFamily: 'PixelifySansBold',
     color: 'white',
-    fontWeight: 'bold',
   },
 
   statusNumberText: {
+    fontFamily: 'PixelifySansBold',
     color: '#00a600',
-    fontWeight: 'bold'
   },
 
   sleepButton: {

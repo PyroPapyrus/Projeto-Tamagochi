@@ -1,6 +1,7 @@
 import PlayPauseButton from "@/components/ButtonPlayPause";
 import { Audio } from "expo-av";
-import { Link } from "expo-router";
+import { useFonts } from "expo-font";
+import { Link, SplashScreen } from "expo-router";
 import { useEffect, useState } from "react";
 import { ImageBackground, SafeAreaView, StyleSheet, Text, Image, TouchableOpacity } from "react-native";
 
@@ -43,13 +44,13 @@ const index = () => {
     <ImageBackground source={{ uri: 'https://wallpapers.com/images/hd/small-memory-art-smartphone-background-3mb6tn8a4554t5k2.jpg' }} style={styles.container}>
 
     <SafeAreaView style={styles.playButton} >
-      <TouchableOpacity style={styles.opacityPlayButton}>
+      <TouchableOpacity>
         <PlayPauseButton isPlaying={isPlaying} onPress={togglePlayPause} />
       </TouchableOpacity>
     </SafeAreaView>
 
       <SafeAreaView style={styles.logoContainer}>
-          <Text style={styles.logoText}>PROJETO{'\n'}TAMAGOCHI</Text>
+          <Text style={styles.logoText} >PROJETO{'\n'}TAMAGOCHI</Text>
 
           <Image style={styles.logo} source={require('@/assets/images/pinguim/pinguim-dance-unscreen.gif')}></Image>
       </SafeAreaView>
@@ -58,13 +59,13 @@ const index = () => {
 
         <Link href={"/CreateTamagochiScreen"} asChild>
           <TouchableOpacity style={styles.button}>
-            <Text style={styles.text}>Criar tamagochi</Text>
+            <Text style={styles.text}>Criar  Tamagochi</Text>
           </TouchableOpacity>
         </Link>
 
         <Link href={"/ListTamagochi"} asChild>
           <TouchableOpacity style={styles.button}>
-            <Text style={styles.text}>Lista tamagochi</Text>
+            <Text style={styles.text}>Lista  Tamagochi</Text>
           </TouchableOpacity>
         </Link>
 
@@ -73,6 +74,7 @@ const index = () => {
       </ImageBackground>
 
     );
+
 }
 
 const styles = StyleSheet.create({
@@ -90,8 +92,8 @@ const styles = StyleSheet.create({
     },
 
     text: {
+      fontFamily: 'PixelifySansBold',
       color: "#fff",
-      fontWeight: 'bold',
     },
 
     button: {
@@ -109,9 +111,9 @@ const styles = StyleSheet.create({
     },
 
     logoText: {
+      fontFamily: 'PixelifySansBold',
       color: "#fff",
-      fontWeight: 'bold',
-      fontSize: 30,
+      fontSize: 40,
       textAlign: 'center',
       textShadowColor: 'lightblack',
       textShadowOffset: { width: -2, height: 5 },
@@ -134,16 +136,10 @@ const styles = StyleSheet.create({
     },
 
     playButton: {
-      
+      position: 'absolute',
+      top: 0,
+      left: 0
     },
-
-    opacityPlayButton: {
-      backgroundColor: 'black',
-      padding: 5,
-      paddingHorizontal: 10,
-      borderRadius: 10,
-      position: 'absolute'
-    }
     
   });
 
