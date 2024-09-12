@@ -6,7 +6,6 @@ import { useEffect } from 'react';
 import 'react-native-reanimated';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
-import { StyleSheet, Text, View } from 'react-native';
 import { SQLiteProvider } from 'expo-sqlite';
 import { initDatabase } from '@/database/initDatabase';
 
@@ -25,7 +24,7 @@ export type RootStackParamList = {
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    PixelifySans: require('../assets/fonts/PixelifySans-Medium.ttf'),
   });
 
   useEffect(() => {
@@ -53,11 +52,3 @@ export default function RootLayout() {
     </SQLiteProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "darkblue",
-    flex: 1,
-    padding: 24,
-  }
-});
