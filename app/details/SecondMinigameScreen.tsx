@@ -176,7 +176,7 @@ const SecondMinigameScreen = () => {
                 { left: fruit.x, top: fruit.y },
               ]}
             >
-              <Image source={require('../../assets/images/hamburguer.png')} style={styles.image} />
+              <Image source={require('@/assets/images/foods/hamburguer.png')} style={styles.image} />
             </View>
           ))}
           <View style={[styles.basket, { left: xPos }]}>

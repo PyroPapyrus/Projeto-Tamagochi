@@ -158,8 +158,8 @@ const styles = StyleSheet.create({
   },
 
   buttonText: {
+    fontFamily: 'PixelySansBold',
     color: '#fff',
-    fontWeight: 'bold',
     fontSize: 16,
   },
 });
