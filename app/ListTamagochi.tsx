@@ -98,14 +98,23 @@ const ListTamagochi: React.FC = () => {
 
     const status = calculateTamagochiStatus(item.hunger, item.sleep, item.happy);
     const isDead = status === "morto";
+    const TamagochiStatus = calculateTamagochiStatus(item.hunger, item.sleep, item.happy);
     
     return (
       <View style={[styles.itemContainer, isDead && styles.deadItem]}>
         <Pressable onPress={() => !isDead && navigation.navigate('TamagochiDetails', { tamagochiId: item.id })}
         disabled={isDead} style={styles.pressable}>
           <Image source={getTamagochiImage(status, item.tamagochi_id as TamagochiType)} style={styles.image} />
-          <Text style={styles.name}>{item.name}</Text>
+          
+
+          <View style={styles.column}> 
+            <Text style={[styles.name, isDead && styles.deadName]}>{item.name}</Text>
+            <Text style={[styles.statusName, isDead && styles.deadName]}>{TamagochiStatus}</Text>
+          </View>
         </Pressable>
+
+
+
         <Ionicons
           name="trash-bin"
           size={26}
@@ -186,8 +195,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 10,
     shadowColor: 'black',
-    elevation: 5
-    
+    elevation: 5,  
   },
 
   image: {
@@ -197,7 +205,15 @@ const styles = StyleSheet.create({
   },
   
   deadItem: {
-    backgroundColor: 'gray', // Cor para itens "mortos"
+    backgroundColor: '#686868a0',
+  },
+  
+  deadName: { 
+    color: 'red',
+    borderColor: 'black',
+    textShadowColor: 'black',
+    textShadowOffset: {width: 3, height: 3},
+    textShadowRadius: 10
   },
 
   pressable: {
@@ -208,12 +224,28 @@ const styles = StyleSheet.create({
   deleteButton: {
     marginTop: 10,
     marginLeft: 'auto',
+    
   },
 
   name: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: 'PixelifySansBold',
+    textShadowColor: '#5559',
+    textShadowOffset: {width: 3, height: 3},
+    textShadowRadius: 5
   },
+  statusName: {
+    fontSize: 13,
+    fontFamily:'PixelifySansMedium',
+    textShadowColor: '#5559',
+    textShadowOffset: {width: 3, height: 3},
+    textShadowRadius: 5
+  },
+  column: {
+    flexDirection: "column",
+    gap: 5,
+    marginLeft: 10
+  }
 
 });
 
