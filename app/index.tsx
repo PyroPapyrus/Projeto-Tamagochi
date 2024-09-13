@@ -1,7 +1,6 @@
 import PlayPauseButton from "@/components/ButtonPlayPause";
 import { Audio } from "expo-av";
-import { useFonts } from "expo-font";
-import { Link, SplashScreen } from "expo-router";
+import { Link } from "expo-router";
 import { useEffect, useState } from "react";
 import { ImageBackground, SafeAreaView, StyleSheet, Text, Image, TouchableOpacity } from "react-native";
 
@@ -41,7 +40,7 @@ const index = () => {
 
     return (
       
-    <ImageBackground source={{ uri: 'https://wallpapers.com/images/hd/small-memory-art-smartphone-background-3mb6tn8a4554t5k2.jpg' }} style={styles.container}>
+    <ImageBackground source={require('@/assets/images/background3.png')} style={styles.background}>
 
     <SafeAreaView style={styles.playButton} >
       <TouchableOpacity>
@@ -54,7 +53,8 @@ const index = () => {
     </SafeAreaView>
 
       <SafeAreaView style={styles.logoContainer}>
-          <Text style={styles.logoText} >PROJETO{'\n'}TAMAGOCHI</Text>
+          <Text style={styles.logoText} >PROJETO</Text>
+          <Text style={styles.logoText2} >TAMAGOCHI</Text>
 
           <Image style={styles.logo} source={require('@/assets/images/pinguim/pinguim-dance-unscreen.gif')}></Image>
       </SafeAreaView>
@@ -85,53 +85,65 @@ const styles = StyleSheet.create({
 
     background: {
       flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
+      backgroundColor: 'white'
     },
 
     container: {
       justifyContent: "center",
       alignItems: "center",
-      flex: 1,
+      marginTop: 105
     },
 
     text: {
       fontFamily: 'PixelifySansBold',
       color: "#fff",
+      textShadowColor: 'black',
+      textShadowOffset: { width: -2, height: 2 },
+      textShadowRadius: 1,
     },
 
     button: {
-      backgroundColor: '#007bff',
+      backgroundColor: 'rgba(0, 123, 255, 0.4)',
       padding: 15,
       margin: 5,
       borderRadius: 5,
-      elevation: 20,  
+      shadowColor: 'black',
     },
 
     logoContainer: {
-      justifyContent: 'center',
       alignItems: 'center',
-      flex: 2,
+      marginTop: 150,
     },
 
     logoText: {
       fontFamily: 'PixelifySansBold',
       color: "#fff",
-      fontSize: 40,
+      fontSize: 38,
       textAlign: 'center',
-      textShadowColor: 'lightblack',
-      textShadowOffset: { width: -2, height: 5 },
-      textShadowRadius: 15,
-      marginTop: 250,
-      elevation: 20,
+      textShadowColor: '#db6018',
+      textShadowOffset: { width: -2, height: 4 },
+      textShadowRadius: 1,
+      marginTop: 10,
+    },
+
+    logoText2: {
+      fontFamily: 'PixelifySansBold',
+      color: "orange",
+      fontSize: 45,
+      position: 'absolute',
+      top: 40,
+      textAlign: 'center',
+      textShadowColor: 'red',
+      textShadowOffset: { width: -2, height: 4 },
+      textShadowRadius: 1,
     },
 
     logo: {
-      width: 150,
-      height: 150,
+      width: 200,
+      height: 200,
       opacity: 0.1,
-      marginBottom: 20
-      
+      marginTop: 120,
+      alignSelf: 'center'
     },
 
     playContainer: {
@@ -141,13 +153,13 @@ const styles = StyleSheet.create({
     playButton: {
       position: 'absolute',
       top: 0,
-      left: 0
+      right: 0
     },
 
     credits: {
       position: 'absolute',
-      top: 30,
-      right: 10
+      top: 35,
+      left: 15
     },
 
     textCredits: {

@@ -125,7 +125,10 @@ const styles = StyleSheet.create({
     color: 'white',
     padding: 10,
     borderRadius: 10,
-    fontSize: 20
+    fontSize: 20,
+    textShadowColor: 'black',
+    textShadowOffset: { width: -1, height: 2 },
+    textShadowRadius: 1,
   },
 
   textAttributes: {
@@ -134,24 +137,30 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     padding: 10,
     paddingHorizontal: 20,
-    textShadowColor: 'cyan'
   },
 
   statusText: {
     fontFamily: 'PixelifySansBold',
     color: 'white',
+    textShadowColor: 'black',
+    textShadowOffset: { width: -1, height: 1 },
+    textShadowRadius: 1,
   },
 
   statusNumberText: {
     fontFamily: 'PixelifySansBold',
-    color: '#00a600',
+    color: '#00d100',
+    textShadowColor: 'black',
+    textShadowOffset: { width: -1, height: 1 },
+    textShadowRadius: 1,
   },
 
   sleepButton: {
     backgroundColor: '#00a600',
     borderRadius: 5,
     padding: 10,
-    paddingHorizontal: 15
+    paddingHorizontal: 15,
+    elevation: 5
   },
 
   sleepButtonInactive: {
@@ -163,6 +172,9 @@ const styles = StyleSheet.create({
     fontFamily: 'PixelifySansBold',
     color: '#fff',
     fontSize: 18,
+    textShadowColor: 'black',
+    textShadowOffset: { width: -1, height: 2 },
+    textShadowRadius: 1,
   },
 });
 

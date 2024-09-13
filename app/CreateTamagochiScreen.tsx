@@ -1,10 +1,11 @@
 import { getTamagochiImage } from "@/utils/getTamagochiImage";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { Alert, Button, Image, ImageBackground, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
+import { Alert, Image, ImageBackground, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from "react-native";
 import { useTamagochiDatabase } from "../database/tamagochiDatabase";
 import { tamagochiImages, TamagochiType } from "@/assets/images/TamagochiImages";
 import { Ionicons } from "@expo/vector-icons";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 
 const CreateTamagochiScreen = () => {
@@ -102,6 +103,9 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10, 
         paddingVertical: 10,    
         alignSelf: 'flex-start', 
+        textShadowColor: 'black',
+        textShadowOffset: { width: -0, height: 2 },
+        textShadowRadius: 1,
       },
 
     background: {
@@ -119,6 +123,9 @@ const styles = StyleSheet.create({
         fontFamily: 'PixelifySansBold',
         fontSize: 30,
         color: 'white',
+        textShadowColor: 'black',
+        textShadowOffset: { width: -2, height: 2 },
+        textShadowRadius: 1,
     },
     inputField: {
         fontFamily: 'PixelifySansMedium',
@@ -137,6 +144,9 @@ const styles = StyleSheet.create({
         fontSize: 20,
         marginBottom: 10,
         color: 'white',
+        textShadowColor: 'black',
+        textShadowOffset: { width: -2, height: 2 },
+        textShadowRadius: 1,
     },
     imageGrid: {
         flexDirection: 'row',
@@ -169,15 +179,17 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     createButton: {
-        backgroundColor: '#4e74ff',
+        backgroundColor: 'rgba(0, 123, 255, 0.4)',
         padding: 12,
         paddingHorizontal: 28,
         borderRadius: 10,
-        elevation: 5
     },
     createButtonText: {
         fontFamily: 'PixelifySansMedium',
         color: 'white',
         fontSize: 18,
+        textShadowColor: 'black',
+        textShadowOffset: { width: -2, height: 2 },
+        textShadowRadius: 1,
     },
 });

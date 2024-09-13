@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, Image, Dimensions, Button } from 'react-native';
+import { View, Text, StyleSheet, Image, Dimensions, Button, TouchableOpacity } from 'react-native';
 import { Accelerometer } from 'expo-sensors';
 import { router } from 'expo-router';
 import { ImageBackground } from 'react-native';
+import { Touchable } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
 
@@ -22,7 +23,7 @@ const SecondMinigameScreen = () => {
   const basketWidth = 100; // Largura da cesta
   const basketHeight = 80; // Altura da cesta
 
-  const fruitWidth = 50; // Largura da fruta
+  const fruitWidth = 60; // Largura da fruta
   const fruitHeight = 60; // Altura da fruta
 
   // Definição das áreas de coleta
@@ -160,22 +161,33 @@ const SecondMinigameScreen = () => {
 
   return (
 
-      <ImageBackground source={require('@/assets/images/backgroundSecondGame.png')} style={styles.background}>
+      <ImageBackground source={require('@/assets/images/backgroundSecondGame.png')} style={styles.container}>
 
+
+    <View style={styles.container}>
+      {gameOver ? (
+        <View style={styles.gameOverContainer}>
+          <Text style={styles.gameOverText}>Você coletou
+          <Text style={styles.gameOverText2}> 100 </Text>
+            frutas!
+          </Text>
+          
+
+          <TouchableOpacity onPress={handleRestart} style={styles.button}>
+            <Text style={styles.buttonText}>Jogar Novamente</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={handleExit} style={styles.button}>
+            <Text style={styles.buttonText}>Sair</Text>
+          </TouchableOpacity>
+
+        </View>
+      ) : (
+        <>
         <View style={styles.titleContainer}>
           <Text style={styles.title}>Pontuação</Text>
           <Text style={styles.titleScore}>{score}</Text>
         </View>
-    <View style={styles.container}>
-      {gameOver ? (
-        <View style={styles.gameOverContainer}>
-          <Text style={styles.gameOverText}>Você coletou 100 frutas!</Text>
-          <Button title="Jogar de novo" onPress={handleRestart} />
-          <Button title="Sair" onPress={handleExit} />
-        </View>
-      ) : (
-        <>
-
           {fruits.map(fruit => (
             <View
               key={fruit.id}
@@ -184,11 +196,11 @@ const SecondMinigameScreen = () => {
                 { left: fruit.x, top: fruit.y },
               ]}
             >
-              <Image source={require('@/assets/images/foods/hamburguer.png')} style={styles.image} />
+              <Image source={require('@/assets/images/golden-apple.gif')} style={styles.imageFruit} />
             </View>
           ))}
           <View style={[styles.basket, { left: xPos }]}>
-            <Image source={require('../../assets/images/basket.png')} style={styles.image} />
+            <Image source={require('@/assets/images/basket.png')} style={styles.imageBasket} />
           </View>
         </>
       )}
@@ -199,32 +211,38 @@ const SecondMinigameScreen = () => {
 
 const styles = StyleSheet.create({
 
-  background: {
-    flex: 1
-  },
 
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignContent: 'center',
   },
 
   titleContainer: {
-    backgroundColor: 'white',
-    justifyContent: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
     alignSelf: 'center',
-    margin: 25
+    padding: 6,
+    paddingHorizontal: 15,
+    margin: 30,
+    borderRadius: 5
   },
 
   title: {
+    color: 'white',
+    fontFamily: 'PixelifySansBold',
     fontSize: 24,
-    textAlign: 'center'
+    textAlign: 'center',
+    textShadowColor: 'red',
+    textShadowOffset: { width: -1, height: 1 },
+    textShadowRadius: 1,
   },
 
   titleScore: {
+    color: 'orange',
+    fontFamily: 'PixelifySansBold',
     fontSize: 24,
-    backgroundColor: 'white',
-    textAlign: 'center'
+    textAlign: 'center',
+    textShadowColor: 'red',
+    textShadowOffset: { width: -1, height: 1 },
+    textShadowRadius: 1,
   },
 
   basket: {
@@ -233,26 +251,80 @@ const styles = StyleSheet.create({
     width: 100,
     height: 80,
   },
+
+  imageBasket: {
+    width: 100,
+    height: 80,
+  },
   
   fruit: {
     position: 'absolute',
-    width: 50,
+    width: 60,
     height: 60,
   },
 
-  image: {
-    width: '100%',
-    height: '100%',
+  imageFruit: {
+    width: 60,
+    height: 60,
+  },
+
+  button: {
+    backgroundColor: 'rgba(0, 123, 255, 0.4)',
+    padding: 15,
+    borderRadius: 5,
+    shadowColor: 'black',
+  },
+
+  buttonText: {
+    fontFamily: 'PixelifySansBold',
+    color: 'white',
+    textShadowColor: 'black',
+    textShadowOffset: { width: -1, height: 1 },
+    textShadowRadius: 1,
   },
 
   gameOverContainer: {
-    justifyContent: 'center',
     alignItems: 'center',
+    alignSelf: 'center',
+    top: "40%",
+    gap: 10
   },
 
   gameOverText: {
+    fontFamily: 'PixelifySansBold',
+    padding: 10,
+    borderRadius: 5,
+    color: 'white',
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
     fontSize: 24,
-    marginBottom: 20,
+    marginBottom: 15,
+    textShadowColor: 'red',
+    textShadowOffset: { width: -1, height: 1 },
+    textShadowRadius: 1,
+  },
+
+  gameOverText2: {
+    fontFamily: 'PixelifySansBold',
+    padding: 10,
+    borderRadius: 5,
+    color: 'orange',
+    fontSize: 24,
+    marginBottom: 15,
+    textShadowColor: 'red',
+    textShadowOffset: { width: -1, height: 1 },
+    textShadowRadius: 1,
+  },
+
+  gameOverText3: {
+    fontFamily: 'PixelifySansBold',
+    padding: 10,
+    borderRadius: 5,
+    color: 'white',
+    fontSize: 24,
+    marginBottom: 15,
+    textShadowColor: 'red',
+    textShadowOffset: { width: -1, height: 1 },
+    textShadowRadius: 1,
   },
 
 });

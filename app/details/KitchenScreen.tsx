@@ -88,7 +88,7 @@ const KitchenScreen: React.FC = () => {
 
   return (
     <ImageBackground
-      source={require('@/assets/images/kitchen.gif')}
+      source={require('@/assets/images/kitchen.jpg')}
       style={styles.background}
     >
       <SafeAreaView>
@@ -149,23 +149,29 @@ const KitchenScreen: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
+
   background: {
     flex: 1,
   },
+
   container: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
   },
+
   image: {
     width: 200,
     height: 200,
-    marginVertical: 20,
+    marginVertical: 200,
+    marginBottom: 20,
   },
+
   foodImage: {
     width: 90,
     height: 90,
   },
+
   text: {
     fontFamily: 'PixelifySansBold',
     textAlign: 'center',
@@ -173,40 +179,60 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     fontSize: 20,
+    textShadowColor: 'black',
+    textShadowOffset: { width: -1, height: 2 },
+    textShadowRadius: 1,
   },
+
   statusText: {
     fontFamily: 'PixelifySansBold',
     color: 'white',
+    textShadowColor: 'black',
+    textShadowOffset: { width: -1, height: 1 },
+    textShadowRadius: 1,
   },
+
   statusNumberText: {
     fontFamily: 'PixelifySansBold',
     color: '#00d100',
-    fontWeight: 'bold'
+    textShadowColor: 'black',
+    textShadowOffset: { width: -1, height: 1 },
+    textShadowRadius: 1,
   },
+
   disabledPressable: {
     opacity: 0.5,
     transform: [{ scale: 0.8 }],
   },
+  
   pressedPressable: {
     transform: [{ scale: 0.9 }],
   },
+
   arrowContainer: {
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,
   },
+
   arrowButton: {
     padding: 10,
   },
+
   arrowText: {
     fontSize: 30,
     color: 'white',
+    textShadowColor: 'black',
+    textShadowOffset: { width: -1, height: 2 },
+    textShadowRadius: 1,
   },
+
   tamagochiContainer: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
+  
 });
 
 export default KitchenScreen;

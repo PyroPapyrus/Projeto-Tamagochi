@@ -166,7 +166,10 @@ const styles = StyleSheet.create({
     color: 'white',
     padding: 10,
     borderRadius: 10,
-    fontSize: 20
+    fontSize: 20,
+    textShadowColor: 'black',
+    textShadowOffset: { width: -1, height: 2 },
+    textShadowRadius: 1,
   },
 
   textAttributes: {
@@ -186,11 +189,17 @@ const styles = StyleSheet.create({
   statusText: {
     fontFamily: 'PixelifySansBold',
     color: 'white',
+    textShadowColor: 'black',
+    textShadowOffset: { width: -1, height: 1 },
+    textShadowRadius: 1,
   },
 
   statusNumberText: {
     fontFamily: 'PixelifySansBold',
     color: '#00d100',
+    textShadowColor: 'black',
+    textShadowOffset: { width: -1, height: 1 },
+    textShadowRadius: 1,
   },
 
   buttonContainer: {
@@ -217,6 +226,9 @@ const styles = StyleSheet.create({
     fontFamily: 'PixelifySansBold',
     color: 'white',
     fontSize: 16,
+    textShadowColor: 'black',
+    textShadowOffset: { width: -1, height: 1 },
+    textShadowRadius: 1,
   },
 
   disabledButton: {
