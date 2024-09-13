@@ -12,6 +12,7 @@ import SleepContainer from '@/components/SleepContainer';
 import HappyContainer from '@/components/HappyContainer';
 import StatusContainer from '@/components/StatusContainer';
 import getFoodImage from '@/utils/getFoodImage';
+import { Ionicons } from '@expo/vector-icons';
 
 
 const KitchenScreen: React.FC = () => {
@@ -124,7 +125,7 @@ const KitchenScreen: React.FC = () => {
       <View style={styles.container}>
         <View style={styles.arrowContainer}>
           <Pressable onPress={handlePreviousFood} style={styles.arrowButton}>
-            <Text style={styles.arrowText}>{"<"}</Text>
+            <Ionicons name={'chevron-back-circle-outline'} style={styles.arrowText}/>
           </Pressable>
         </View>
 
@@ -137,7 +138,7 @@ const KitchenScreen: React.FC = () => {
 
         <View style={styles.arrowContainer}>
           <Pressable onPress={handleNextFood} style={styles.arrowButton}>
-            <Text style={styles.arrowText}>{">"}</Text>
+            <Ionicons name={'chevron-forward-circle-outline'} style={styles.arrowText}/>
           </Pressable>
         </View>
       </View>

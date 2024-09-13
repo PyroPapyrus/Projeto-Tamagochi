@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, Image, Dimensions, Button } from 'react-native';
 import { Accelerometer } from 'expo-sensors';
 import { router } from 'expo-router';
+import { ImageBackground } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
 
@@ -158,6 +159,13 @@ const SecondMinigameScreen = () => {
   };
 
   return (
+
+      <ImageBackground source={require('@/assets/images/backgroundSecondGame.png')} style={styles.background}>
+
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>Pontuação</Text>
+          <Text style={styles.titleScore}>{score}</Text>
+        </View>
     <View style={styles.container}>
       {gameOver ? (
         <View style={styles.gameOverContainer}>
@@ -167,7 +175,7 @@ const SecondMinigameScreen = () => {
         </View>
       ) : (
         <>
-          <Text style={styles.title}>Pontuação: {score}</Text>
+
           {fruits.map(fruit => (
             <View
               key={fruit.id}
@@ -185,42 +193,68 @@ const SecondMinigameScreen = () => {
         </>
       )}
     </View>
+      </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
+
+  background: {
+    flex: 1
+  },
+
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignContent: 'center',
   },
+
+  titleContainer: {
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    margin: 25
+  },
+
   title: {
     fontSize: 24,
-    marginBottom: 20,
+    textAlign: 'center'
   },
+
+  titleScore: {
+    fontSize: 24,
+    backgroundColor: 'white',
+    textAlign: 'center'
+  },
+
   basket: {
     position: 'absolute',
     bottom: 50,
     width: 100,
     height: 80,
   },
+  
   fruit: {
     position: 'absolute',
     width: 50,
     height: 60,
   },
+
   image: {
     width: '100%',
     height: '100%',
   },
+
   gameOverContainer: {
     justifyContent: 'center',
     alignItems: 'center',
   },
+
   gameOverText: {
     fontSize: 24,
     marginBottom: 20,
   },
+
 });
 
 export default SecondMinigameScreen

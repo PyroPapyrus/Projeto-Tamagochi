@@ -52,9 +52,7 @@ const BedroomScreen: React.FC = () => {
 
   return (
     <ImageBackground
-      source={isSleeping ? require('@/assets/images/night.jpg') : require('@/assets/images/day.jpeg')}
-      style={styles.background}
-    >
+      source={isSleeping ? require('@/assets/images/night.jpg') : require('@/assets/images/day.jpeg')} style={[styles.backgroundDay, isSleeping && styles.backgroundNight]} >
 
       <SafeAreaView>
       <AtributtesContainer>
@@ -100,8 +98,12 @@ const BedroomScreen: React.FC = () => {
 
 const styles = StyleSheet.create({
 
-  background: {
-    flex: 1,
+  backgroundDay: {
+    flex: 1
+  },
+
+  backgroundNight: {
+
   },
 
   container: {
@@ -158,9 +160,9 @@ const styles = StyleSheet.create({
   },
 
   buttonText: {
-    fontFamily: 'PixelySansBold',
+    fontFamily: 'PixelifySansBold',
     color: '#fff',
-    fontSize: 16,
+    fontSize: 18,
   },
 });
 

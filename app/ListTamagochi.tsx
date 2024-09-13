@@ -229,14 +229,19 @@ const styles = StyleSheet.create({
 
   name: {
     fontSize: 18,
-    fontFamily: 'PixelifySansBold'
-  },
-  statusName: {
-    fontSize: 13,
-    fontFamily:'PixelifySansMedium',
+    fontFamily: 'PixelifySansBold',
     textShadowColor: '#5559',
     textShadowOffset: {width: 3, height: 3},
     textShadowRadius: 5
+  },
+
+  statusName: {
+    color: '#35c008',
+    fontSize: 13,
+    fontFamily:'PixelifySansMedium',
+    textShadowColor: '#5555',
+    textShadowOffset: {width: 3, height: 3},
+    textShadowRadius: 5,
   },
   column: {
     flexDirection: "column",

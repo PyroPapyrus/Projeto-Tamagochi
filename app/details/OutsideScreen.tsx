@@ -214,7 +214,7 @@ const styles = StyleSheet.create({
   },
   
   buttonText: {
-    fontWeight: 'bold',
+    fontFamily: 'PixelifySansBold',
     color: 'white',
     fontSize: 16,
   },

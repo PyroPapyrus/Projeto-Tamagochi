@@ -49,6 +49,10 @@ const index = () => {
       </TouchableOpacity>
     </SafeAreaView>
 
+    <SafeAreaView style={styles.credits} >
+      <Text style={styles.textCredits}>Créditos:{'\n'}Walter,{'\n'}Emanuel</Text>
+    </SafeAreaView>
+
       <SafeAreaView style={styles.logoContainer}>
           <Text style={styles.logoText} >PROJETO{'\n'}TAMAGOCHI</Text>
 
@@ -118,7 +122,6 @@ const styles = StyleSheet.create({
       textShadowColor: 'lightblack',
       textShadowOffset: { width: -2, height: 5 },
       textShadowRadius: 15,
-      margin: 20,
       marginTop: 250,
       elevation: 20,
     },
@@ -126,8 +129,8 @@ const styles = StyleSheet.create({
     logo: {
       width: 150,
       height: 150,
-      resizeMode: 'contain',
       opacity: 0.1,
+      marginBottom: 20
       
     },
 
@@ -140,6 +143,18 @@ const styles = StyleSheet.create({
       top: 0,
       left: 0
     },
+
+    credits: {
+      position: 'absolute',
+      top: 30,
+      right: 10
+    },
+
+    textCredits: {
+      fontFamily: 'PixelifySansBold',
+      color: 'white',
+      fontSize: 10
+    }
     
   });
 
