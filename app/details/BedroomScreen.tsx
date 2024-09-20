@@ -12,6 +12,8 @@ import SleepContainer from '@/components/SleepContainer';
 import HappyContainer from '@/components/HappyContainer';
 import StatusContainer from '@/components/StatusContainer';
 import { getSleepingImage } from '@/utils/getSleepImage';
+import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
 
 const BedroomScreen: React.FC = () => {
   const route = useRoute();
@@ -40,7 +42,7 @@ const BedroomScreen: React.FC = () => {
       const updatedTamagochi = { ...tamagochi, sleep: newSleep };
       setTamagochi(updatedTamagochi);
       await AsyncStorage.setItem('tamagochi', JSON.stringify(updatedTamagochi));
-      setTimeout(() => setIsSleeping(false), 10000); // Botão inativo por 10 segundos
+      setTimeout(() => setIsSleeping(false), 5000); // Botão inativo por 10 segundos
     }
   };
 
@@ -78,6 +80,10 @@ const BedroomScreen: React.FC = () => {
 
       <View>
         <StatusContainer>
+          <Ionicons name="arrow-back" style={styles.arrowBack}
+            onPress={() => {
+            router.push('./ListTamagochi');
+          }}/>
           <Text style={styles.statusText}>STATUS</Text>
           <Text style={styles.statusNumberText}>{status}</Text>
         </StatusContainer>
@@ -175,6 +181,14 @@ const styles = StyleSheet.create({
     textShadowColor: 'black',
     textShadowOffset: { width: -1, height: 2 },
     textShadowRadius: 1,
+  },
+
+  arrowBack: {
+    fontSize: 32,
+    color: "white",
+    position: 'absolute',
+    left: 15,
+    top: 12
   },
 });
 

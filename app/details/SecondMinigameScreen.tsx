@@ -80,7 +80,7 @@ const SecondMinigameScreen = () => {
           ) {
             setScore(score => {
               const newScore = score + 1;
-              if (newScore >= 100) {
+              if (newScore >= 50) {
                 setGameOver(true); // Acaba o jogo ao alcançar 100 frutas
               }
               return newScore;
@@ -168,7 +168,7 @@ const SecondMinigameScreen = () => {
       {gameOver ? (
         <View style={styles.gameOverContainer}>
           <Text style={styles.gameOverText}>Você coletou
-          <Text style={styles.gameOverText2}> 100 </Text>
+          <Text style={styles.gameOverText2}> 50 </Text>
             frutas!
           </Text>
           

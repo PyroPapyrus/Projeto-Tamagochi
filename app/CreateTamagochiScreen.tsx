@@ -5,8 +5,6 @@ import { Alert, Image, ImageBackground, Pressable, ScrollView, StyleSheet, Text,
 import { useTamagochiDatabase } from "../database/tamagochiDatabase";
 import { tamagochiImages, TamagochiType } from "@/assets/images/TamagochiImages";
 import { Ionicons } from "@expo/vector-icons";
-import { TouchableOpacity } from "react-native-gesture-handler";
-
 
 const CreateTamagochiScreen = () => {
     const [selectedImage, setSelectedImage] = useState<TamagochiType | null>(null);

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, Button, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, Button, TouchableOpacity, StyleSheet, ImageBackground, Pressable } from 'react-native';
 
 const MinigameScreen = () => {
   const [gameStarted, setGameStarted] = useState(false);
@@ -8,6 +8,13 @@ const MinigameScreen = () => {
   const [timeLeft, setTimeLeft] = useState(10); // 10 segundos de jogo
   const [loading, setLoading] = useState(false); // Estado de carregamento para exibir "Carregando..."
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Efeito que atualiza o `bestScore` assim que o `score` muda
+  useEffect(() => {
+    if (score > bestScore) {
+      setBestScore(score); // Atualiza a melhor pontuação assim que o `score` muda
+    }
+  }, [score, bestScore]);
 
   // Inicia o jogo
   const startGame = () => {
@@ -34,11 +41,6 @@ const MinigameScreen = () => {
     setGameStarted(false); // Encerra o jogo
     setLoading(true); // Exibe "Carregando..." enquanto a pontuação é atualizada
 
-    // Atualiza a melhor pontuação se a pontuação atual for maior
-    if (score > bestScore) {
-      setBestScore(score);
-    }
-
     // Simula um delay para mostrar "Carregando..." e então esconder
     setTimeout(() => {
       setLoading(false); // Esconde "Carregando..." após a atualização
@@ -48,36 +50,59 @@ const MinigameScreen = () => {
   // Função que incrementa o score a cada toque
   const handleTap = () => {
     if (gameStarted) {
-      setScore((prevScore) => prevScore + 1);
+      setScore((prevScore) => {
+        const newScore = prevScore + 1;
+        
+        // Verifica se o jogador atingiu 100 pontos
+        if (newScore >= 100) {
+          clearInterval(timerRef.current!);
+          endGame(); // Finaliza o jogo se atingir 100 pontos
+        }
+
+        return newScore;
+      });
     }
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Jogo de Toque Rápido</Text>
+    <ImageBackground source={require('@/assets/images/background-minigame.jpg')} style={styles.container}>
 
-      {!gameStarted && (
-        <>
-          {loading ? (
-            <Text style={styles.loadingText}>Carregando...</Text>
-          ) : (
-            <Text style={styles.bestScoreText}>Melhor Pontuação: {bestScore}</Text>
-          )}
-          <Button title="Iniciar Jogo" onPress={startGame} />
-        </>
-      )}
+
+      
+        {!gameStarted && (
+          <>   
+            <View style={styles.textContainer}>
+              <Text style={styles.title}>{'<'}Jogo do Toque Rápido{'/>'}</Text>
+                {loading ? (
+                  <Text style={styles.loadingText}>Carregando...</Text>
+                ) : (
+                  <Text style={styles.bestScoreText}>Melhor Pontuação: {bestScore}</Text>
+                )} 
+            </View>
+
+            <TouchableOpacity onPress={startGame} style={styles.button}> 
+              <Text style={styles.textButton}>Iniciar Jogo</Text>
+            </TouchableOpacity>
+          </>
+          
+        )}
+      
+
+     
 
       {gameStarted && (
         <>
-          <Text style={styles.timeLeftText}>Tempo Restante: {timeLeft}s</Text>
-          <Text style={styles.scoreText}>Pontuação: {score}</Text>
+          <View style={styles.textContainer}>
+            <Text style={styles.timeLeftText}>Tempo Restante: {timeLeft}s</Text>
+            <Text style={styles.scoreText}>Pontuação: {score}</Text>
+          </View>
 
           <TouchableOpacity style={styles.tapArea} onPress={handleTap}>
             <Text style={styles.tapText}>Toque!</Text>
           </TouchableOpacity>
         </>
       )}
-    </View>
+    </ImageBackground>
   );
 };
 
@@ -88,39 +113,98 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
+
+  textContainer: {
+    padding: 20,
+    borderRadius: 10,
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    alignItems:'center',
   },
+
+  textButton: {
+    color: 'white',
+    fontFamily: 'PixelifySansBold',
+    textShadowColor: 'black',
+    textShadowOffset: { width: -1, height: 1 },
+    textShadowRadius: 1,
+  },
+
+  button: {
+    position: 'absolute',
+    bottom: 20,
+    backgroundColor: 'rgba(0, 123, 255, 0.7)',
+    padding: 15,
+    borderRadius: 5,
+  },
+
+  title: {
+    color: 'white',
+    fontSize: 24,
+    fontFamily: 'PixelifySansBold',
+    marginBottom: 5,
+    textShadowColor: 'red',
+    textShadowOffset: { width: -1, height: 1 },
+    textShadowRadius: 1,
+  },
+
   bestScoreText: {
+    color: 'darkorange',
+    fontFamily: 'PixelifySansBold',
     fontSize: 18,
     marginBottom: 10,
+    textShadowColor: 'red',
+    textShadowOffset: { width: -1, height: 1 },
+    textShadowRadius: 1,
   },
+  
   loadingText: {
+    fontFamily: 'PixelifySansBold',
     fontSize: 18,
     marginBottom: 10,
     color: 'gray',
+    textShadowColor: 'black',
+    textShadowOffset: { width: -1, height: 1 },
+    textShadowRadius: 1,
   },
+
   timeLeftText: {
+    color: 'white',
+    fontFamily: 'PixelifySansBold',
     fontSize: 18,
+    marginTop: 15,
     marginBottom: 10,
+    textShadowColor: 'black',
+    textShadowOffset: { width: -1, height: 1 },
+    textShadowRadius: 1,
   },
+
   scoreText: {
+    color: 'darkorange',
+    fontFamily: 'PixelifySansBold',
     fontSize: 20,
     marginBottom: 20,
+    textShadowColor: 'red',
+    textShadowOffset: { width: -1, height: 1 },
+    textShadowRadius: 1,
   },
+
   tapArea: {
+    marginTop: 20,
     width: 200,
     height: 200,
-    backgroundColor: '#ff6347',
+    backgroundColor: 'rgba(255, 78, 0, 0.7)',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 100,
   },
+
   tapText: {
+    fontFamily: 'PixelifySansBold',
     fontSize: 24,
     color: 'white',
+    textShadowColor: 'black',
+    textShadowOffset: { width: -1, height: 1 },
+    textShadowRadius: 1,
   },
 });
 

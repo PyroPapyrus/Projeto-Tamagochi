@@ -12,6 +12,8 @@ import SleepContainer from '@/components/SleepContainer';
 import HappyContainer from '@/components/HappyContainer';
 import HungerContainer from '@/components/HungerContainer';
 import StatusContainer from '@/components/StatusContainer';
+import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
 
 type RootStackParamList = {
   OutsideMain: { tamagochiId: number };
@@ -47,7 +49,7 @@ const OutsideScreen: React.FC = () => {
 
     if (tamagochi) {
       setIsPlayButtonDisabled(true);
-      const newHappy = Math.min(tamagochi.happy + 10, 100); // Incrementa a felicidade em 10, mas não ultrapassa 100
+      const newHappy = Math.min(tamagochi.happy + 20, 100); // Incrementa a felicidade em 20, mas não ultrapassa 100
       await database.updateHappy(tamagochi.id, newHappy);
       const updatedTamagochi = { ...tamagochi, happy: newHappy };
       setTamagochi(updatedTamagochi);
@@ -62,7 +64,7 @@ const OutsideScreen: React.FC = () => {
 
     if (tamagochi) {
       setIsWalkButtonDisabled(true);
-      const newHappy = Math.min(tamagochi.happy + 5, 100); // Incrementa a felicidade em 5, mas não ultrapassa 100
+      const newHappy = Math.min(tamagochi.happy + 20, 100); // Incrementa a felicidade em 20, mas não ultrapassa 100
       await database.updateHappy(tamagochi.id, newHappy);
       const updatedTamagochi = { ...tamagochi, happy: newHappy };
       setTamagochi(updatedTamagochi);
@@ -80,7 +82,7 @@ const OutsideScreen: React.FC = () => {
 
   return (
     <ImageBackground
-      source={require('@/assets/images/bakground.png')}
+      source={require('@/assets/images/background-outside.webp')}
       style={styles.background}
     >
 
@@ -108,6 +110,10 @@ const OutsideScreen: React.FC = () => {
 
       <View>
         <StatusContainer>
+          <Ionicons name="arrow-back" style={styles.arrowBack}
+            onPress={() => {
+            router.push('./ListTamagochi');
+          }}/> 
           <Text style={styles.statusText}>STATUS</Text>
           <Text style={styles.statusNumberText}>{status}</Text>
         </StatusContainer>
@@ -238,6 +244,14 @@ const styles = StyleSheet.create({
 
   pressedButton: {
     transform: [{ scale: 0.8 }],
+  },
+
+  arrowBack: {
+    fontSize: 32,
+    color: "white",
+    position: 'absolute',
+    left: 15,
+    top: 12
   },
 });
 

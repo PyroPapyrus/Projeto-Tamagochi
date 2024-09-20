@@ -13,6 +13,7 @@ import HappyContainer from '@/components/HappyContainer';
 import StatusContainer from '@/components/StatusContainer';
 import getFoodImage from '@/utils/getFoodImage';
 import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
 
 
 const KitchenScreen: React.FC = () => {
@@ -113,6 +114,10 @@ const KitchenScreen: React.FC = () => {
 
       <View>
         <StatusContainer>
+          <Ionicons name="arrow-back" style={styles.arrowBack}
+            onPress={() => {
+            router.push('./ListTamagochi');
+          }}/>
           <Text style={styles.statusText}>STATUS</Text>
           <Text style={styles.statusNumberText}>{status}</Text>
         </StatusContainer>
@@ -231,6 +236,14 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+
+  arrowBack: {
+    fontSize: 32,
+    color: "white",
+    position: 'absolute',
+    left: 15,
+    top: 12
   },
   
 });

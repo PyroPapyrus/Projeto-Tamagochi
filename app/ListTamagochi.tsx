@@ -133,7 +133,7 @@ const ListTamagochi: React.FC = () => {
       <SafeAreaView>
           <Ionicons name="arrow-back" style={styles.arrowBack}
             onPress={() => {
-            router.back();
+              navigation.navigate('index');
           }}/>
       </SafeAreaView>
    
