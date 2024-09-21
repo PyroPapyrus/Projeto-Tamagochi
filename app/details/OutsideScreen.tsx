@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet, Pressable, ImageBackground, SafeAreaView } from 'react-native';
 import { useRoute, useFocusEffect, useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -24,32 +24,35 @@ type RootStackParamList = {
 type OutsideScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'OutsideMain'>;
 
 const OutsideScreen: React.FC = () => {
-  const route = useRoute();
-  const navigation = useNavigation<OutsideScreenNavigationProp>();
-  const { tamagochiId } = route.params as { tamagochiId: number };
-  const [tamagochi, setTamagochi] = useState<Tamagochi | null>(null);
-  const database = useTamagochiDatabase();
-  const [isPlayButtonDisabled, setIsPlayButtonDisabled] = useState(false);
-  const [isWalkButtonDisabled, setIsWalkButtonDisabled] = useState(false);
+  const route = useRoute(); // Acessa os parâmetros da rota
+  const navigation = useNavigation<OutsideScreenNavigationProp>(); // Permite navegar para outras telas
+  const { tamagochiId } = route.params as { tamagochiId: number }; // Recebe o ID do tamagochi
+  const [tamagochi, setTamagochi] = useState<Tamagochi | null>(null); // Armazena os dados do tamagochi
+  const database = useTamagochiDatabase(); // Acessa o banco de dados do tamagochi
+  const [isPlayButtonDisabled, setIsPlayButtonDisabled] = useState(false); // Controla o estado do botão de "Brincar"
+  const [isWalkButtonDisabled, setIsWalkButtonDisabled] = useState(false); // Controla o estado do botão de "Passear"
 
 
+  // Função que busca os dados do tamagochi no banco de dados
   const fetchTamagochi = async () => {
     const tamagochiData = await database.findTamagochiById(tamagochiId);
     setTamagochi(tamagochiData);
-    await AsyncStorage.setItem('tamagochi', JSON.stringify(tamagochiData));
+    await AsyncStorage.setItem('tamagochi', JSON.stringify(tamagochiData)); // Armazena no AsyncStorage
   };
 
+  // Efeito que busca os dados toda vez que a tela é focada
   useFocusEffect(
     React.useCallback(() => {
       fetchTamagochi();
     }, [tamagochiId])
   );
 
+  // Função para o botão de "Brincar"
   const handlePlay = async () => {
 
     if (tamagochi) {
       setIsPlayButtonDisabled(true);
-      const newHappy = Math.min(tamagochi.happy + 20, 100); // Incrementa a felicidade em 20, mas não ultrapassa 100
+      const newHappy = Math.min(tamagochi.happy + 20, 100); // Aumenta a felicidade em 20 (máximo 100)
       await database.updateHappy(tamagochi.id, newHappy);
       const updatedTamagochi = { ...tamagochi, happy: newHappy };
       setTamagochi(updatedTamagochi);
@@ -60,24 +63,27 @@ const OutsideScreen: React.FC = () => {
 
   };
 
+  // Função para o botão de "Passear"
   const handleWalk = async () => {
 
     if (tamagochi) {
       setIsWalkButtonDisabled(true);
-      const newHappy = Math.min(tamagochi.happy + 20, 100); // Incrementa a felicidade em 20, mas não ultrapassa 100
+      const newHappy = Math.min(tamagochi.happy + 20, 100); // Aumenta a felicidade em 20 (máximo 100)
       await database.updateHappy(tamagochi.id, newHappy);
       const updatedTamagochi = { ...tamagochi, happy: newHappy };
       setTamagochi(updatedTamagochi);
       await AsyncStorage.setItem('tamagochi', JSON.stringify(updatedTamagochi));
-      navigation.navigate('SecondMinigameScreen');
+      navigation.navigate('SecondMinigameScreen'); // Navega para o segundo minigame
       setTimeout(() => setIsWalkButtonDisabled(false), 10000); // Desabilita o botão por 10 segundos
     }
   };
 
+  // Exibe um texto de carregamento enquanto os dados não foram carregados
   if (!tamagochi) {
     return <Text>Carregando...</Text>;
   }
 
+  // Calcula o status geral do tamagochi com base nos atributos
   const status = calculateTamagochiStatus(tamagochi.hunger, tamagochi.sleep, tamagochi.happy);
 
   return (
@@ -122,7 +128,7 @@ const OutsideScreen: React.FC = () => {
       <View style={styles.container}>
         <Image source={getTamagochiImage(status, tamagochi.tamagochi_id as TamagochiType)} style={styles.image} />
 
-        <View style={styles.buttonContainer}>
+        <View style={styles.buttonContainer}> 
           <Pressable
               onPress={handlePlay} disabled={isPlayButtonDisabled} style={({ pressed }) => [
               styles.playButton,

@@ -1,6 +1,7 @@
 import { TamagochiType } from "@/assets/images/TamagochiImages";
 import { StyleSheet } from "react-native";
 
+ //Obtém a imagem correspondente ao Tamagochi em estado de sono
 const getSleepingImage = (tamagochiId: TamagochiType) => {
     switch (tamagochiId) {
       case 'tamagochi1':
@@ -12,7 +13,7 @@ const getSleepingImage = (tamagochiId: TamagochiType) => {
       case 'tamagochi4':
         return require('@/assets/images/sleepingTamagochi/pinguim sleep.png');
       default:
-        return require('@/assets/images/sleepingTamagochi/walter-white.png');
+        return require('@/assets/images/sleepingTamagochi/walter-white.png'); // Retorna uma imagem padrão se o ID não for reconhecido
     }
   };
 

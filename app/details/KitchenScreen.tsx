@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet, Pressable, ImageBackground, SafeAreaView } from 'react-native';
 import { useRoute, useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -17,40 +17,45 @@ import { router } from 'expo-router';
 
 
 const KitchenScreen: React.FC = () => {
+  // Obtém o ID do Tamagochi da rota de navegação
   const route = useRoute();
   const { tamagochiId } = route.params as { tamagochiId: number };
+  // Estados para armazenar o Tamagochi, controlar o botão de alimentação e o índice da comida atual
   const [tamagochi, setTamagochi] = useState<Tamagochi | null>(null);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
-  const [currentFoodIndex, setCurrentFoodIndex] = useState(0);
-  const [currentFood, setCurrentFood] = useState('hamburguer');
+  const [currentFood, setCurrentFood] = useState('hamburguer'); // Comida inicial é 'hamburguer'
+  // Hook personalizado para interagir com o banco de dados do Tamagochi
   const database = useTamagochiDatabase();
 
+  // Função para buscar o Tamagochi no banco de dados e salvar no estado e AsyncStorage
   const fetchTamagochi = async () => {
     const tamagochiData = await database.findTamagochiById(tamagochiId);
     setTamagochi(tamagochiData);
     await AsyncStorage.setItem('tamagochi', JSON.stringify(tamagochiData));
   };
 
+  // useFocusEffect garante que os dados do Tamagochi sejam carregados sempre que a tela for exibida
   useFocusEffect(
     React.useCallback(() => {
       fetchTamagochi();
     }, [tamagochiId])
   );
 
+  // Função para alimentar o Tamagochi, atualizando seu nível de fome e salvando no banco de dados
   const handleFeed = async () => {
     if (tamagochi) {
-      setIsButtonDisabled(true);
-      const newHunger = Math.min(tamagochi.hunger + 10, 100);
-      await database.updateHunger(tamagochi.id, newHunger);
+      setIsButtonDisabled(true); // Desabilita o botão de alimentação enquanto o Tamagochi está sendo alimentado
+      const newHunger = Math.min(tamagochi.hunger + 10, 100); // Aumenta a fome sem ultrapassar 100
+      await database.updateHunger(tamagochi.id, newHunger); // Atualiza a fome no banco de dados
       const updatedTamagochi = { ...tamagochi, hunger: newHunger };
-      setTamagochi(updatedTamagochi);
-      await AsyncStorage.setItem('tamagochi', JSON.stringify(updatedTamagochi));
-      setTimeout(() => setIsButtonDisabled(false), 2000);
+      setTamagochi(updatedTamagochi); // Atualiza o estado com os novos dados
+      await AsyncStorage.setItem('tamagochi', JSON.stringify(updatedTamagochi)); // Salva no AsyncStorage
+      setTimeout(() => setIsButtonDisabled(false), 2000); // Reabilita o botão após 2 segundos
     }
   };
 
+  // Função para alternar a comida anterior na lista (hamburguer, pizza, sushi)
   const handlePreviousFood = () => {
-    // Lógica para alterar a comida para a anterior
     setCurrentFood((prevFood) => {
       switch (prevFood) {
         case 'hamburguer':
@@ -65,8 +70,8 @@ const KitchenScreen: React.FC = () => {
     });
   };
 
+  // Função para alternar para a próxima comida na lista
  const handleNextFood = () => {
-    // Lógica para alterar a comida para a próxima
     setCurrentFood((prevFood) => {
       switch (prevFood) {
         case 'hamburguer':
@@ -81,10 +86,12 @@ const KitchenScreen: React.FC = () => {
     });
   };
 
+  // Exibe "Carregando..." enquanto o Tamagochi não foi carregado
   if (!tamagochi) {
     return <Text>Carregando...</Text>;
   }
 
+  // Calcula o status geral do Tamagochi com base na fome, sono e humor
   const status = calculateTamagochiStatus(tamagochi.hunger, tamagochi.sleep, tamagochi.happy);
 
   return (
@@ -93,7 +100,7 @@ const KitchenScreen: React.FC = () => {
       style={styles.background}
     >
       <SafeAreaView>
-        <AtributtesContainer>
+        <AtributtesContainer> 
           <View>
             <HungerContainer>
               <Text style={styles.text}>Fome{'\n'}{tamagochi.hunger}</Text>
@@ -113,7 +120,7 @@ const KitchenScreen: React.FC = () => {
       </SafeAreaView>
 
       <View>
-        <StatusContainer>
+        <StatusContainer> 
           <Ionicons name="arrow-back" style={styles.arrowBack}
             onPress={() => {
             router.navigate('./ListTamagochi');
@@ -123,7 +130,7 @@ const KitchenScreen: React.FC = () => {
         </StatusContainer>
       </View>
 
-      <View style={styles.tamagochiContainer}>
+      <View style={styles.tamagochiContainer}> 
         <Image source={getTamagochiImage(status, tamagochi.tamagochi_id as TamagochiType)} style={styles.image} />
       </View>
 
@@ -135,12 +142,12 @@ const KitchenScreen: React.FC = () => {
         </View>
 
         <Pressable onPress={handleFeed} disabled={isButtonDisabled} style={({ pressed }) => [
-          isButtonDisabled && styles.disabledPressable,
-          pressed && styles.pressedPressable,
+          isButtonDisabled && styles.disabledPressable, // Desabilita o botão se o Tamagochi estiver sendo alimentado
+          pressed && styles.pressedPressable, // Muda o estilo ao pressionar
         ]}>
            <Image source={getFoodImage(currentFood)} style={styles.foodImage} />
         </Pressable>
-
+        
         <View style={styles.arrowContainer}>
           <Pressable onPress={handleNextFood} style={styles.arrowButton}>
             <Ionicons name={'chevron-forward-circle-outline'} style={styles.arrowText}/>

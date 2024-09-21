@@ -5,20 +5,24 @@ import { useEffect, useState } from "react";
 import { ImageBackground, SafeAreaView, StyleSheet, Text, Image, TouchableOpacity } from "react-native";
 
 const index = () => {
+   // Estados para controlar o áudio e seu estado de reprodução
   const [sound, setSound] = useState<Audio.Sound | null>(null);
   const [isPlaying, setIsPlaying] = useState<boolean>(true);
 
+   // Função assíncrona para carregar o som e configurá-lo para tocar em loop
   async function loadSound() {
     const { sound } = await Audio.Sound.createAsync(
        require('@/assets/audios/invention_ - Wingspan.mp3'),
        { shouldPlay: true, isLooping: true }
     );
-    setSound(sound);
+    setSound(sound); // Salva o objeto de som no estado
   }
 
+    // useEffect para carregar o som assim que o componente for montado
   useEffect(() => {
     loadSound();
 
+      // Limpa o som quando o componente for desmontado
     return () => {
       if (sound) {
         sound.unloadAsync();
@@ -26,6 +30,7 @@ const index = () => {
     };
   }, []);
 
+   // Função para alternar entre tocar e pausar o áudio
   const togglePlayPause = async () => {
     if (sound) {
       if (isPlaying) {
@@ -39,6 +44,7 @@ const index = () => {
   
 
     return (
+       // Tela com imagem de fundo e botões
       
     <ImageBackground source={require('@/assets/images/background3.png')} style={styles.background}>
 
@@ -55,12 +61,10 @@ const index = () => {
       <SafeAreaView style={styles.logoContainer}>
           <Text style={styles.logoText} >PROJETO</Text>
           <Text style={styles.logoText2} >TAMAGOCHI</Text>
-
           <Image style={styles.logo} source={require('@/assets/images/pinguim/pinguim-dance-unscreen.gif')}></Image>
       </SafeAreaView>
 
       <SafeAreaView style={styles.container}>
-
         <Link href={"/CreateTamagochiScreen"} asChild>
           <TouchableOpacity style={styles.button}>
             <Text style={styles.text}>Criar  Tamagochi</Text>

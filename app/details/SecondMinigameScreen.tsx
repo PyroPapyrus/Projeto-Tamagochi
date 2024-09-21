@@ -1,24 +1,21 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, Image, Dimensions, Button, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, Dimensions, TouchableOpacity } from 'react-native';
 import { Accelerometer } from 'expo-sensors';
 import { router } from 'expo-router';
 import { ImageBackground } from 'react-native';
-import { Touchable } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
 
 const SecondMinigameScreen = () => {
   const [xPos, setXPos] = useState(width / 2 - 100 / 2); // Posição inicial da cesta
-  const [fruits, setFruits] = useState<{ id: number; x: number; y: number }[]>([]);
-  const [score, setScore] = useState(0);
+  const [fruits, setFruits] = useState<{ id: number; x: number; y: number }[]>([]); // Estado para armazenar as frutas
+  const [score, setScore] = useState(0); // Pontuação do jogador
   const [fruitSpeed, setFruitSpeed] = useState(5); // Velocidade das frutas
   const [gameOver, setGameOver] = useState(false); // Estado para verificar se o jogo acabou
   const frameId = useRef<number | null>(null); // Referência para o ID do frame
 
   
-
-  // Sensibilidade do movimento da cesta
-  const sensitivity = 60; // Ajuste conforme necessário
+  const sensitivity = 60; // Sensibilidade do movimento da cesta
 
   const basketWidth = 100; // Largura da cesta
   const basketHeight = 80; // Altura da cesta
@@ -26,7 +23,7 @@ const SecondMinigameScreen = () => {
   const fruitWidth = 60; // Largura da fruta
   const fruitHeight = 60; // Altura da fruta
 
-  // Definição das áreas de coleta
+   // Áreas de coleta
   const topCollectArea = 20; // Área de coleta superior
   const sideCollectArea = 15; // Área lateral de coleta
 
@@ -34,15 +31,15 @@ const SecondMinigameScreen = () => {
   useEffect(() => {
     if (gameOver) return; // Não movimentar a cesta se o jogo acabou
 
-    Accelerometer.setUpdateInterval(100);
+    Accelerometer.setUpdateInterval(100); // Define o intervalo de atualização do acelerômetro
     const subscription = Accelerometer.addListener(accelerometerData => {
-      let newXPos = xPos - accelerometerData.x * sensitivity;
-      if (newXPos < 0) newXPos = 0;
-      if (newXPos > width - basketWidth) newXPos = width - basketWidth;
-      setXPos(newXPos);
+      let newXPos = xPos - accelerometerData.x * sensitivity; // Calcula a nova posição X da cesta
+      if (newXPos < 0) newXPos = 0; // Limita a posição mínima
+      if (newXPos > width - basketWidth) newXPos = width - basketWidth; // Limita a posição máxima
+      setXPos(newXPos); // Atualiza a posição da cesta
     });
 
-    return () => subscription.remove();
+    return () => subscription.remove(); // Remove o listener ao desmontar
   }, [xPos, gameOver]);
 
   // Atualiza a posição das frutas e verifica colisões
@@ -51,17 +48,17 @@ const SecondMinigameScreen = () => {
 
     const updateFruits = () => {
       setFruits(fruits => {
-        const updatedFruits = fruits.map(fruit => ({ ...fruit, y: fruit.y + fruitSpeed }));
+        const updatedFruits = fruits.map(fruit => ({ ...fruit, y: fruit.y + fruitSpeed })); // Move as frutas para baixo
 
         // Remove frutas que saíram da tela
         const filteredFruits = updatedFruits.filter(fruit => fruit.y < height);
 
-        // Verifica colisões e remove frutas que colidiram com a cesta
+           // Verifica colisões
         const remainingFruits = filteredFruits.filter(fruit => {
           const fruitRight = fruit.x + fruitWidth;
           const fruitBottom = fruit.y + fruitHeight;
           const basketRight = xPos + basketWidth;
-          const basketBottom = height - 50; // Posição fixa da cesta no fundo da tela
+          const basketBottom = height - 50; // Posição fixa da cesta
 
           // Verifica se a fruta está dentro da área lateral de coleta da cesta
           const isInSideCollectArea =
@@ -72,6 +69,7 @@ const SecondMinigameScreen = () => {
             (fruitBottom > height - basketHeight - topCollectArea) &&
             (fruit.y < height - basketHeight);
 
+            // Se a fruta colidiu com a cesta, atualiza a pontuação
           if (
             isInSideCollectArea &&
             isInTopCollectArea &&
@@ -81,26 +79,26 @@ const SecondMinigameScreen = () => {
             setScore(score => {
               const newScore = score + 1;
               if (newScore >= 50) {
-                setGameOver(true); // Acaba o jogo ao alcançar 100 frutas
+                setGameOver(true);  // Acaba o jogo ao alcançar 50 frutas
               }
               return newScore;
             });
             return false; // Remove a fruta da lista
           }
-          return true;
+          return true; // Mantém a fruta se não colidiu
         });
 
-        return remainingFruits;
+        return remainingFruits; // Atualiza o estado com as frutas restantes
       });
 
-      frameId.current = requestAnimationFrame(updateFruits);
+      frameId.current = requestAnimationFrame(updateFruits); // Chama a função novamente no próximo frame
     };
 
-    frameId.current = requestAnimationFrame(updateFruits);
+    frameId.current = requestAnimationFrame(updateFruits); // Inicia a atualização das frutas
 
     return () => {
       if (frameId.current) {
-        cancelAnimationFrame(frameId.current);
+        cancelAnimationFrame(frameId.current); // Cancela a animação ao desmontar
       }
     };
   }, [xPos, score, fruitSpeed, gameOver]);
@@ -115,19 +113,19 @@ const SecondMinigameScreen = () => {
           return [
             ...fruits,
             {
-              id: Date.now(),
+              id: Date.now(), // ID único para a fruta
               x: Math.random() * (width - fruitWidth), // Posição X aleatória
               y: -fruitHeight, // Começa fora da tela
             },
           ];
         }
-        return fruits;
+        return fruits; // Retorna frutas existentes se o limite foi atingido
       });
     };
 
     const spawnInterval = setInterval(spawnFruit, 500); // Frequência de criação das frutas
 
-    return () => clearInterval(spawnInterval);
+    return () => clearInterval(spawnInterval); // Limpa o intervalo ao desmontar
   }, [gameOver]);
 
   // Aumenta gradualmente a velocidade das frutas até um certo limite
@@ -138,25 +136,27 @@ const SecondMinigameScreen = () => {
     const maxSpeed = 10; // Velocidade máxima das frutas
 
     const increaseSpeed = () => {
-      setFruitSpeed(prevSpeed => Math.min(prevSpeed + speedIncrement, maxSpeed));
+      setFruitSpeed(prevSpeed => Math.min(prevSpeed + speedIncrement, maxSpeed)); // Aumenta a velocidade, sem ultrapassar o máximo
     };
 
     const speedInterval = setInterval(increaseSpeed, 10000); // Aumenta a velocidade a cada 10 segundos
 
-    return () => clearInterval(speedInterval);
+    return () => clearInterval(speedInterval); // Limpa o intervalo ao desmontar
   }, [gameOver]);
 
 
+  // Reinicia o jogo
   const handleRestart = async () => {
-    setXPos(width / 2 - basketWidth / 2);
-    setFruits([]);
-    setScore(0);
-    setFruitSpeed(5);
-    setGameOver(false);
+    setXPos(width / 2 - basketWidth / 2); // Reseta a posição da cesta
+    setFruits([]); // Limpa as frutas
+    setScore(0); // Reseta a pontuação
+    setFruitSpeed(5); // Reseta a velocidade
+    setGameOver(false); // Reinicia o estado do jogo
   };
 
+  // Sai do jogo
   const handleExit = () => {
-    router.back();
+    router.back(); // Volta para a tela anterior
   };
 
   return (
@@ -193,7 +193,7 @@ const SecondMinigameScreen = () => {
               key={fruit.id}
               style={[
                 styles.fruit,
-                { left: fruit.x, top: fruit.y },
+                { left: fruit.x, top: fruit.y }, // Define a posição da fruta
               ]}
             >
               <Image source={require('@/assets/images/golden-apple.gif')} style={styles.imageFruit} />

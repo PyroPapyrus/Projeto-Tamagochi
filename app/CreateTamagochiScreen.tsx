@@ -7,35 +7,39 @@ import { tamagochiImages, TamagochiType } from "@/assets/images/TamagochiImages"
 import { Ionicons } from "@expo/vector-icons";
 
 const CreateTamagochiScreen = () => {
-    const [selectedImage, setSelectedImage] = useState<TamagochiType | null>(null);
-    const [name, setName] = useState('');
+    const [selectedImage, setSelectedImage] = useState<TamagochiType | null>(null); // Armazena a imagem selecionada.
+    const [name, setName] = useState(''); // Armazena o nome do Tamagochi.
     const router = useRouter();
-    const database = useTamagochiDatabase();
+    const database = useTamagochiDatabase(); // Acesso ao banco de dados do Tamagochi.
 
+
+     // Função responsável por criar o Tamagochi no banco de dados.
       async function constructTamagochi() {
         
         try {
             if (!name) {
-                return Alert.alert('O tamagochi precisa ter um nome');
+                return Alert.alert('O tamagochi precisa ter um nome');  // Valida se o nome foi preenchido.
                 
             }
             if (selectedImage === null) {
-                return Alert.alert('O tamagochi precisa ter uma imagem');
+                return Alert.alert('O tamagochi precisa ter uma imagem');  // Valida se uma imagem foi selecionada.
             }
+            // Cria o Tamagochi no banco de dados.
             const newTamagochiId = await database.createTamagochi({
                 name: name,
                 tamagochi_id: selectedImage
             });
             Alert.alert('Tamagochi cadastrado com sucesso!');
-            setName('');
-            setSelectedImage(null);
-            router.back();
+            setName('');  // Reseta o nome após o cadastro.
+            setSelectedImage(null); // Reseta a imagem selecionada.
+            router.back(); // Volta para a tela anterior.
 
         } catch (error) {
             console.log('Erro ao criar Tamagochi:', error);
         }
     }
 
+     // Pega a imagem registrada do Tamagochi se uma imagem foi selecionada.
     const registeredImage = selectedImage !== null ? getTamagochiImage('muito_bem', selectedImage) : null;
 
 
@@ -56,7 +60,7 @@ const CreateTamagochiScreen = () => {
                     {Object.keys(tamagochiImages.muito_bem).map((key) => (
                         <Pressable
                         key={key}
-                            onPress={() => setSelectedImage(key as TamagochiType)}
+                            onPress={() => setSelectedImage(key as TamagochiType)} // Atualiza a imagem selecionada.
                             style={[styles.imageTile, selectedImage === key && styles.selectedImageTile]}
                             >
                             <Image

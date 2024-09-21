@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, FlatList, StyleSheet, Pressable, SafeAreaView, ScrollView, Alert } from 'react-native';
+import { View, Text, Image, FlatList, StyleSheet, Pressable, SafeAreaView, Alert } from 'react-native';
 import { Tamagochi, useTamagochiDatabase } from "@/database/tamagochiDatabase";
 import { updateAttributesBasedOnTime } from "@/utils/updateAttributesBasedOnTime";
 import { getTamagochiImage } from '@/utils/getTamagochiImage';
@@ -8,23 +8,23 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from './_layout';
 import { TamagochiType } from '@/assets/images/TamagochiImages';
-import { router } from 'expo-router';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Ionicons } from '@expo/vector-icons';
 import { ImageBackground } from 'react-native';
-import { VirtualizedList } from 'react-native';
 
+// Definição da tipagem para a navegação na lista de Tamagochis
 type ListTamagochiNavigationProp = StackNavigationProp<RootStackParamList, 'ListTamagochi'>;
 
 const ListTamagochi: React.FC = () => {
-  const [tamagochis, setTamagochis] = useState<Tamagochi[]>([]);
-  const navigation = useNavigation<ListTamagochiNavigationProp>();
-  const database = useTamagochiDatabase();
+  const [tamagochis, setTamagochis] = useState<Tamagochi[]>([]); // Estado para armazenar a lista de Tamagochis
+  const navigation = useNavigation<ListTamagochiNavigationProp>(); // Hook de navegação
+  const database = useTamagochiDatabase(); // Acesso ao banco de dados
 
+  // Função para carregar todos os Tamagochis e atualizar seus atributos baseados no tempo
   const ChargeTamagochi = async () => {
     try {
       const allTamagochis = await database.findAllTamagochi();
 
+      // Atualiza os atributos de cada Tamagochi baseados no tempo
       const updatedTamagochis = allTamagochis.map(async (tamagochi) => {
         const { hunger, sleep, happy } = updateAttributesBasedOnTime(
           tamagochi.lastUpdated,
@@ -40,6 +40,7 @@ const ListTamagochi: React.FC = () => {
           happy,
         };
 
+        // Atualiza no banco de dados se houver alguma mudança nos atributos
         if (sleep !== tamagochi.sleep || hunger !== tamagochi.hunger || happy !== tamagochi.happy) {
           await database.updateAllTamagochiAttribute(tamagochi.id, hunger, sleep, happy);
         }
@@ -47,34 +48,38 @@ const ListTamagochi: React.FC = () => {
         return updatedTamagochi;
       });
 
-      setTamagochis(await Promise.all(updatedTamagochis));
+      setTamagochis(await Promise.all(updatedTamagochis)); // Atualiza o estado com a lista de Tamagochis
     } catch (error) {
       console.log('Erro ao carregar Tamagochis:', error);
     }
   };
 
+  // useEffect para carregar os Tamagochis ao montar o componente
   useEffect(() => {
     ChargeTamagochi();
   }, []);
 
+  // Atualiza a lista de Tamagochis a cada 3 segundos
   useEffect(() => {
     const intervalId = setInterval(() => {
       ChargeTamagochi();
     }, 3000);
 
-    return () => clearInterval(intervalId);
+    return () => clearInterval(intervalId);  // Limpa o intervalo quando o componente é desmontado
   }, []);
 
   
+  // Função para deletar um Tamagochi do banco de dados
   const deleteTamagochi = async (id: number) => {
     try {
       await database.deleteTamagochiById(id);
-      setTamagochis(tamagochis.filter(tamagochi => tamagochi.id !== id));
+      setTamagochis(tamagochis.filter(tamagochi => tamagochi.id !== id));  // Remove o Tamagochi da lista
     } catch (error) {
       console.log('Erro ao deletar Tamagochi:', error);
     }
   };
 
+  // Alerta de confirmação antes de deletar um Tamagochi
   const confirmDelete = (id: number) => {
     Alert.alert(
       "Confirmar Exclusão",
@@ -94,10 +99,11 @@ const ListTamagochi: React.FC = () => {
   };
 
 
+  // Função para renderizar cada item da lista de Tamagochis
   const renderItem = ({ item }: { item: Tamagochi }) => {
 
-    const status = calculateTamagochiStatus(item.hunger, item.sleep, item.happy);
-    const isDead = status === "morto";
+    const status = calculateTamagochiStatus(item.hunger, item.sleep, item.happy);  // Calcula o status do Tamagochi
+    const isDead = status === "morto"; // Verifica se o Tamagochi está morto
     const TamagochiStatus = calculateTamagochiStatus(item.hunger, item.sleep, item.happy);
     
     return (
@@ -106,13 +112,11 @@ const ListTamagochi: React.FC = () => {
         disabled={isDead} style={styles.pressable}>
           <Image source={getTamagochiImage(status, item.tamagochi_id as TamagochiType)} style={styles.image} />
           
-
           <View style={styles.column}> 
             <Text style={[styles.name, isDead && styles.deadName]}>{item.name}</Text>
             <Text style={[styles.statusName, isDead && styles.deadName]}>{TamagochiStatus}</Text>
           </View>
         </Pressable>
-
 
 
         <Ionicons
@@ -129,7 +133,7 @@ const ListTamagochi: React.FC = () => {
   return (
 
   <ImageBackground source={{ uri: 'https://i.pinimg.com/736x/c9/8b/a0/c98ba0403bb66007b04c6c396267d30d.jpg' }} style={styles.background}>
-    
+      
       <SafeAreaView>
           <Ionicons name="arrow-back" style={styles.arrowBack}
             onPress={() => {
@@ -142,7 +146,7 @@ const ListTamagochi: React.FC = () => {
           renderItem={renderItem}
           keyExtractor={item => item.id.toString()} 
 
-          ItemSeparatorComponent={() => <View style={styles.separator} />}
+          ItemSeparatorComponent={() => <View style={styles.separator} />} // Separador entre itens
         />    
         
   </ImageBackground>
