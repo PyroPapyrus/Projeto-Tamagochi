@@ -116,7 +116,7 @@ const KitchenScreen: React.FC = () => {
         <StatusContainer>
           <Ionicons name="arrow-back" style={styles.arrowBack}
             onPress={() => {
-            router.push('./ListTamagochi');
+            router.navigate('./ListTamagochi');
           }}/>
           <Text style={styles.statusText}>STATUS</Text>
           <Text style={styles.statusNumberText}>{status}</Text>
