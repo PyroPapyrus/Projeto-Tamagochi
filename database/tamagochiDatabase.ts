@@ -12,7 +12,10 @@ export type Tamagochi = {
     lastUpdated: number;
 };
 
-// Função para usar o banco de dados Tamagochi
+/**
+ * Hook personalizado para interagir com o banco de dados de Tamagochi.
+ * Contém funções para criar, buscar, atualizar e deletar registros de Tamagochi.
+ */
 export function useTamagochiDatabase() {
     const database = useSQLiteContext();
 
@@ -47,7 +50,7 @@ export function useTamagochiDatabase() {
         }
     }
 
-    // Função para buscar todos os Tamagochis
+    // Função para buscar todos os Tamagochis no banco de dados
     async function findAllTamagochi() {
         try {
             const query = `SELECT * FROM tamagochis;`; // Declaração SQL para buscar todos os registros
@@ -152,6 +155,7 @@ async function deleteTamagochiById(id: number) {
         }
     }
     
+    //Função para atualizar todos os atributos de um Tamagochi.
     async function updateAllTamagochiAttribute(tamagochiId: number, hunger: number, sleep: number, happy: number) {
         // Calcula o tempo atual em segundos
         const currentTime = Math.floor(Date.now() / 3600000); 

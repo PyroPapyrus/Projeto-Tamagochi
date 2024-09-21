@@ -1,33 +1,53 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, Button, TouchableOpacity, StyleSheet, ImageBackground, Pressable } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ImageBackground } from 'react-native';
 
+/**
+ * Componente MinigameScreen
+ * Este componente representa um minigame onde o usuário tem 10 segundos para tocar em uma área da tela
+ * o maior número de vezes possível para acumular pontos.
+ */
 const MinigameScreen = () => {
+  // Estado para indicar se o jogo começou ou não
   const [gameStarted, setGameStarted] = useState(false);
+  // Estado para armazenar a pontuação atual
   const [score, setScore] = useState(0);
+  // Estado para armazenar a melhor pontuação alcançada
   const [bestScore, setBestScore] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(10); // 10 segundos de jogo
-  const [loading, setLoading] = useState(false); // Estado de carregamento para exibir "Carregando..."
+  // Estado para armazenar o tempo restante de jogo (inicialmente 10 segundos)
+  const [timeLeft, setTimeLeft] = useState(10);
+  // Estado de carregamento para exibir "Carregando..." ao final do jogo
+  const [loading, setLoading] = useState(false);
+  // Referência para o timer que controla o tempo de jogo
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Efeito que atualiza o `bestScore` assim que o `score` muda
+
+   /**
+   * Efeito que atualiza a melhor pontuação (bestScore) sempre que a pontuação (score) muda.
+   * Se a pontuação atual for maior que a melhor pontuação, ela é atualizada.
+   */
   useEffect(() => {
     if (score > bestScore) {
-      setBestScore(score); // Atualiza a melhor pontuação assim que o `score` muda
+      setBestScore(score);
     }
   }, [score, bestScore]);
 
-  // Inicia o jogo
+
+  /**
+   * Função que inicia o jogo.
+   * - Reinicia a pontuação e o tempo
+   * - Inicia o cronômetro que decrementa o tempo a cada segundo
+   */
   const startGame = () => {
     setScore(0); // Reinicia a pontuação
     setTimeLeft(10); // Tempo inicial de 10 segundos
-    setGameStarted(true); // Começa o jogo
+    setGameStarted(true); // Marca o jogo como iniciado
     setLoading(false); // Reseta o estado de carregamento
 
-    // Iniciar cronômetro
+    // Inicia o cronômetro que decrementa o tempo
     timerRef.current = setInterval(() => {
       setTimeLeft((prevTime) => {
         if (prevTime <= 1) {
-          clearInterval(timerRef.current!);
+          clearInterval(timerRef.current!); // Para o cronômetro
           endGame(); // Chama a função para encerrar o jogo
           return 0;
         }
@@ -36,7 +56,10 @@ const MinigameScreen = () => {
     }, 1000);
   };
 
-  // Função para encerrar o jogo e atualizar a pontuação
+    /**
+   * Função que encerra o jogo.
+   * - Para o cronômetro e exibe o estado de carregamento por 500ms
+   */
   const endGame = () => {
     setGameStarted(false); // Encerra o jogo
     setLoading(true); // Exibe "Carregando..." enquanto a pontuação é atualizada
@@ -47,16 +70,21 @@ const MinigameScreen = () => {
     }, 500); // Simula um atraso de 500ms para a atualização
   };
 
-  // Função que incrementa o score a cada toque
+
+   /**
+   * Função chamada ao tocar na área de jogo.
+   * - Incrementa a pontuação se o jogo estiver em andamento
+   * - Se a pontuação atingir 100, o jogo termina automaticamente
+   */
   const handleTap = () => {
     if (gameStarted) {
       setScore((prevScore) => {
         const newScore = prevScore + 1;
         
-        // Verifica se o jogador atingiu 100 pontos
+        // Verifica se o jogador atingiu 100 pontos e encerra o jogo
         if (newScore >= 100) {
-          clearInterval(timerRef.current!);
-          endGame(); // Finaliza o jogo se atingir 100 pontos
+          clearInterval(timerRef.current!); // Para o cronômetro
+          endGame(); // Encerra o jogo
         }
 
         return newScore;
@@ -68,7 +96,6 @@ const MinigameScreen = () => {
     <ImageBackground source={require('@/assets/images/background-minigame.jpg')} style={styles.container}>
 
 
-      
         {!gameStarted && (
           <>   
             <View style={styles.textContainer}>
@@ -88,14 +115,13 @@ const MinigameScreen = () => {
         )}
       
 
-     
-
       {gameStarted && (
         <>
           <View style={styles.textContainer}>
             <Text style={styles.timeLeftText}>Tempo Restante: {timeLeft}s</Text>
             <Text style={styles.scoreText}>Pontuação: {score}</Text>
           </View>
+
 
           <TouchableOpacity style={styles.tapArea} onPress={handleTap}>
             <Text style={styles.tapText}>Toque!</Text>

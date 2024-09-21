@@ -1,8 +1,21 @@
 import { ImageSourcePropType } from "react-native";
 
+/**
+ * Tipos de status que um Tamagochi pode ter.
+ * Os status representam o estado de humor ou condição do Tamagochi.
+ */
 export type TamagochiStatus = "morto" | "critico" | "muito_triste" | "triste" | "ok" | "bem" | "muito_bem";
+
+/**
+ * Tipos de Tamagochis disponíveis.
+ * Cada Tamagochi tem um conjunto de imagens associado ao seu tipo.
+ */
 export type TamagochiType = "tamagochi1" | "tamagochi2" | "tamagochi3" | "tamagochi4";
 
+/**
+ * Objeto que mapeia o status de um Tamagochi e seu tipo para uma imagem correspondente.
+ * Cada status e tipo de Tamagochi tem uma imagem específica que será renderizada.
+ */
 const tamagochiImages: Record<TamagochiStatus, Record<TamagochiType, ImageSourcePropType>> = {
     morto: {
         tamagochi1: require('./rip-morto.webp'),

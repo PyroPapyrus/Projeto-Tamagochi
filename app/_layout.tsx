@@ -7,7 +7,6 @@ import 'react-native-reanimated';
 import { SQLiteProvider } from 'expo-sqlite';
 import { initDatabase } from '@/database/initDatabase';
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export type RootStackParamList = {
@@ -20,6 +19,7 @@ export type RootStackParamList = {
 };
 
 export default function RootLayout() {
+  // Carrega as fontes personalizadas.
   const [loaded, error] = useFonts({
     'PixelifySansBold': require('@/assets/fonts/PixelifySans-Bold.ttf'),
     'PixelifySansMedium': require('@/assets/fonts/PixelifySans-Medium.ttf'),
@@ -37,6 +37,7 @@ export default function RootLayout() {
 
  
   return (
+      // Provedor do banco de dados SQLite.
     <SQLiteProvider databaseName='Tamagochi.db' onInit={initDatabase}>
 
         <Stack>

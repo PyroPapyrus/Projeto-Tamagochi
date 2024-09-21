@@ -1,8 +1,10 @@
 import { TamagochiStatus } from "@/assets/images/TamagochiImages";
 
+ //Calcula o status do Tamagochi com base nos atributos de fome, sono e felicidade
 export function calculateTamagochiStatus(hunger: number, sleep: number, happy: number): TamagochiStatus {
-    const total = hunger + sleep + happy;
+    const total = hunger + sleep + happy; // Soma os níveis de fome, sono e felicidade
 
+ // Determina o status com base na soma total
     if (total === 0) {
         return "morto";
     } else if (total >= 1 && total <= 50) {
@@ -19,7 +21,7 @@ export function calculateTamagochiStatus(hunger: number, sleep: number, happy: n
         return "muito_bem";
     } else {
         // Retornar um valor padrão válido ou lançar um erro
-        return "morto"; // ou qualquer outro valor padrão válido
+        return "morto"; // Retorna "morto" como valor padrão para qualquer caso não esperado
     }
 }
 

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, Image, StyleSheet, Pressable, ImageBackground, SafeAreaView, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, Image, StyleSheet, ImageBackground, SafeAreaView, TouchableOpacity } from 'react-native';
 import { useRoute, useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Tamagochi, useTamagochiDatabase } from "@/database/tamagochiDatabase";
@@ -16,40 +16,48 @@ import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 
 const BedroomScreen: React.FC = () => {
+  // Obtém o ID do Tamagochi da rota de navegação
   const route = useRoute();
   const { tamagochiId } = route.params as { tamagochiId: number };
+  // Estados para armazenar o Tamagochi e o status de sono
   const [tamagochi, setTamagochi] = useState<Tamagochi | null>(null);
   const [isSleeping, setIsSleeping] = useState(false);
+  // Acessa o banco de dados do Tamagochi
   const database = useTamagochiDatabase();
 
+  // Função para buscar o Tamagochi no banco de dados e salvar no estado e AsyncStorage
   const fetchTamagochi = async () => {
     const tamagochiData = await database.findTamagochiById(tamagochiId);
     setTamagochi(tamagochiData);
     await AsyncStorage.setItem('tamagochi', JSON.stringify(tamagochiData));
   };
 
+  // useFocusEffect garante que os dados do Tamagochi sejam carregados sempre que a tela for exibida
   useFocusEffect(
     React.useCallback(() => {
       fetchTamagochi();
     }, [tamagochiId])
   );
 
+  // Função para colocar o Tamagochi para dormir e aumentar seu nível de sono
   const handleSleep = async () => {
     if (tamagochi) {
-      setIsSleeping(true);
+      setIsSleeping(true); // Define que o Tamagochi está dormindo
       const newSleep = Math.min(tamagochi.sleep + 10, 100); // Incrementa o sono em 10, mas não ultrapassa 100
-      await database.updateSleep(tamagochi.id, newSleep);
-      const updatedTamagochi = { ...tamagochi, sleep: newSleep };
+      await database.updateSleep(tamagochi.id, newSleep); // Atualiza o nível de sono no banco de dados
+      const updatedTamagochi = { ...tamagochi, sleep: newSleep }; // Atualiza o estado com o novo nível de sono
       setTamagochi(updatedTamagochi);
-      await AsyncStorage.setItem('tamagochi', JSON.stringify(updatedTamagochi));
-      setTimeout(() => setIsSleeping(false), 5000); // Botão inativo por 10 segundos
+      await AsyncStorage.setItem('tamagochi', JSON.stringify(updatedTamagochi)); // Salva o Tamagochi atualizado no AsyncStorage
+      setTimeout(() => setIsSleeping(false), 5000); // Tamagochi "dorme" por 5 segundos
     }
   };
 
+  // Exibe "Carregando..." enquanto o Tamagochi não foi carregado
   if (!tamagochi) {
     return <Text>Carregando...</Text>;
   }
 
+  // Calcula o status geral do Tamagochi com base na fome, sono e humor
   const status = calculateTamagochiStatus(tamagochi.hunger, tamagochi.sleep, tamagochi.happy);
 
   return (
@@ -82,7 +90,7 @@ const BedroomScreen: React.FC = () => {
         <StatusContainer>
           <Ionicons name="arrow-back" style={styles.arrowBack}
             onPress={() => {
-            router.push('./ListTamagochi');
+            router.navigate('./ListTamagochi');
           }}/>
           <Text style={styles.statusText}>STATUS</Text>
           <Text style={styles.statusNumberText}>{status}</Text>

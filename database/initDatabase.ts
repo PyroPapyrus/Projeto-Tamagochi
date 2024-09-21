@@ -1,9 +1,13 @@
 import { SQLiteDatabase } from "expo-sqlite";
 
-// Função assíncrona para inicializar o banco de dados
+/**
+ * Função assíncrona para inicializar o banco de dados SQLite.
+ * Essa função cria a tabela "tamagochis" se ela não existir e também cria triggers para atualizar o status
+ * dos Tamagochis com base em mudanças nos atributos de fome, felicidade e sono.
+ */
 export async function initDatabase(database: SQLiteDatabase) {
     try {
-           // Criação da tabela tamagochis se ela não existir
+        // Criação da tabela "tamagochis" se ela ainda não existir
         await database.execAsync(`
     CREATE TABLE IF NOT EXISTS tamagochis (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -16,7 +20,7 @@ export async function initDatabase(database: SQLiteDatabase) {
         lastUpdated INTEGER NOT NULL DEFAULT (strftime('%s', 'now'))
     );
 `);
-        // Criação do trigger para atualizar o status após atualização dos atributos hunger, happy e sleep
+// Trigger que atualiza o status do Tamagochi automaticamente após uma atualização nos atributos de fome, felicidade ou sono
         await database.execAsync(`
             CREATE TRIGGER IF NOT EXISTS update_data
             AFTER UPDATE OF hunger, happy, sleep ON tamagochis
@@ -28,7 +32,7 @@ export async function initDatabase(database: SQLiteDatabase) {
             END;
         `);
         
-        // Criação do trigger para calcular o status após inserção de um novo Tamagochi
+        // Trigger que calcula o status do Tamagochi automaticamente após a inserção de um novo registro
         await database.execAsync(`
             CREATE TRIGGER IF NOT EXISTS calculate_data
             AFTER INSERT ON tamagochis
@@ -44,8 +48,7 @@ export async function initDatabase(database: SQLiteDatabase) {
         console.log("database funciona grazadeus")
 
     } catch (error) {
-        
-         // Mensagem de erro no console
+        // Captura e exibe qualquer erro que ocorrer durante a inicialização
         console.error("deu pau, erro:", error);
     }
 }
