@@ -1,8 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, Image, Dimensions, TouchableOpacity } from 'react-native';
 import { Accelerometer } from 'expo-sensors';
-import { router } from 'expo-router';
+import { router, useFocusEffect } from 'expo-router';
 import { ImageBackground } from 'react-native';
+import { useRoute } from '@react-navigation/native';
+import { Tamagochi, useTamagochiDatabase } from '@/database/tamagochiDatabase';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width, height } = Dimensions.get('window');
 
@@ -13,6 +16,25 @@ const SecondMinigameScreen = () => {
   const [fruitSpeed, setFruitSpeed] = useState(5); // Velocidade das frutas
   const [gameOver, setGameOver] = useState(false); // Estado para verificar se o jogo acabou
   const frameId = useRef<number | null>(null); // Referência para o ID do frame
+
+  const route = useRoute(); // Acessa os parâmetros da rota
+  const { tamagochiId } = route.params as { tamagochiId: number }; // Recebe o ID do tamagochi
+  const [tamagochi, setTamagochi] = useState<Tamagochi | null>(null); // Armazena os dados do tamagochi
+  const database = useTamagochiDatabase(); // Acessa o banco de dados do tamagochi
+
+  // Função que busca os dados do tamagochi no banco de dados
+  const fetchTamagochi = async () => {
+    const tamagochiData = await database.findTamagochiById(tamagochiId);
+    setTamagochi(tamagochiData);
+    await AsyncStorage.setItem('tamagochi', JSON.stringify(tamagochiData)); // Armazena no AsyncStorage
+  };
+
+  // Efeito que busca os dados toda vez que a tela é focada
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchTamagochi();
+    }, [tamagochiId])
+  );
 
   
   const sensitivity = 60; // Sensibilidade do movimento da cesta
@@ -79,6 +101,19 @@ const SecondMinigameScreen = () => {
             setScore(score => {
               const newScore = score + 1;
               if (newScore >= 50) {
+                
+
+                          
+                const updateStatusHappy = async () => {
+                  if (tamagochi) {
+                    const newHappy = Math.min(tamagochi.happy + 20, 100); // Aumenta a felicidade em 20 (máximo 100)
+                    await database.updateHappy(tamagochi.id, newHappy);
+                    const updatedTamagochi = { ...tamagochi, happy: newHappy };
+                    setTamagochi(updatedTamagochi);
+                    await AsyncStorage.setItem('tamagochi', JSON.stringify(updatedTamagochi));
+                  }
+                }
+                updateStatusHappy()
                 setGameOver(true);  // Acaba o jogo ao alcançar 50 frutas
               }
               return newScore;

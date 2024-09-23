@@ -1,12 +1,21 @@
+import { TamagochiType } from '@/assets/images/TamagochiImages';
+import { Tamagochi, useTamagochiDatabase } from '@/database/tamagochiDatabase';
+import { calculateTamagochiStatus } from '@/utils/calculateTamagochiStatus';
+import { getTamagochiImage } from '@/utils/getTamagochiImage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useRoute } from '@react-navigation/native';
+import { router, useFocusEffect, useNavigation } from 'expo-router';
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ImageBackground } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ImageBackground, Image } from 'react-native';
 
 /**
  * Componente MinigameScreen
- * Este componente representa um minigame onde o usuário tem 10 segundos para tocar em uma área da tela
+ * Este componente representa um minigame onde o usuário tem 15 segundos para tocar em uma área da tela
  * o maior número de vezes possível para acumular pontos.
  */
-const MinigameScreen = () => {
+
+
+const MinigameScreen: React.FC = () => {
   // Estado para indicar se o jogo começou ou não
   const [gameStarted, setGameStarted] = useState(false);
   // Estado para armazenar a pontuação atual
@@ -20,6 +29,24 @@ const MinigameScreen = () => {
   // Referência para o timer que controla o tempo de jogo
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
+  const route = useRoute(); // Acessa os parâmetros da rota
+  const { tamagochiId } = route.params as { tamagochiId: number }; // Recebe o ID do tamagochi
+  const [tamagochi, setTamagochi] = useState<Tamagochi | null>(null); // Armazena os dados do tamagochi
+  const database = useTamagochiDatabase(); // Acessa o banco de dados do tamagochi
+
+  // Função que busca os dados do tamagochi no banco de dados
+  const fetchTamagochi = async () => {
+    const tamagochiData = await database.findTamagochiById(tamagochiId);
+    setTamagochi(tamagochiData);
+    await AsyncStorage.setItem('tamagochi', JSON.stringify(tamagochiData)); // Armazena no AsyncStorage
+  };
+
+  // Efeito que busca os dados toda vez que a tela é focada
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchTamagochi();
+    }, [tamagochiId])
+  );
 
    /**
    * Efeito que atualiza a melhor pontuação (bestScore) sempre que a pontuação (score) muda.
@@ -39,7 +66,7 @@ const MinigameScreen = () => {
    */
   const startGame = () => {
     setScore(0); // Reinicia a pontuação
-    setTimeLeft(10); // Tempo inicial de 10 segundos
+    setTimeLeft(15); // Tempo inicial de 15 segundos
     setGameStarted(true); // Marca o jogo como iniciado
     setLoading(false); // Reseta o estado de carregamento
 
@@ -76,7 +103,7 @@ const MinigameScreen = () => {
    * - Incrementa a pontuação se o jogo estiver em andamento
    * - Se a pontuação atingir 100, o jogo termina automaticamente
    */
-  const handleTap = () => {
+  const handleTap = async () => {
     if (gameStarted) {
       setScore((prevScore) => {
         const newScore = prevScore + 1;
@@ -84,13 +111,33 @@ const MinigameScreen = () => {
         // Verifica se o jogador atingiu 100 pontos e encerra o jogo
         if (newScore >= 100) {
           clearInterval(timerRef.current!); // Para o cronômetro
+          
+          const updateStatusHappy = async () => {
+            if (tamagochi) {
+              const newHappy = Math.min(tamagochi.happy + 20, 100); // Aumenta a felicidade em 20 (máximo 100)
+              await database.updateHappy(tamagochi.id, newHappy);
+              const updatedTamagochi = { ...tamagochi, happy: newHappy };
+              setTamagochi(updatedTamagochi);
+              await AsyncStorage.setItem('tamagochi', JSON.stringify(updatedTamagochi));
+            }
+          }
           endGame(); // Encerra o jogo
+          updateStatusHappy();
         }
+
+
 
         return newScore;
       });
     }
   };
+
+    // Exibe um texto de carregamento enquanto os dados não foram carregados
+    if (!tamagochi) {
+      return <Text>Carregando...</Text>;
+    }
+
+  const status = calculateTamagochiStatus(tamagochi.hunger, tamagochi.sleep, tamagochi.happy);
 
   return (
     <ImageBackground source={require('@/assets/images/background-minigame.jpg')} style={styles.container}>
@@ -110,6 +157,10 @@ const MinigameScreen = () => {
             <TouchableOpacity onPress={startGame} style={styles.button}> 
               <Text style={styles.textButton}>Iniciar Jogo</Text>
             </TouchableOpacity>
+
+            <TouchableOpacity onPress={router.back} style={styles.exitButton}> 
+              <Text style={styles.textButton}>Sair</Text>
+            </TouchableOpacity>
           </>
           
         )}
@@ -124,6 +175,7 @@ const MinigameScreen = () => {
 
 
           <TouchableOpacity style={styles.tapArea} onPress={handleTap}>
+            <Image source={getTamagochiImage(status, tamagochi.tamagochi_id as TamagochiType)} style={styles.image} />
             <Text style={styles.tapText}>Toque!</Text>
           </TouchableOpacity>
         </>
@@ -139,9 +191,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  
+  image: {
+    width: 150,
+    height: 150,
+    marginBottom: 20,
+  },
 
   textContainer: {
     padding: 20,
+    paddingHorizontal: 30,
     borderRadius: 10,
     backgroundColor: 'rgba(0, 0, 0, 0.4)',
     alignItems:'center',
@@ -156,6 +215,14 @@ const styles = StyleSheet.create({
   },
 
   button: {
+    position: 'absolute',
+    bottom: 75,
+    backgroundColor: 'rgba(0, 123, 255, 0.7)',
+    padding: 15,
+    borderRadius: 5,
+  },
+
+  exitButton: {
     position: 'absolute',
     bottom: 20,
     backgroundColor: 'rgba(0, 123, 255, 0.7)',
@@ -218,7 +285,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     width: 200,
     height: 200,
-    backgroundColor: 'rgba(255, 78, 0, 0.7)',
+    backgroundColor: 'rgba(255, 255, 255, 0.3)',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 100,
@@ -227,8 +294,10 @@ const styles = StyleSheet.create({
   tapText: {
     fontFamily: 'PixelifySansBold',
     fontSize: 24,
+    position: 'absolute',
+    bottom: 8,
     color: 'white',
-    textShadowColor: 'black',
+    textShadowColor: 'red',
     textShadowOffset: { width: -1, height: 1 },
     textShadowRadius: 1,
   },

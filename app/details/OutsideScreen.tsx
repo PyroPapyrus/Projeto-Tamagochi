@@ -52,11 +52,6 @@ const OutsideScreen: React.FC = () => {
 
     if (tamagochi) {
       setIsPlayButtonDisabled(true);
-      const newHappy = Math.min(tamagochi.happy + 20, 100); // Aumenta a felicidade em 20 (máximo 100)
-      await database.updateHappy(tamagochi.id, newHappy);
-      const updatedTamagochi = { ...tamagochi, happy: newHappy };
-      setTamagochi(updatedTamagochi);
-      await AsyncStorage.setItem('tamagochi', JSON.stringify(updatedTamagochi));
       navigation.navigate('Minigame'); // Navega para a tela do minigame
       setTimeout(() => setIsPlayButtonDisabled(false), 10000) // Desabilita o botão por 10 segundos
     }
@@ -68,11 +63,7 @@ const OutsideScreen: React.FC = () => {
 
     if (tamagochi) {
       setIsWalkButtonDisabled(true);
-      const newHappy = Math.min(tamagochi.happy + 20, 100); // Aumenta a felicidade em 20 (máximo 100)
-      await database.updateHappy(tamagochi.id, newHappy);
-      const updatedTamagochi = { ...tamagochi, happy: newHappy };
-      setTamagochi(updatedTamagochi);
-      await AsyncStorage.setItem('tamagochi', JSON.stringify(updatedTamagochi));
+      
       navigation.navigate('SecondMinigameScreen'); // Navega para o segundo minigame
       setTimeout(() => setIsWalkButtonDisabled(false), 10000); // Desabilita o botão por 10 segundos
     }

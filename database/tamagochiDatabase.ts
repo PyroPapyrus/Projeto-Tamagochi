@@ -190,5 +190,5 @@ async function deleteTamagochiById(id: number) {
         
         
         // Retorna todas as funções para uso externo
-    return { createTamagochi, findAllTamagochi, findTamagochiById,deleteTamagochiById, updateHunger, updateHappy, updateSleep,updateAllTamagochiAttribute };
+    return { createTamagochi, findAllTamagochi, findTamagochiById,deleteTamagochiById, updateHunger, updateHappy, updateSleep, updateAllTamagochiAttribute };
 }
