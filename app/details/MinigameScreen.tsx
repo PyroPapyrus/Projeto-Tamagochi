@@ -147,11 +147,14 @@ const MinigameScreen: React.FC = () => {
           <>   
             <View style={styles.textContainer}>
               <Text style={styles.title}>{'<'}Jogo do Toque Rápido{'/>'}</Text>
-                {loading ? (
-                  <Text style={styles.loadingText}>Carregando...</Text>
-                ) : (
-                  <Text style={styles.bestScoreText}>Melhor Pontuação: {bestScore}</Text>
-                )} 
+              
+                  <Text style={styles.title2}>Alcance
+                    <Text style={styles.metaText}> 100 pontos</Text>
+                    <Text style={styles.title2}> antes que o tempo acabe!</Text>
+                  </Text>
+                  
+                  
+               
             </View>
 
             <TouchableOpacity onPress={startGame} style={styles.button}> 
@@ -170,7 +173,9 @@ const MinigameScreen: React.FC = () => {
         <>
           <View style={styles.textContainer}>
             <Text style={styles.timeLeftText}>Tempo Restante: {timeLeft}s</Text>
-            <Text style={styles.scoreText}>Pontuação: {score}</Text>
+            <Text style={styles.scoreText}>Pontuação:
+              <Text style={styles.statusNumber}> {score}</Text>
+            </Text>
           </View>
 
 
@@ -240,22 +245,24 @@ const styles = StyleSheet.create({
     textShadowRadius: 1,
   },
 
-  bestScoreText: {
+  title2: {
+    textAlign: 'center',
+    color: 'white',
+    fontSize: 18,
+    fontFamily: 'PixelifySansBold',
+    marginBottom: 5,
+    textShadowColor: 'red',
+    textShadowOffset: { width: -1, height: 1 },
+    textShadowRadius: 1,
+  },
+
+  metaText: {
+    textAlign: 'center',
     color: 'darkorange',
     fontFamily: 'PixelifySansBold',
     fontSize: 18,
     marginBottom: 10,
     textShadowColor: 'red',
-    textShadowOffset: { width: -1, height: 1 },
-    textShadowRadius: 1,
-  },
-  
-  loadingText: {
-    fontFamily: 'PixelifySansBold',
-    fontSize: 18,
-    marginBottom: 10,
-    color: 'gray',
-    textShadowColor: 'black',
     textShadowOffset: { width: -1, height: 1 },
     textShadowRadius: 1,
   },
@@ -276,6 +283,18 @@ const styles = StyleSheet.create({
     fontFamily: 'PixelifySansBold',
     fontSize: 20,
     marginBottom: 20,
+    textShadowColor: 'red',
+    textShadowOffset: { width: -1, height: 1 },
+    textShadowRadius: 1,
+  },
+
+  statusNumber: {
+    fontFamily: 'Micro5',
+    textAlign: 'center',
+    color: 'darkorange',
+    padding: 10,
+    borderRadius: 10,
+    fontSize: 27,
     textShadowColor: 'red',
     textShadowOffset: { width: -1, height: 1 },
     textShadowRadius: 1,

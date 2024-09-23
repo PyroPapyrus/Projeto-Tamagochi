@@ -29,7 +29,7 @@
     "plugins": [
       ["expo-router"],
       ["expo-font",
-        { "fonts": ["./assets/fonts/PixelifySans-Bold.ttf", "./assets/fonts/PixelifySans-Medium.ttf"] }
+        { "fonts": ["./assets/fonts/PixelifySans-Bold.ttf", "./assets/fonts/PixelifySans-Medium.ttf", "./assets/fonts/Micro5-Regular.ttf"] }
       ]
     ],
     "experiments": {

@@ -60,7 +60,7 @@ const index = () => {
 
       <SafeAreaView style={styles.logoContainer}>
           <Text style={styles.logoText} >PROJETO</Text>
-          <Text style={styles.logoText2} >TAMAGOCHI</Text>
+          <Text style={styles.logoText2} >TAMAGOTCHI</Text>
           <Image style={styles.logo} source={require('@/assets/images/pinguim/pinguim-dance-unscreen.gif')}></Image>
       </SafeAreaView>
 

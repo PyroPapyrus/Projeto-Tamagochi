@@ -221,7 +221,9 @@ const SecondMinigameScreen = () => {
         <>
         <View style={styles.titleContainer}>
           <Text style={styles.title}>Pontuação</Text>
-          <Text style={styles.titleScore}>{score}</Text>
+          <Text style={styles.titleScore}>
+            <Text style={styles.scoreNumber}>{score}</Text>
+          </Text>
         </View>
           {fruits.map(fruit => (
             <View
@@ -275,6 +277,16 @@ const styles = StyleSheet.create({
     fontFamily: 'PixelifySansBold',
     fontSize: 24,
     textAlign: 'center',
+    textShadowColor: 'red',
+    textShadowOffset: { width: -1, height: 1 },
+    textShadowRadius: 1,
+  },
+
+  scoreNumber: {
+    fontFamily: 'Micro5',
+    textAlign: 'center',
+    color: 'darkorange',
+    fontSize: 35,
     textShadowColor: 'red',
     textShadowOffset: { width: -1, height: 1 },
     textShadowRadius: 1,
@@ -339,12 +351,11 @@ const styles = StyleSheet.create({
   },
 
   gameOverText2: {
-    fontFamily: 'PixelifySansBold',
+    fontFamily: 'Micro5',
     padding: 10,
     borderRadius: 5,
-    color: 'orange',
-    fontSize: 24,
-    marginBottom: 15,
+    color: 'darkorange',
+    fontSize: 32,
     textShadowColor: 'red',
     textShadowOffset: { width: -1, height: 1 },
     textShadowRadius: 1,

@@ -23,6 +23,7 @@ export default function RootLayout() {
   const [loaded, error] = useFonts({
     'PixelifySansBold': require('@/assets/fonts/PixelifySans-Bold.ttf'),
     'PixelifySansMedium': require('@/assets/fonts/PixelifySans-Medium.ttf'),
+    'Micro5': require('@/assets/fonts/Micro5-Regular.ttf'),
   });
 
   useEffect(() => {

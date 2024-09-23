@@ -87,19 +87,25 @@ const OutsideScreen: React.FC = () => {
       <AtributtesContainer>
         <View> 
           <HungerContainer>
-            <Text style={styles.text}>Fome{'\n'}{tamagochi.hunger}</Text>
+            <Text style={styles.text}>Fome{'\n'}
+              <Text style={styles.statusNumber}>{tamagochi.hunger}</Text>
+            </Text>
           </HungerContainer>
         </View>  
 
         <View> 
           <SleepContainer>
-            <Text style={styles.text}>Sono{'\n'}{tamagochi.sleep}</Text>
+            <Text style={styles.text}>Sono{'\n'}
+              <Text style={styles.statusNumber}>{tamagochi.sleep}</Text>
+            </Text>
           </SleepContainer>
         </View> 
 
         <View> 
           <HappyContainer>
-            <Text style={styles.text}>Humor{'\n'}{tamagochi.happy}</Text>
+            <Text style={styles.text}>Humor{'\n'}
+              <Text style={styles.statusNumber}>{tamagochi.happy}</Text>
+            </Text>
           </HappyContainer>
         </View> 
         </AtributtesContainer> 
@@ -170,6 +176,18 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     fontSize: 20,
+    textShadowColor: 'black',
+    textShadowOffset: { width: -1, height: 2 },
+    textShadowRadius: 1,
+  },
+
+  statusNumber: {
+    fontFamily: 'Micro5',
+    textAlign: 'center',
+    color: 'white',
+    padding: 10,
+    borderRadius: 10,
+    fontSize: 27,
     textShadowColor: 'black',
     textShadowOffset: { width: -1, height: 2 },
     textShadowRadius: 1,
